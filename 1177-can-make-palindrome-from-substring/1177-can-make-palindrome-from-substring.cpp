@@ -21,7 +21,7 @@ public:
                 odd-=2;
             }
             if(odd<=1)
-            {    cout<<i<<endl;result[i]=true;}
+                result[i]=true;
         }
         return result;
     }
