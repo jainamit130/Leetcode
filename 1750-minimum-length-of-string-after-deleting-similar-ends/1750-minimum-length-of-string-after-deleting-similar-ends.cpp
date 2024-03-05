@@ -6,7 +6,7 @@ public:
                 char k=s[i];
                 while(i<=j && k==s[i]){
                     i++;
-                } while(i<=j && k==s[j]){
+                } while(i<j && k==s[j]){
                     j--;
                 }
         }if(j<i)
