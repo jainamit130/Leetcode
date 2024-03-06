@@ -14,7 +14,7 @@ public:
             if(visited[row][col])
                 continue;
             visited[row][col]=true;
-            if(row==n && col==m)
+            if(row==n-1 && col==m-1)
                 return weight;
             for(int k=0;k<mp.size();k++){
                 int nR=row+mp[k][0];
