@@ -19,6 +19,6 @@ public:
             prod=(prod*pq.top())%((int)1e9+7);
             pq.pop();
         }
-        return prod%((int)1e9+7);
+        return prod;
     }
 };
