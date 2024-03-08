@@ -11,36 +11,29 @@ public:
             adjacencyList[prerequisites[i][0]].push_back(prerequisites[i][1]);
         
         //Topological Sort
-        unordered_map<int,int> mp;
-        vector<int> topoSort;
-        vector<bool> visited(numCourses);
-        for(int i=0;i<numCourses;i++){
-            dfs(adjacencyList,i,visited,topoSort);
-        }
-        reverse(topoSort.begin(),topoSort.end());
-        for(int i=0;i<topoSort.size();i++)
-            mp[topoSort[i]]=i;
+        unordered_map<int,unordered_set<int>> topoSort;
+        for(int i=0;i<numCourses;i++)
+            dfs(adjacencyList,i,topoSort);
+
         for(int i=0;i<queries.size();i++){
             int start=queries[i][0];
             int dst=queries[i][1];
-            cout<<mp[start]<<" "<<mp[dst]<<endl;
-            result[i]=mp[start]<mp[dst]?true:false;
+            result[i]=topoSort[start].find(dst)!=topoSort[start].end();
         }
         return result;
     }
 
-    void dfs(vector<vector<int>>& adj,int course,vector<bool>& visited,vector<int>& topoSort){
-        if(visited[course])
-            return;
+    unordered_set<int> dfs(vector<vector<int>>& adj,int course,unordered_map<int,unordered_set<int>>& prereqMap){
+        if(prereqMap.find(course)!=prereqMap.end())
+            return prereqMap[course];
 
-        visited[course]=true;
-        //traversing all neighbours
+        unordered_set<int> topoSet;
         for(int i=0;i<adj[course].size();i++){
-            dfs(adj,adj[course][i],visited,topoSort);
+            unordered_set<int> temp=dfs(adj,adj[course][i],prereqMap);
+            prereqMap[course].insert(temp.begin(),temp.end());
         }
-
-        topoSort.push_back(course);
-        return;
+        prereqMap[course].insert(course);
+        return prereqMap[course];
     }
 };
 
