@@ -17,6 +17,9 @@ public:
                     memory.erase(n);
                 if(memory[k-n]<=0)
                     memory.erase(k-n);
+            } else {
+                memory.erase(n);
+                memory.erase(k-n);
             }
             if(memory.size()==0)
                 break;
