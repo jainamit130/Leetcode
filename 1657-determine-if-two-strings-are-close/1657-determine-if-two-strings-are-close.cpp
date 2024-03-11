@@ -1,38 +1,36 @@
 class Solution {
 public:
     bool closeStrings(string word1, string word2) {
-        unordered_map<char,pair<int,int>> mp;
-        if(word1.length()!=word2.length())
+        if (word1.size() != word2.size()) {
             return false;
-        for(int i=0;i<word1.length();i++)
-            mp[word1[i]].first++;
- 
-        for(int i=0;i<word1.length();i++){
-            if(mp.find(word2[i])!=mp.end())
-                mp[word2[i]].second++;
-            else return false;
-        }   
-        while(mp.size()){
-            int currentSize=mp.size();
-            pair<char,pair<int,int>> it={mp.begin()->first,mp.begin()->second};
-            if(it.second.first==it.second.second){
-                mp.erase(it.first);
-                continue;
-            } else {
-                unordered_map<char,pair<int,int>>::iterator itr=mp.begin();
-                itr++;
-                while(itr!=mp.end()){
-                    if(itr->second.second==it.second.first){
-                        itr->second.second=it.second.second;
-                        mp.erase(it.first);
-                        break;
-                    }
-                    itr++;
-                }
-                if(currentSize==mp.size())
-                    return false;
-            }
         }
-        return true;
+        unordered_map<char, int> freq1, freq2;
+        unordered_set<char> c1, c2;
+        for (auto ch : word1) {
+            freq1[ch]++;
+            c1.insert(ch);
+        }
+
+        for (auto ch : word2) {
+            freq2[ch]++;
+            c2.insert(ch);
+        }
+
+        if (c1 != c2) {
+            return false;
+        }
+
+        vector<int> count1, count2;
+        for (auto p : freq1) {
+            count1.push_back(p.second);
+        }
+
+        for (auto p : freq2) {
+            count2.push_back(p.second);
+        }
+
+        sort(count1.begin(), count1.end());
+        sort(count2.begin(), count2.end());
+        return count1 == count2;
     }
 };
