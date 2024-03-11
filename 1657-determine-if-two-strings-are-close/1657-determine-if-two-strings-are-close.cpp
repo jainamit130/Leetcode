@@ -1,7 +1,7 @@
 class Solution {
 public:
     bool closeStrings(string word1, string word2) {
-        map<char,pair<int,int>> mp;
+        unordered_map<char,pair<int,int>> mp;
         if(word1.length()!=word2.length())
             return false;
         for(int i=0;i<word1.length();i++)
@@ -19,7 +19,7 @@ public:
                 mp.erase(it.first);
                 continue;
             } else {
-                map<char,pair<int,int>>::iterator itr=mp.begin();
+                unordered_map<char,pair<int,int>>::iterator itr=mp.begin();
                 itr++;
                 while(itr!=mp.end()){
                     if(itr->second.second==it.second.first){
