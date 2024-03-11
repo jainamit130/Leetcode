@@ -6,7 +6,6 @@ public:
         int ans=0;
         int count=0;
         while(j<nums.size() && i<=j){
-            cout<<i<<" "<<j<<endl;
             if(available && nums[j]==0){
                 available=false;
                 j++;
