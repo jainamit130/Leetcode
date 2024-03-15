@@ -18,7 +18,6 @@ public:
         while(fast && fast->next){
             st.push(slow->val);
             fast=fast->next->next;
-            cout<<slow->val<<endl;
             slow=slow->next;
         }
         while(slow){
