@@ -30,7 +30,7 @@ public:
         }
         else {
             traverseZigZag(root->right,!isLeft,depth+1);
-            traverseZigZag(root->left,isLeft,1);
+            traverseZigZag(root->left,!isLeft,1);
         }
         return;
     }
