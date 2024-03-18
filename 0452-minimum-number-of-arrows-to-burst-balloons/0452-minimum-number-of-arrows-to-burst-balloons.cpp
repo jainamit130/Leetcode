@@ -1,11 +1,7 @@
 class Solution {
 public:
     int findMinArrowShots(vector<vector<int>>& points) {
-        sort(points.begin(),points.end(),[](auto lhs,auto rhs){
-            if(lhs[0]==rhs[0])
-                return lhs[1]<rhs[1];
-            return lhs[0]<rhs[0];
-        });
+        sort(points.begin(),points.end());
         // cout<<"Sorted"<<endl;
         // for(int i=0;i<points.size();i++){
         //     cout<<points[i][0]<<" "<<points[i][1]<<endl;
