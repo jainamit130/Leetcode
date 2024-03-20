@@ -14,10 +14,10 @@ public:
         if(index>=rooms.size()){
             return;
         }
+        visited[index]=1;
         for(int i=0;i<rooms[index].size();i++){
             if(visited[rooms[index][i]])
                 continue;
-            visited[rooms[index][i]]=1;
             dfs(rooms[index][i],rooms,visited);
         }
         return;
