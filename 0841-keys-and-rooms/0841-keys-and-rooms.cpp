@@ -1,23 +1,25 @@
 class Solution {
 public:
-    
-    void solve(int room,vector<vector<int>>& rooms,vector<bool>&vis){
-        if(vis[room]){
-            return ;
-        }
-        vis[room]  =1;
-        for(int key:rooms[room]){
-            if(key==room) continue ;
-            if(vis[key]) continue ;
-            solve(key,rooms,vis);
-        }
-    }
     bool canVisitAllRooms(vector<vector<int>>& rooms) {
-        vector<bool>vis(rooms.size()+1,0);
-        solve(0,rooms,vis);
+        vector<int> visited(rooms.size());
+        visited[0]=1;
+        dfs(0,rooms,visited);
         for(int i = 0 ;i < rooms.size() ;++i){
-            if(!vis[i]) return  0;
+            if(!visited[i]) return  0;
         }
         return 1;
+    }
+
+    void dfs(int index,vector<vector<int>> rooms,vector<int>& visited){
+        if(index>=rooms.size()){
+            return;
+        }
+        for(int i=0;i<rooms[index].size();i++){
+            if(visited[rooms[index][i]])
+                continue;
+            visited[rooms[index][i]]=1;
+            dfs(rooms[index][i],rooms,visited);
+        }
+        return;
     }
 };
