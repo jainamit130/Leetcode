@@ -27,6 +27,9 @@ public:
         }
         visited.insert(currentVertex);
         for(auto a:adj[currentVertex]){
+            if(visited.find(a)!=visited.end()){
+                continue;
+            }
             adj[a].erase(currentVertex);
             dfs(adj,a,time-1,visited,target,prob*(1.0/adj[currentVertex].size()));
             adj[a].insert(currentVertex);
