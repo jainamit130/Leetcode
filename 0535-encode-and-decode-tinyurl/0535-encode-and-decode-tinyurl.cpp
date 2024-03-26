@@ -2,15 +2,13 @@ class Solution {
 public:
     unordered_map<string,string> encodemp;
     unordered_map<string,string> decodemp;
-    int hash=0;
     // Encodes a URL to a shortened URL.
     string encode(string longUrl) {
         if(encodemp.find(longUrl)!=encodemp.end())
             return encodemp[longUrl];
-        string str=to_string(hash);
+        string str=to_string(encodemp.size()+1);
         encodemp[longUrl]=str;
         decodemp[str]=longUrl;
-        hash++;
         return encodemp[longUrl];
     }
 
