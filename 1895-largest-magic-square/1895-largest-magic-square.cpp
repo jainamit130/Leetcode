@@ -2,12 +2,9 @@ class Solution {
 public:
     int largestMagicSquare(vector<vector<int>>& grid) {
         vector<vector<int>> prefix(grid.size()+1,vector<int>(grid[0].size()+1,0));
-        vector<vector<int>> prefixRightDiagonals(grid.size()+1,vector<int>(grid[0].size()+1,0));
-        int ROWS=grid.size(),COLS=grid[0].size();
         for(int i=1;i<=grid.size();i++){
             for(int j=1;j<=grid[0].size();j++){
                 prefix[i][j]=prefix[i-1][j]+prefix[i][j-1]+grid[i-1][j-1]-prefix[i-1][j-1];
-                prefixRightDiagonals[ROWS-i][j]=prefixRightDiagonals[ROWS-i+1][j-1]+grid[ROWS-i][j-1];
             }
         }
         int ans=1;
