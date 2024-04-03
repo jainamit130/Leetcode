@@ -1,40 +1,65 @@
 class Solution {
 public:
-    bool search(int i, int j, int n, int m, vector<vector<char>>& board, int k, string word) {
-        if (k == word.size()) return true;  // If we have matched all characters in the word, return true
-        if (i == n || i < 0 || j < 0 || j == m || board[i][j] != word[k]) {
-            return false;  // If current cell is out of bounds or does not match the current character in word, return false
-        }
-        
-        char ch = board[i][j];  // Store the current character before exploring neighbors
-        board[i][j] = '#';  // Mark the current cell as visited to avoid revisiting it
-        
-        // Explore neighbors in all four directions
-        bool op1 = search(i + 1, j, n, m, board, k + 1, word);  // Down
-        bool op2 = search(i - 1, j, n, m, board, k + 1, word);  // Up
-        bool op3 = search(i, j + 1, n, m, board, k + 1, word);  // Right
-        bool op4 = search(i, j - 1, n, m, board, k + 1, word);  // Left
-        
-        board[i][j] = ch;  // Restore the original character in the board
-        
-        return op1 || op2 || op3 || op4;  // Return true if any of the recursive calls return true
-    }
-
+    vector<pair<int,int>> directions={{0,1},{0,-1},{1,0},{-1,0}};
     bool exist(vector<vector<char>>& board, string word) {
-        int n = board.size();  // Number of rows in the board
-        int m = board[0].size();  // Number of columns in the board
-        int k = word.size();  // Length of the target word
-
-        // Iterate over each cell in the board
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                // Check if the word can be formed starting from the current cell
-                if (search(i, j, n, m, board, 0, word)) {
-                    return true;  // If found, return true
+        for(int i=0;i<board.size();i++){
+            for(int j=0;j<board[0].size();j++){
+                if(word[0]==board[i][j]){
+                    if(searchInBoard(i,j,board,word,0))
+                        return true;
                 }
             }
         }
+        return false;
+    }
 
-        return false;  // If no match is found, return false
+    bool searchInBoard(int r,int c,vector<vector<char>>& board,string word,int wordIndex){
+        if(wordIndex==word.length())
+            return true;
+
+        if(r<0 || r>=board.size() || c<0 || c>=board[0].size() || board[r][c]!=word[wordIndex])
+            return false;
+
+        bool searchResult=false;
+        for(auto d:directions){
+            char ch=board[r][c];
+            board[r][c]='#';
+            searchResult|=searchInBoard(r+d.first,c+d.second,board,word,wordIndex+1);
+            board[r][c]=ch;
+        }
+        return searchResult;
     }
 };
+
+
+
+/*
+ABCESEEEFS
+
+
+A   B   C   E
+S   F   E   S
+A   D   E   E   
+
+00
+01
+02
+03
+04
+02
+13
+14
+12
+13
+11
+22
+23
+24
+23
+33
+13
+21
+32
+
+
+*/
