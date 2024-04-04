@@ -6,18 +6,27 @@ public:
                                     {1,0}};
     vector<vector<int>> goal={{1,2,3},{4,5,0}};
     int slidingPuzzle(vector<vector<int>>& board) {
+        unordered_map<int,int> stateMap;
         vector<vector<int>> visited(2,vector<int>(3,0));
         //Get Position of Zero
         for(int i=0;i<board.size();i++){
             for(int j=0;j<board[0].size();j++){
                 if(board[i][j]==0){
-                    dfs(i,j,board,0,visited);
+                    dfs(i,j,board,0,stateMap);
                 }
             }
         }
-        if(ans==INT_MAX)
-            return -1;
-        return ans;
+        return stateMap.find(123450) == stateMap.end() ? -1 : stateMap[123450];
+    }
+
+    int boardValue(vector<vector<int>> board){
+        int value=0;
+        for(int i=0;i<board.size();i++){
+            for(int j=0;j<board[0].size();j++){
+                value=value*10+board[i][j];
+            }
+        }
+        return value;
     }
 
     bool isValid(int r,int c){
@@ -26,18 +35,16 @@ public:
         return true;
     }
 
-    void dfs(int r,int c,vector<vector<int>>& board,int moves,vector<vector<int>>& visited){
+    void dfs(int r,int c,vector<vector<int>>& board,int moves,unordered_map<int,int>& stateMap){
         if(!isValid(r,c))
             return;
 
-        if(visited[r][c]==1)
+        int boardVal=boardValue(board);
+        if(stateMap.find(boardVal)!=stateMap.end() && stateMap[boardVal]<moves)
             return;
 
-        if(board==goal){
-            ans=min(ans,moves);
-            return;
-        }
-
+        stateMap[boardVal]=moves;
+        if (boardVal == 123450)  return;
         for(auto d:directions){
             int nr=r+d[0];
             int nc=c+d[1];
@@ -45,18 +52,20 @@ public:
             if(isValid(nr,nc)){
                 board[r][c]=board[nr][nc];
                 board[nr][nc]=0;
-                visited[r][c]=1;
             }
-            dfs(nr,nc,board,moves+1,visited);
+            dfs(nr,nc,board,moves+1,stateMap);
             if(isValid(nr,nc)){
                 board[nr][nc]=board[r][c];
                 board[r][c]=0;
-                visited[r][c]=0;
             }
         }
         return;
     }
 };
+
+
+
+
 
 
 /*
