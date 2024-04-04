@@ -1,91 +1,94 @@
 class Solution {
 public:
-    int ans=INT_MAX;
-    vector<vector<int>> directions={{-1,0},
-                              {0,-1},     {0,1},
-                                    {1,0}};
-    vector<vector<int>> goal={{1,2,3},{4,5,0}};
     int slidingPuzzle(vector<vector<int>>& board) {
-        unordered_map<int,int> stateMap;
-        vector<vector<int>> visited(2,vector<int>(3,0));
-        //Get Position of Zero
-        for(int i=0;i<board.size();i++){
-            for(int j=0;j<board[0].size();j++){
-                if(board[i][j]==0){
-                    dfs(i,j,board,0,stateMap);
+        unordered_map<int, int> state_map;
+        int zero_row = -1, zero_col = -1;
+        for (int row = 0; row < 2; row++)
+        {
+            for (int col = 0; col < 3; col++)
+            {
+                if (board[row][col] == 0)
+                {
+                    zero_row = row;
+                    zero_col = col;
                 }
             }
         }
-        return stateMap.find(123450) == stateMap.end() ? -1 : stateMap[123450];
+        
+        solve(board, state_map, zero_row, zero_col, 0);
+        return state_map.find(123450) == state_map.end() ? -1 : state_map[123450];
+        
     }
-
-    int boardValue(vector<vector<int>> board){
-        int value=0;
-        for(int i=0;i<board.size();i++){
-            for(int j=0;j<board[0].size();j++){
-                value=value*10+board[i][j];
-            }
+    
+    int board_to_int(vector<vector<int>>& board)
+    {
+        int value = 0;
+        for (auto& v : board[0])
+        {
+            value = value * 10 + v;
+        }
+        for (auto& v : board[1])
+        {
+            value = value * 10 + v;
         }
         return value;
     }
-
-    bool isValid(int r,int c){
-        if(r<0 || r>=2 || c>=3 || c<0)
-            return false;
-        return true;
-    }
-
-    void dfs(int r,int c,vector<vector<int>>& board,int moves,unordered_map<int,int>& stateMap){
-        if(!isValid(r,c))
-            return;
-
-        int boardVal=boardValue(board);
-        if(stateMap.find(boardVal)!=stateMap.end() && stateMap[boardVal]<moves)
-            return;
-
-        stateMap[boardVal]=moves;
-        if (boardVal == 123450)  return;
-        for(auto d:directions){
-            int nr=r+d[0];
-            int nc=c+d[1];
-            //swap
-            if(isValid(nr,nc)){
-                board[r][c]=board[nr][nc];
-                board[nr][nc]=0;
+    
+    void solve(vector<vector<int>>& board, unordered_map<int, int>& state_map, int row, int col, int moves)
+    {
+        int board_value = board_to_int(board);
+        state_map[board_value] = moves;
+        if (board_value == 123450)  return;
+        
+        
+        //move right
+        if (col <= 1)
+        {
+            swap(board[row][col], board[row][col + 1]);
+            int new_value = board_to_int(board);
+            if (state_map.find(new_value) == state_map.end() || moves + 1 < state_map[new_value])
+            {
+                solve(board, state_map, row, col + 1, moves + 1);
             }
-            dfs(nr,nc,board,moves+1,stateMap);
-            if(isValid(nr,nc)){
-                board[nr][nc]=board[r][c];
-                board[r][c]=0;
-            }
+            swap(board[row][col + 1], board[row][col]);
         }
-        return;
+        
+        //move left
+        if (col >= 1)
+        {
+            swap(board[row][col], board[row][col - 1]);
+            int new_value = board_to_int(board);
+            if (state_map.find(new_value) == state_map.end() || moves + 1 < state_map[new_value])
+            {
+                solve(board, state_map, row, col - 1, moves + 1);
+            }
+            swap(board[row][col], board[row][col - 1]);
+        }
+        
+        
+        //move up
+        if (row == 1)
+        {
+            swap(board[row][col], board[row - 1][col]);
+            int new_value = board_to_int(board);
+            if (state_map.find(new_value) == state_map.end() || moves + 1 < state_map[new_value])
+            {
+                solve(board, state_map, row - 1, col, moves + 1);
+            }
+            swap(board[row][col], board[row - 1][col]);
+        }
+        
+        
+        //move down
+        if (row == 0)
+        {
+            swap(board[row][col], board[row + 1][col]);
+            int new_value = board_to_int(board);
+            if (state_map.find(new_value) == state_map.end() || moves + 1 < state_map[new_value])
+            {
+                solve(board, state_map, row + 1, col, moves + 1);
+            }
+            swap(board[row][col], board[row + 1][col]);
+        }
     }
 };
-
-
-
-
-
-
-/*
-
-1   2   3
-5   4
-...
-1   2   3
-5       4
-
-1   3   4
-5       2
-
-1   4   2
-5   3
-
-4   2   3
-    5   1
-
-2   3   1
-4   5    
-
-*/
