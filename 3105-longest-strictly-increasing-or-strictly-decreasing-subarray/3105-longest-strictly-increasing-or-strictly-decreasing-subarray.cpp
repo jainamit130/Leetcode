@@ -1,3 +1,35 @@
+// #Approach 1
+// class Solution {
+// public:
+//     int longestMonotonicSubarray(std::vector<int>& nums) {
+//         int n = nums.size();
+//         if (n == 0) return 0;
+
+//         int maxLength = 1;
+
+//         int increasingLength = 1;
+//         int decreasingLength = 1;
+
+//         for (int i = 1; i < n; ++i) {
+//             if (nums[i] > nums[i - 1]) {
+//                 increasingLength++;
+//                 decreasingLength = 1;
+//             } else if (nums[i] < nums[i - 1]) {
+//                 decreasingLength++;
+//                 increasingLength = 1;
+//             } else {
+//                 increasingLength = 1;
+//                 decreasingLength = 1;
+//             }
+
+//             maxLength = max(maxLength, max(increasingLength, decreasingLength));
+//         }
+
+//         return maxLength;
+//     }
+// };
+
+// #Approach 2
 class Solution {
 public:
     int longestMonotonicSubarray(vector<int>& nums) {
