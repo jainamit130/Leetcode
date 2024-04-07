@@ -29,7 +29,6 @@ public:
         sort(nums.begin(),nums.end());
         long long ans=0;
         int firstGreaterIndex=lower_bound(nums.begin(),nums.end(),k)-nums.begin();
-        // cout<<firstGreaterIndex<<endl;
         int start=0,end=n;
         if(firstGreaterIndex>n/2){
             start=n/2;
