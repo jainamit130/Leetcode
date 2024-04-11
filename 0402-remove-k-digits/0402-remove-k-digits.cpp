@@ -1,62 +1,55 @@
 class Solution {
 public:
     string removeKdigits(string num, int k) {
-        int k2 = k;
-        int n = num.size();
-        stack<char> st;
-
-        //removing k digits
-        for(int i=0; i<n; i++){
-            if(st.empty()){
-                st.push(num[i]);
-            }
-            else{
-                if(num[i] >= st.top()){
-                    st.push(num[i]);
-                }
-                else{
-                    while(!st.empty() && k > 0 && st.top() > num[i]){
-                        k--;
-                        st.pop();
-                    }
-                    st.push(num[i]);
-                }
-            }
-        }
-
-        while(!st.empty() && k > 0){
-            k--;
-            st.pop();
-        }
-
-        string ans = "";
-        bool leadRemoved = false;
-        while(!st.empty()){
-            ans.push_back(st.top());
-            st.pop();
-        }
-
-        //removing leading zeros
-        for(int i=0; i<ans.size(); i++){
-            st.push(ans[i]);
-        }
-        ans = "";
-
-        while(!st.empty()){
-            if(st.top() == '0' && !leadRemoved){
-                st.pop();
-            }
-            else{
-                leadRemoved = true;
-                ans.push_back(st.top());
-                st.pop();
-            }
-        }
-
-        if(ans.size() == 0){
+        stack<int> st;
+        if(k==num.length())
             return "0";
+        int lock=0;
+        for(auto c:num){
+            int n=c-'0';
+            if(st.size()==k && lock==0)
+                lock=1;
+            if(lock==0){
+                while(!st.empty() && st.top()>n){
+                    st.pop();
+                }
+            } else {
+                while(st.size()==k && st.top()>n){
+                    st.pop();
+                }
+            }
+            st.push(n);
         }
-
-        return ans;
+        string ans="";
+        while(!st.empty()){
+            ans+=to_string(st.top());
+            st.pop();
+        }
+        reverse(ans.begin(),ans.end());
+        string finalAns="";
+        for(auto c:ans){
+            if(finalAns.length()==0 && c=='0'){
+                continue;
+            }
+            finalAns+=c;
+        }
+        if(finalAns.length()==0)
+            return "0";
+        return finalAns;
     }
 };
+
+
+
+
+/*
+
+
+1   4   3   2   2   1   9
+                        i
+Stack: 1    2   1   9
+
+
+
+
+*/
