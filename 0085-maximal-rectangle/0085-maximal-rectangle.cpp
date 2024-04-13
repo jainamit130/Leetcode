@@ -1,8 +1,13 @@
 class Solution {
 public:
-    int maximalRectangle(vector<vector<char>>& matrix) {
-        vector<int> a;
-        
+    int maximalRectangle(vector<vector<char>>& mat) {
+        vector<vector<int>> matrix(mat.size(),vector<int>(mat[0].size()));
+        for(int i=0;i<mat.size();i++){
+            for(int j=0;j<mat[0].size();j++){
+                matrix[i][j]=mat[i][j]-'0';
+            }
+        }
+
         for(int i=1;i<matrix.size();i++){
             for(int j=0;j<matrix[0].size();j++){
                 if(matrix[i][j]!=0)
@@ -10,11 +15,17 @@ public:
             }
         }
 
+        // for(int i=0;i<matrix.size();i++){
+        //     for(int j=0;j<matrix[0].size();j++){
+        //         cout<<matrix[i][j]<<" ";
+        //     }
+        //     cout<<endl;
+        // }
+        int ans=0;
         for(int i=0;i<matrix.size();i++){
-            a.push_back(largestRectangleArea(matrix[i]));
-        }
-        int ans=largestRectangleArea(a);
-        return largestRectangleArea(a);
+            ans=max(ans,largestRectangleArea(matrix[i]));
+        }        
+        return ans;
     }
 
     int largestRectangleArea(vector<int>& heights) {
