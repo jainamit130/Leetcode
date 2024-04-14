@@ -8,13 +8,14 @@ public:
         }
         
         vector<int> ans(n, -1); 
-        dfs(0, 0, disappear, adjList, ans);
+        unordered_set<int> visited;
+        dfs(0, 0, disappear, adjList, ans,visited);
         
         return ans;
     }
     
-    void dfs(int node, int time, vector<int>& disappear, vector<vector<pair<int,int>>>& adjList, vector<int>& ans) {
-        if (time >= disappear[node]) return;
+    void dfs(int node, int time, vector<int>& disappear, vector<vector<pair<int,int>>>& adjList, vector<int>& ans,unordered_set<int>& visited) {
+        if (time >= disappear[node] || (visited.find(node)!=visited.end() && ans[node]<time)) return;
         
         if (ans[node] == -1 || time < ans[node]) {
             ans[node] = time;
@@ -22,10 +23,11 @@ public:
             return;
         }
         
+        visited.insert(node);
         for (const auto& neighbor : adjList[node]) {
             int nextNode = neighbor.first;
             int nextTime = time + neighbor.second;
-            dfs(nextNode, nextTime, disappear, adjList, ans);
+            dfs(nextNode, nextTime, disappear, adjList, ans,visited);
         }
     }
 };
