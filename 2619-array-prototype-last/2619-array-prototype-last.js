@@ -3,10 +3,11 @@
  */
 Array.prototype.last = function() {
     let index=this.length-1;
-    if(this[index])
-        return this[index];
-    else
+    console.log(index);
+    if(index<0){
         return -1;
+    }
+    return this[index];
 };
 
 /**
