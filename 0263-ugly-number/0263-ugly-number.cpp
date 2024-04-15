@@ -6,9 +6,6 @@ public:
         if(n==1)
             return true;
 
-        if(n%2!=0 && n%3!=0 && n%5!=0)
-            return false;
-
         bool ans=false;
         if(n%2==0)
             ans=ans||isUgly(n/2);
