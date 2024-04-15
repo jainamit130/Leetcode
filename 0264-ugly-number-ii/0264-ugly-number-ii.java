@@ -39,8 +39,8 @@
 // }
 
 // #Approach 3
-
-public int nthUglyNumber(int n) {
+class Solution {
+    public int nthUglyNumber(int n) {
         TreeSet<Long> st = new TreeSet<>();
         st.add((long)1);
         int cnt = 0;
@@ -55,3 +55,4 @@ public int nthUglyNumber(int n) {
         }
         return (int)ans;
     }
+}
