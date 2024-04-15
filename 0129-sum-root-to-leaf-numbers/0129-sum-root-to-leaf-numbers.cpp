@@ -12,21 +12,13 @@
 class Solution {
 public:
     int ans=0;
-    int sumNumbers(TreeNode* root) {
-        dfs(root,0);
-        return ans;
-    }
-
-    void dfs(TreeNode* root,int curr){
+    int sumNumbers(TreeNode* root,int sum=0) {
         if(!root)
-            return;
+            return 0;
 
         if(!root->left && !root->right){
-            ans+=curr*10+root->val;
-            return;
+            return sum*10+root->val;
         }
-        dfs(root->left,curr*10+root->val);
-        dfs(root->right,curr*10+root->val);
-        return;
+        return sumNumbers(root->left,sum*10+root->val)+sumNumbers(root->right,sum*10+root->val);
     }
 };
