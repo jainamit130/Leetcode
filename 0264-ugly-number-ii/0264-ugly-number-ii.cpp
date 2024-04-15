@@ -1,28 +1,45 @@
+// #Approach 1
+// class Solution {
+// public:
+//     int nthUglyNumber(int n) {
+//         set<long> st;
+//         st.insert(1);
+//         long num;
+//         for(int i=1;i<=n;i++){
+//             num = *st.begin();
+//             st.erase(num);
+//             st.insert(num*2);
+//             st.insert(num*3);
+//             st.insert(num*5);
+//         }
+//         return num;
+//     }
+// };
+
+// #Approach 2
 class Solution {
 public:
     int nthUglyNumber(int n) {
-        set<long> st;
-        st.insert(1);
-        long num;
-        for(int i=1;i<=n;i++){
-            num = *st.begin();
-            st.erase(num);
-            st.insert(num*2);
-            st.insert(num*3);
-            st.insert(num*5);
+        vector<int> dp(n);
+        dp[0]=1;
+        int p2=0,p3=0,p5=0;
+        for(int i=1;i<n;i++){
+            dp[i]=min(dp[p2]*2,min(dp[p3]*3,dp[p5]*5));
+            if(dp[p2]*2==dp[i]) p2++;
+            if(dp[p3]*3==dp[i]) p3++;
+            if(dp[p5]*5==dp[i]) p5++;
         }
-        return num;
+        return dp[n-1];
     }
 };
 
+
 /*
-1 => 2  3   5
-2 => 4  6   10
-3 => 9   15
-5 => 25
-4 => 8  12  20
-6 => 18 30
-10 => 50
-9 => 
+dp
+0   1   2   3   4   5   6   7   8   9   10    
+1   2   3   4   5   6   8   9   10  12  15      
+                        p2
+                    p3
+            p5
 
 */
