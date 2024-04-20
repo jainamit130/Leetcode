@@ -25,7 +25,7 @@ public:
                     t.push_back(i+count1);
                     t.push_back(j+count2);
                     for(int m=i;m<=i+count1;m++){
-                        for(int n=j;n<=j+count1;n++){
+                        for(int n=j;n<=j+count2;n++){
                             land[m][n]=-1;
                         }   
                     }
