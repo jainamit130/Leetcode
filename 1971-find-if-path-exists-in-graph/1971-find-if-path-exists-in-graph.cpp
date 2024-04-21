@@ -16,9 +16,11 @@ public:
         if(visited.find(source)!=visited.end())
             return false;
 
-        visited.insert(source);
         bool flag=false;
         for(auto newSource:adj[source]){
+            if(visited.find(newSource)!=visited.end())
+                continue;
+            visited.insert(source);
             flag=flag||dfs(adj,newSource,destination,visited);
         }
         return flag;
