@@ -15,7 +15,6 @@ public:
         for(auto e:edges){
             int u=e[0];
             int v=e[1];
-            cout<<dist1[u]<<" "<<dist2[u]<<" "<<dist1[v]<<" "<<dist2[v]<<endl;
             if((dist1[u]!=INT_MAX && dist2[u]!=INT_MAX && dist1[v]!=INT_MAX && dist2[v]!=INT_MAX) && (dist1[u]+dist2[v]+e[2]==dist1[n-1] || dist1[v]+dist2[u]+e[2]==dist1[n-1]))
                 ans[i]=true;
             i++;
