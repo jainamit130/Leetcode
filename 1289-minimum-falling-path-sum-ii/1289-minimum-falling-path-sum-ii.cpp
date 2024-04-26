@@ -1,36 +1,31 @@
 class Solution {
 public:
     int minFallingPathSum(vector<vector<int>>& grid) {
-        vector<vector<int>> dp(grid.size()+1,vector<int>(grid[0].size()+1,INT_MAX));
-        return dfs(0,grid,-1,dp);
+        int ans=INT_MAX;
+        vector<vector<int>> memoization(grid.size()+1,vector<int>(grid.size()+1,0)); 
+        for(int i=0;i<grid[0].size();i++)
+        {   
+            ans=min(ans,dp(grid,0,i,memoization));
+        }
+        return ans;
     }
 
-    int dfs(int row,vector<vector<int>>& grid,int prevCol,vector<vector<int>>& dp){
-        if(row>=grid.size()){
-            return 0;
-        }
+    int dp(vector<vector<int>>& grid,int row,int col,vector<vector<int>>& memoization){
+        if(col<0 || col>=grid[0].size())
+            return 100000;
 
-        if(dp[row][prevCol+1]!=INT_MAX){
-            return dp[row][prevCol+1];
-        }
+        if(row==grid.size()-1)
+            return grid[row][col];
 
-        int result=INT_MAX;
-        for(int col=0;col<grid[0].size();col++){
-            if(prevCol==col)
+        if(memoization[row][col]!=0)
+            return memoization[row][col];
+
+        int ans=INT_MAX;
+        for(int i=0;i<grid[0].size();i++){
+            if(i==col)
                 continue;
-            result=min(result,grid[row][col]+dfs(row+1,grid,col,dp));
+            ans=min(ans,grid[row][col]+dp(grid,row+1,i,memoization));
         }
-        return dp[row][prevCol+1]=result;
+        return memoization[row][col]=ans;
     }
 };
-
-
-/*
-
-*   *   *   *   *
--   -   -   -   -
-*   *   *   *   *
-
-
-
-*/
