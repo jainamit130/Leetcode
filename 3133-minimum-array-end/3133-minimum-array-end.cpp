@@ -1,24 +1,25 @@
 class Solution {
 public:
-    long long minEnd(int n, int x) {
-        n--;long long ans=x;long long temp=1;
-        for(int i=0;i<=26 && n>0;i++){
-            long long t=temp<<i;
-            if(!(x&t)){
-                ans=x|t;
-                n--;
+    using ll = long long;
+    ll minEnd(int n, int x){
+        ll  num = x , one = 1;
+        vector<int> unsetBits;
+        for(int bit = 0 ; bit < 63 ; bit++){
+            if(num >> bit & one ^ one){
+                unsetBits.push_back(bit);
             }
         }
-        return ans;
+        int m = unsetBits.size();
+        for(ll mask = 0 ; mask < (one << m) ; mask++){
+            if(--n == 0){
+                for(int index = 0 ; index < m ; index++){
+                    if(mask >> index & one){
+                        num |= one << unsetBits[index];
+                    }
+                }
+                return num;
+            }
+        }
+        return num;
     }
 };
-
-
-/*
-
-001
-011
-101
-1001
-
-*/
