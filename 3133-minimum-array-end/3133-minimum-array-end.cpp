@@ -49,7 +49,6 @@ public:
                 for(int i=63;i>=0;i--){
                     if(unsetBits1[i]==0){
                         unsetBits1[i]=unsetBits1[i]|((numberOfZeros>>(63-k)) & 1);
-                            // cout<<i<<" "<<k<<" "<<unsetBits1[i]<<endl;
                         k--;
                     }
                 }
