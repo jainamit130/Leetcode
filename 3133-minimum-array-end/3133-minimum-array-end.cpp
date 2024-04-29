@@ -43,15 +43,17 @@ public:
         vector<int> unsetBits1=unsetBits;
         long long numberOfZeros=1;
         while(n){
-            unsetBits1=unsetBits;
-            int k=63;
-           for(int i=63;i>=0;i--){
-                if(unsetBits1[i]==0){
-                    unsetBits1[i]=unsetBits1[i]|((numberOfZeros>>(63-k)) & 1);
-                    // cout<<i<<" "<<k<<" "<<unsetBits1[i]<<endl;
-                    k--;
+            if(n==1){
+                unsetBits1=unsetBits;
+                int k=63;
+                for(int i=63;i>=0;i--){
+                    if(unsetBits1[i]==0){
+                        unsetBits1[i]=unsetBits1[i]|((numberOfZeros>>(63-k)) & 1);
+                            // cout<<i<<" "<<k<<" "<<unsetBits1[i]<<endl;
+                        k--;
+                    }
                 }
-           }
+            }
            numberOfZeros++;
             n--;
         }
