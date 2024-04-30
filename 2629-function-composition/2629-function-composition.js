@@ -3,13 +3,14 @@
  * @return {Function}
  */
 var compose = function(functions) {
-    if(functions.length===0)
-        return x;
-    return functions.reduceRight(function(prevFunc,currFunc) {
-        return function(x) {
-            return currFunc(prevFunc(x));
-    };
-    });
+    return function(x) {
+        if(functions.length===0) return x;
+        let t=functions[functions.length-1](x);
+        for(let i=functions.length-2;i>=0;i--){
+            t=funtions[i](t);
+        }
+        return t;
+    }
 };
 
 /**
