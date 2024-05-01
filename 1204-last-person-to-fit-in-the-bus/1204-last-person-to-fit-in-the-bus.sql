@@ -1,2 +1,2 @@
 # Write your MySQL query statement below
-SELECT person_name FROM (SELECT Q.person_name,SUM(Q.WEIGHT) as maxW FROM QUEUE Q JOIN QUEUE Q1 ON Q.TURN<=Q1.TURN GROUP BY Q1.WEIGHT ORDER BY Q1.WEIGHT DESC) as subquery where maxW<=1000 limit 1;
+SELECT person_name FROM (SELECT Q.person_name,SUM(Q1.WEIGHT) as maxW FROM QUEUE Q JOIN QUEUE Q1 ON Q.TURN>=Q1.TURN GROUP BY Q.PERSON_ID) as subquery where maxW<=1000 limit 1;
