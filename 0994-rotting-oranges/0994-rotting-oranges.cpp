@@ -41,12 +41,12 @@ public:
             if(good==0)
                 break;
         }
-        for(int i=0;i<grid.size();i++){
-            for(int j=0;j<grid[0].size();j++){
-                cout<<grid[i][j]<<" ";
-            }
-            cout<<endl;
-        }
+        // for(int i=0;i<grid.size();i++){
+        //     for(int j=0;j<grid[0].size();j++){
+        //         cout<<grid[i][j]<<" ";
+        //     }
+        //     cout<<endl;
+        // }
         if(good==0)
             return time;  
         return -1;
