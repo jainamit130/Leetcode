@@ -46,7 +46,6 @@ public:
         root=root->children[ch];
         if(root->endOfWord){
             ans.insert(currWord);
-            return;
         }
 
         dfs(row+1,col,currWord,board,root);
