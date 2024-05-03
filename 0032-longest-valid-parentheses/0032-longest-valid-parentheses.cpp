@@ -5,7 +5,7 @@ public:
         int i=0;
         int ans=0;
         while(i<s.length()){
-            printStack(st);
+            // printStack(st);
             if(s[i]==')'){
                 if(!st.empty() && st.top().second=='('){
                     int openIndex=st.top().first;
@@ -26,14 +26,14 @@ public:
         return ans;
     }
 
-    void printStack(stack<pair<int,char>> st){
-        while(!st.empty()){
-            cout<<st.top().first<<","<<st.top().second<<" ";
-            st.pop();
-        }
-        cout<<endl;
-        return;
-    }
+    // void printStack(stack<pair<int,char>> st){
+    //     while(!st.empty()){
+    //         cout<<st.top().first<<","<<st.top().second<<" ";
+    //         st.pop();
+    //     }
+    //     cout<<endl;
+    //     return;
+    // }
 };
 
 /*
