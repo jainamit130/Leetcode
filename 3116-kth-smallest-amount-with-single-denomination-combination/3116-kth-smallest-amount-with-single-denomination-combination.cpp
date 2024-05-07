@@ -1,7 +1,7 @@
 class Solution {
 public:
     long long findKthSmallest(vector<int>& coins, int k) {
-        long long l=1; long long r = 1e11;
+        long long l=1; long long r = 25+25*2*(1e9);
         long long ans = 0;
         while(l<=r){
             long long mid = (l + r)/2;
