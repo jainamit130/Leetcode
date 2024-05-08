@@ -1,0 +1,2 @@
+# Write your MySQL query statement below
+Select s.user_id,IFNULL(round(sum(action="confirmed")/sum(action="timeout" or action="confirmed"),2),0) as confirmation_rate  from Signups s left join confirmations c on c.user_id=s.user_id group by c.user_id;
