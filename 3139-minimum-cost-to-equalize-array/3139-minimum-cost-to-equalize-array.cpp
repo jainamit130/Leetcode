@@ -1,7 +1,7 @@
 class Solution {
 public:
-    long long minNum=0;
-    long long maxNum=0;
+    int minNum=0;
+    int maxNum=0;
     long long sum = 0;
     int minCostToEqualizeArray(vector<int>& nums, int cost1, int cost2) {
         minNum = *min_element(nums.begin(), nums.end()); 
