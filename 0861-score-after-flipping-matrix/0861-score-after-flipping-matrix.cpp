@@ -35,8 +35,15 @@ public:
         int sum=0;
         for(int j=0;j<grid[0].size();j++){
             int wt=grid[0].size()-j-1;
-            if(value==grid[i][j])
+            if(value==grid[i][j]){
                 sum+=pow(2,wt);
+            } 
+            if (value==0){
+                if(grid[i][j]==1)
+                    grid[i][j]=0;
+                else
+                    grid[i][j]=1;
+            }
         }
         return sum;
     }
@@ -64,6 +71,13 @@ public:
 1   1   1   1
 1   0   0   1
 1   1   1   1
+
+
+
+0   1
+0   1
+0   1
+0   0
 
 
 */
