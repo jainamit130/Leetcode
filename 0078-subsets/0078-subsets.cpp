@@ -1,21 +1,31 @@
 class Solution {
 public:
-    vector<vector<int>> ans;
     vector<vector<int>> subsets(vector<int>& nums) {
-        solve({},nums,0);
-        return ans;
+        return helper(nums,-1,nums.size()-1);
     }
-
-    void solve(vector<int> curr,vector<int>& nums,int index){
-        if(index>=nums.size()){
-            ans.push_back(curr);
-            return;
+private:
+    map<pair<int,int>, vector<vector<int>> > mem;
+    
+    vector<vector<int>> helper(vector<int> nums, int begin, int end){
+        
+        pair<int,int> key = make_pair(begin,end);
+        if(mem.find(key) != mem.end())return mem[key];
+        
+        vector<vector<int>> subsets;
+        vector<int> empty_v;
+        subsets.push_back(empty_v);
+        
+        if(begin > end){
+            return subsets;
         }
-
-        solve(curr,nums,index+1);
-        curr.push_back(nums[index]);
-        solve(curr,nums,index+1);
-        curr.pop_back();
-        return;
+        for(int i = begin+1; i<=end; i++){
+            vector<vector<int>> result = helper(nums,i,end);
+            for(int j = 0; j<result.size(); j++){
+                result[j].push_back(nums[i]);
+            }
+            subsets.insert(subsets.end(),result.begin(), result.end());
+        }
+        mem.insert(make_pair(key,subsets));
+        return subsets;
     }
 };
