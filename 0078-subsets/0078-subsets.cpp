@@ -2,20 +2,20 @@ class Solution {
 public:
     vector<vector<int>> ans;
     vector<vector<int>> subsets(vector<int>& nums) {
-        vector<int> currentVector;
-        bt(nums,0,currentVector);
+        solve({},nums,0);
         return ans;
     }
 
-    void bt(vector<int>& nums,int index,vector<int>& currentVector){
-
-        ans.push_back(currentVector);
-
-        for(int i=index;i<nums.size();i++){
-            currentVector.push_back(nums[i]);
-            bt(nums,i+1,currentVector);
-            currentVector.pop_back();
+    void solve(vector<int> curr,vector<int>& nums,int index){
+        if(index>=nums.size()){
+            ans.push_back(curr);
+            return;
         }
+
+        solve(curr,nums,index+1);
+        curr.push_back(nums[index]);
+        solve(curr,nums,index+1);
+        curr.pop_back();
         return;
     }
 };
