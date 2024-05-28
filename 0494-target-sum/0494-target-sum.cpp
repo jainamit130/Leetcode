@@ -1,23 +1,20 @@
 class Solution {
 public:
-    int ans=0;
     int findTargetSumWays(vector<int>& nums, int target) {
-        solve(nums,target,0,0);
-        return ans;
+        return solve(nums,target,0,0);
     }
 
-    void solve(vector<int>& nums,int target,int currSum,int index){
+    int solve(vector<int>& nums,int target,int currSum,int index){
         if(index>=nums.size()){
             if(currSum==target)
-                ans++;
-            return;
+                return 1;
+            else
+                return 0;
         }
     
-        //minus
-        solve(nums,target,currSum-nums[index],index+1);
-        //plus
-        solve(nums,target,currSum+nums[index],index+1);
-        return;
+        int subtract = solve(nums,target,currSum-nums[index],index+1);
+        int add = solve(nums,target,currSum+nums[index],index+1);
+        return subtract+add;
     }
 };
 
