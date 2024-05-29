@@ -48,7 +48,7 @@ class NumArray {
         }
 
         int calculateTree(int leftIndex,int rightIndex,SegmentTree* root){
-            if(root->r==root->l)
+            if(root->r==rightIndex && root->l==leftIndex)
                 return root->total;
 
             if(leftIndex>rightIndex)
