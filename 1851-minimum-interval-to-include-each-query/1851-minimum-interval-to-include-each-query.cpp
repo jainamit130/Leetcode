@@ -8,10 +8,9 @@ public:
         }
         sort(queries.begin(),queries.end());
         priority_queue<vector<int>,vector<vector<int>>,greater<vector<int>>> minHeap;
-        int j=1;
+        int j=0;
         int i=0;
         vector<int> ans(queries.size(),-1);
-        minHeap.push({intervals[0][1]-intervals[0][0]+1,intervals[0][1]});
         while(i<queries.size()){
             while(j<intervals.size() && intervals[j][0]<=queries[i].first){
                 minHeap.push({intervals[j][1]-intervals[j][0]+1,intervals[j][1]});
