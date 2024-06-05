@@ -1,143 +1,71 @@
-int mod=1e9 + 7;
+using ll = long long;
+#define lc (x << 1)
+#define rc (x << 1) | 1
+int N;
+vector<array<ll, 4>> ST;
+// 0 -> both first and last
+// 1 -> first but not last
+// 2 -> not first but last
+// 3 -> not first and not last
+
+array<ll, 4> combine(array<ll, 4> lcVal, array<ll, 4> rcVal)
+{
+    array<ll, 4> ans;
+    ans[0] = max(lcVal[0] + rcVal[2], lcVal[1] + max(rcVal[2], rcVal[0]));
+    ans[1] = max(lcVal[0] + rcVal[3], lcVal[1] + max(rcVal[1], rcVal[3]));
+    ans[2] = max(lcVal[2] + rcVal[2], lcVal[3] + max(rcVal[0], rcVal[2]));
+    ans[3] = max(lcVal[2] + rcVal[3], lcVal[3] + max(rcVal[1], rcVal[3]));
+    return ans;
+}
+
+array<ll, 4> query(int L, int R, int x = 1, int l = 1, int r = N + 1)
+{
+    // Base Case
+    if (l >= R or r <= L) return {0ll,0ll,0ll,0ll};
+    if (l >= L and r <= R) return ST[x];
+    int mid = (l + r) / 2;
+    // Combine
+    array<ll, 4> ans = combine(query(L, R, lc, l, mid), query(L, R, rc, mid, r));
+    return ans;
+}
+
+void update(int pos, int val, int x = 1, int l = 1, int r = N + 1)
+{
+    // no overlap
+    if (pos < l or pos >= r) return;
+    if (l == r - 1)
+    {
+        ST[x][0] = val;
+        ST[x][1] = ST[x][2] = ST[x][3] = 0;
+        return;
+    }
+    int mid = (l + r) / 2;
+    update(pos, val, lc, l, mid);
+    update(pos, val, rc, mid, r);
+
+    // pass the update information to ancestors
+    ST[x] = combine(ST[lc], ST[rc]);
+}
+
 
 class Solution {
 public:
-
-    void build(int ind,int low,int high,vector<int> &nums,vector<vector<int>> &seg){
-        if(low==high){
-            // seg[ind][0][0]=0;
-            // cout<<"vimal"<<endl;
-            seg[ind][0]=0;
-            seg[ind][1]=-1e9;
-            seg[ind][2]=-1e9;
-            seg[ind][3]=nums[low];
-            // seg[ind][0][1]=-1e9;
-            // seg[ind][1][0]=-1e9;
-            // seg[ind][1][1]=nums[low];
-            return;
-        }
-        int mid = low + (high - low)/2;
-        build(2*ind + 1,low,mid,nums,seg);
-        build(2*ind + 2,mid+1,high,nums,seg);
-        seg[ind][0] = max(seg[2*ind + 1][0] + seg[2*ind + 2][0] , max(seg[2*ind + 1][1] + seg[2*ind + 2][0] ,seg[2*ind+1][0] + seg[2*ind+2][2]));
-        seg[ind][1] = max(seg[2*ind + 1][0] + seg[2*ind + 2][1] , max(seg[2*ind + 1][1] + seg[2*ind + 2][1] ,seg[2*ind+1][0] + seg[2*ind+2][3]));
-        seg[ind][2] = max(seg[2*ind + 1][2] + seg[2*ind + 2][0] , max(seg[2*ind + 1][3] + seg[2*ind + 2][0] ,seg[2*ind+1][2] + seg[2*ind+2][2]));
-        seg[ind][3] = max(seg[2*ind + 1][2] + seg[2*ind + 2][1] , max(seg[2*ind + 1][3] + seg[2*ind + 2][1] ,seg[2*ind+1][2] + seg[2*ind+2][3]));
-    }
-
-    void update(int ind,int low,int high,vector<int> &nums,vector<vector<int>> &seg,int k,int val){
-        if(low>k || high<k){
-            return;
-        }
-        if(low == high && high == k){
-           seg[ind][0]=0;
-           seg[ind][3]=val;
-           return ;
-        }
-        int mid=low + (high - low)/2;
-        update(2*ind+1,low,mid,nums,seg,k,val);
-        update(2*ind + 2,mid+1,high,nums,seg,k,val);
-         seg[ind][0] = max(seg[2*ind + 1][0] + seg[2*ind + 2][0] , max(seg[2*ind + 1][1] + seg[2*ind + 2][0] ,seg[2*ind+1][0] + seg[2*ind+2][2]));
-        seg[ind][1] = max(seg[2*ind + 1][0] + seg[2*ind + 2][1] , max(seg[2*ind + 1][1] + seg[2*ind + 2][1] ,seg[2*ind+1][0] + seg[2*ind+2][3]));
-        seg[ind][2] = max(seg[2*ind + 1][2] + seg[2*ind + 2][0] , max(seg[2*ind + 1][3] + seg[2*ind + 2][0] ,seg[2*ind+1][2] + seg[2*ind+2][2]));
-        seg[ind][3] = max(seg[2*ind + 1][2] + seg[2*ind + 2][1] , max(seg[2*ind + 1][3] + seg[2*ind + 2][1] ,seg[2*ind+1][2] + seg[2*ind+2][3]));
-    }
-
     int maximumSumSubsequence(vector<int>& nums, vector<vector<int>>& queries) {
-        int n=nums.size();
-        // vector<vector<vector<int>>> seg(4*n+1,vector<vector<int>> (2,vector<int> (2,-1)));
-        vector<vector<int>> seg(4*n+1,vector<int>(5,0));
-        build(0,0,n-1,nums,seg);
-        int m=queries.size();
-        int ans=0;
-        for(int i=0;i<m;i++){
-            update(0,0,n-1,nums,seg,queries[i][0],queries[i][1]);
-            ans = (ans + max(seg[0][0],max(seg[0][1],max(seg[0][2],seg[0][3]))))%mod;
+        
+        ll ans = 0;
+        int n = nums.size(); 
+        N = n+1;
+        ST.assign(4*N, {0ll,0ll,0ll,0ll});
+        // 1-based indexed seg tree
+        for (int i=0; i<n; i++) update(i+1, nums[i]);
+        
+        for (auto q:queries)
+        {
+            int p = q[0], x = q[1];
+            update(p+1, x);
+            auto cur = query(1,n+1);
+            ans += max({cur[0], cur[1], cur[2], cur[3]});
         }
-        return ans;
-
-
+        return ans%1000000007;
     }
 };
-
-// vector<vector<int>> dir={{0,0},{0,1},{1,0},{1,1}};
-// int mod=1e9+7;
-// class SegmentTree {
-//     public:
-//         int leftIndex;
-//         int rightIndex;
-//         SegmentTree* left;
-//         SegmentTree* right;
-//         vector<vector<int>> val;
-//         SegmentTree(int li,int ri){
-//             val.resize(2,vector<int>(2,INT_MIN));
-//             leftIndex=li;
-//             rightIndex=ri;
-//             left=NULL;
-//             right=NULL;
-//         }
-
-//         //construct
-//         SegmentTree* construct(vector<int>& nums,int leftIndex,int rightIndex){
-//             if(leftIndex==rightIndex){
-//                 SegmentTree* leaf = new SegmentTree(leftIndex,leftIndex);
-//                 leaf->val[0][0]=0;
-//                 leaf->val[0][1]=-1e9;
-//                 leaf->val[1][0]=-1e9;
-//                 leaf->val[1][1]=nums[leftIndex];
-//                 return leaf;
-//             } 
-//             SegmentTree* root=new SegmentTree(leftIndex,rightIndex);
-//             int mid=(leftIndex+rightIndex)/2;
-//             root->left=construct(nums,leftIndex,mid);
-//             root->right=construct(nums,mid+1,rightIndex);
-//             for(auto d:dir){
-//                 root->val[d[0]][d[1]]=max(root->left->val[d[0]][0]+root->right->val[0][d[1]],
-//                                           max(root->left->val[d[0]][0]+root->right->val[1][d[1]],
-//                                           root->left->val[d[0]][1]+root->right->val[0][d[1]]));
-//             }
-//             return root;
-//         }
-
-//         //update
-//         void update(int index,int val){
-//             if(this->leftIndex==this->rightIndex && this->leftIndex==index){
-//                 this->val[0][0]=0;
-//                 this->val[0][1]=-1e9;
-//                 this->val[1][0]=-1e9;
-//                 this->val[1][1]=val;
-//                 return;
-//             }
-
-//             int mid=(this->leftIndex+this->rightIndex)/2;
-//             if(index<=mid){
-//                 this->left->update(index,val);
-//             } else {
-//                 this->right->update(index,val);
-//             }
-//             for(auto d:dir){
-//                 this->val[d[0]][d[1]]=max(this->left->val[d[0]][0]+this->right->val[0][d[1]],
-//                                           max(this->left->val[d[0]][0]+this->right->val[1][d[1]],
-//                                           this->left->val[d[0]][1]+this->right->val[0][d[1]]));
-//             }
-//             return;
-//         }
-// };
-
-// class Solution {
-// public:
-//     int maximumSumSubsequence(vector<int>& nums, vector<vector<int>>& queries) {
-//         SegmentTree* root=new SegmentTree(0,nums.size()-1);
-//         root=root->construct(nums,0,nums.size()-1);
-//         int result=0;
-//         for(auto q:queries){
-//             int ans=INT_MIN;
-//             root->update(q[0],q[1]);
-//             for(auto d:dir){
-//                 ans=max(ans,root->val[d[0]][d[1]]);
-//             }
-//             result=(result+ans)%mod;
-//         }
-//         return result;
-//     }
-// };
