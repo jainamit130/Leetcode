@@ -10,8 +10,6 @@ public:
         map<int,int> mp;
         for(int i=0;i<hand.size();i++){
             mp[hand[i]]++;
-            if(mp[hand[i]]>t)
-                return false;
         }
         while(mp.size()){
             int curr = mp.begin()->first;
