@@ -14,30 +14,16 @@ public:
                 return false;
         }
         while(mp.size()){
-            map<int, int>::iterator it=mp.begin();
-            int last=it->first;
-            // cout<<last<<endl;
-            it->second--;
-            // cout<<it->first<<" "<<it->second<<endl;
-            map<int, int>::iterator copyIt=it;
-            copyIt++;
-            if(mp[it->first]==0){
-                mp.erase(it->first);
-            } 
-            it=copyIt;
-            for(int i=1;i<groupSize;i++){
-                if(last+1!=it->first){
+            int curr = mp.begin()->first;
+            for(int i=0;i<groupSize;i++){
+                if(mp[curr+i]==0){
                     return false;
+                } else {
+                    mp[curr+i]--;
+                    if(mp[curr+i]<=0){
+                        mp.erase(curr+i);
+                    }
                 }
-                it->second--;
-                // cout<<it->first<<" "<<it->second<<endl;
-                last=it->first;
-                map<int, int>::iterator copyIt=it;
-                copyIt++;
-                if(mp[it->first]==0){
-                    mp.erase(it->first);
-                } 
-                it=copyIt;
             }
         }
         return true;
