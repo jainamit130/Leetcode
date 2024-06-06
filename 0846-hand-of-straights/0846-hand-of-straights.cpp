@@ -1,13 +1,13 @@
 class Solution {
 public:
     bool isNStraightHand(vector<int>& hand, int groupSize) {
-        map<int,int> mp;
         int t=0;
         if(hand.size()%groupSize==0){
             t=hand.size()/groupSize;
         } else {
             return false;
         }
+        map<int,int> mp;
         for(int i=0;i<hand.size();i++){
             mp[hand[i]]++;
             if(mp[hand[i]]>t)
