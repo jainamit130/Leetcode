@@ -2,53 +2,60 @@ class Solution {
 public:
     typedef long long ll;
     vector<ll> bitCount;
-    void getSetBitsCount(ll num){
-        if(num==0){
-            return;
-        }
 
-        if(num==1){
+    void getBits(ll number) {
+        if (number == 0)
+            return;
+        
+        if (number == 1) {
             bitCount[0]++;
             return;
         }
-
-        if(num==2){
+        
+        if (number == 2) {
             bitCount[0]++;
             bitCount[1]++;
             return;
         }
 
-        int bitLength = log2(num);
-        ll border = pow(2,bitLength);
-        bitCount[bitLength]+=num-border+1;
-        for(int i=0;i<bitLength;i++){
-            bitCount[i]+=(border/2);
+        ll bitLen          = log2(number);
+        ll nearestPowerTwo = (1ll << bitLen);
+        bitCount[bitLen]  += (number - nearestPowerTwo + 1);
+
+        for (ll i = 0; i < bitLen; i++) {
+            bitCount[i] += (nearestPowerTwo / 2);
         }
-        getSetBitsCount(num-border);
-        return;
+
+        number = number - nearestPowerTwo;
+        getBits(number);
     }
 
-    long long findMaximumNumber(long long k, int x) {
-        ll left=0;
-        ll right=1e15;
-        ll ans=0;
-        while(left<=right){
-            bitCount=vector<ll>(65,0);
-            ll mid = left+(right-left)/2;
-            getSetBitsCount(mid);
-            ll total=0;
-            for(int i=0;i<log2(mid)+1;i++){
-                if((i+1)%x==0){
-                    total+=bitCount[i];
-                }
+    ll findMaximumNumber(ll threshold, int divisor) {
+        ll low = 0, high = 1e15;
+        
+        ll result = 0;
+        while (low <= high) {
+            ll mid = low + (high - low) / 2;
+            
+            bitCount = vector<ll>(65, 0);
+            
+            getBits(mid);
+
+            ll accumulatedCount = 0;
+            
+            for (ll i = 0; i < log2(mid)+1; i++) {
+                if ((i + 1) % divisor == 0) 
+                    accumulatedCount += bitCount[i];
             }
-            if(total<=k){
-                ans=mid;
-                left=mid+1;
-            } else{
-                right=mid-1;
-            } 
+
+            if (accumulatedCount <= threshold) {
+                result = mid;
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
         }
-        return ans;
+
+        return result;
     }
 };
