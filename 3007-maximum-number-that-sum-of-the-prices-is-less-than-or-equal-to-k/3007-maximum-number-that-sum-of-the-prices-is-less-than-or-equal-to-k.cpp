@@ -20,7 +20,7 @@ public:
 
         int bitLength = log2(num);
         ll border = pow(2,bitLength);
-        bitCount[bitLength]=num-border+1;
+        bitCount[bitLength]+=num-border+1;
         for(int i=0;i<bitLength;i++){
             bitCount[i]+=(border/2);
         }
@@ -32,7 +32,6 @@ public:
         ll left=0;
         ll right=1e15;
         ll ans=0;
-        ll result=0;
         while(left<=right){
             bitCount=vector<ll>(65,0);
             ll mid = left+(right-left)/2;
@@ -44,15 +43,12 @@ public:
                 }
             }
             if(total<=k){
-                if(total>ans){
-                    ans=total;
-                    result=mid;
-                }
+                ans=mid;
                 left=mid+1;
             } else{
                 right=mid-1;
             } 
         }
-        return result;
+        return ans;
     }
 };
