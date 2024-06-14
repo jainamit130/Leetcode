@@ -1,15 +1,17 @@
 class Solution {
 public:
     int minIncrementForUnique(vector<int>& nums) {
-        unordered_map<int,int> mp;
         int maxi=0;
         for(auto n:nums){
-            mp[n]++;
             maxi=max(n,maxi);
         }
+        vector<int> mp(nums.size()+maxi);
+        for(auto n:nums){
+            mp[n]++;
+        }
         int ans=0;
-        for(int i=0;i<=maxi+nums.size();i++){
-            if(mp.find(i)!=mp.end() && mp[i]>1){
+        for(int i=0;i<maxi+nums.size();i++){
+            if(mp[i]>1){
                 ans+=mp[i]-1;
                 mp[i+1]+=(mp[i]-1);
             }
