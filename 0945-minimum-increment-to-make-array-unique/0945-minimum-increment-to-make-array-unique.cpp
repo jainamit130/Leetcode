@@ -10,7 +10,6 @@ public:
                 ans+=(nums[i-1]+1)-nums[i];
                 nums[i]=nums[i-1]+1;
             }
-            cout<<nums[i]<<endl;
             st.insert(nums[i]);
        } 
        return ans;
