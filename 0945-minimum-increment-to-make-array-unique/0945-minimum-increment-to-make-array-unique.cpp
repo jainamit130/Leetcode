@@ -1,17 +1,38 @@
 class Solution {
 public:
     int minIncrementForUnique(vector<int>& nums) {
-       sort(nums.begin(),nums.end());
-       int ans=0;
-       for(int i=1;i<nums.size();i++){
-            if(nums[i]<=nums[i-1]){
-                ans+=(nums[i-1]+1)-nums[i];
-                nums[i]=nums[i-1]+1;
+        map<int,int> mp;
+        int maxi=0;
+        for(auto n:nums){
+            mp[n]++;
+            maxi=max(n,maxi);
+        }
+        int ans=0;
+        for(int i=0;i<=maxi+nums.size();i++){
+            if(mp.find(i)!=mp.end() && mp[i]>1){
+                ans+=mp[i]-1;
+                mp[i+1]+=(mp[i]-1);
             }
-       } 
-       return ans;
+        }
+        return ans;
     }
 };
+
+
+// class Solution {
+// public:
+//     int minIncrementForUnique(vector<int>& nums) {
+//        sort(nums.begin(),nums.end());
+//        int ans=0;
+//        for(int i=1;i<nums.size();i++){
+//             if(nums[i]<=nums[i-1]){
+//                 ans+=(nums[i-1]+1)-nums[i];
+//                 nums[i]=nums[i-1]+1;
+//             }
+//        } 
+//        return ans;
+//     }
+// };
 
 
 
