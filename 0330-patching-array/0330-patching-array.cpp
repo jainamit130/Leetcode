@@ -5,13 +5,14 @@ public:
         int ans=0;
         for(int i=0;i<nums.size() && maxReach<n;){
             if(nums[i]>maxReach+1){
+                maxReach+=maxReach+1;
                 ans++;
             } else {
+                maxReach+=nums[i];
                 i++;
             }
-            maxReach+=maxReach+1;
         }
-        while(maxReach<=n){
+        while(maxReach<n){
             ans++;
             maxReach+=(long)maxReach+1;
         }
