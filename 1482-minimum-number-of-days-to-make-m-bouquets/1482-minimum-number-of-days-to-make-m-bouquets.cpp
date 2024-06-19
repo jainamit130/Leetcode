@@ -8,7 +8,6 @@ public:
             maxDay=max(maxDay,b);
         }
         int i=1,j=maxDay;
-        int ans=INT_MAX;
         while(i<=j){
             int mid=(i+j)/2;
             int t=bloomed(mid,bloomDay,m,k);
