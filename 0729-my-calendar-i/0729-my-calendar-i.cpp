@@ -2,6 +2,7 @@ class MyCalendar {
 public:
     map<int,int> mp;
     MyCalendar() {
+        
     }
     
     bool book(int start, int end) {
