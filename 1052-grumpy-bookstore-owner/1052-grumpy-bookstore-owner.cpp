@@ -9,18 +9,15 @@ public:
         }
         int i=0,j=0;
         int ans=INT_MIN;
-        int add = 0;
         while(j<customers.size()){
             if(j-i+1<=minutes){
-                if(grumpy[j]==1){
-                    add+=customers[j];
-                } 
+                sum+=customers[j]*grumpy[j];
                 j++;
             } else {
-                add-=customers[i]*grumpy[i];
+                sum-=customers[i]*grumpy[i];
                 i++;
             }
-            ans=max(ans,sum+add);
+            ans=max(ans,sum);
         }
         return ans;
     }
