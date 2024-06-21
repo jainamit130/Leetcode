@@ -3,7 +3,7 @@ public:
     int maxSatisfied(vector<int>& customers, vector<int>& grumpy, int minutes) {
         int sum=0;
         for(int i=0;i<customers.size();i++){
-            sum+=customers[i]*grumpy[i];
+            sum+=customers[i]*(!grumpy[i]);
         }
         int i=0,j=0;
         int ans=INT_MIN;
