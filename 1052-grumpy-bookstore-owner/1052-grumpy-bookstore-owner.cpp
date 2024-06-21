@@ -19,8 +19,6 @@ public:
             } else {
                 add-=customers[i]*grumpy[i];
                 i++;
-                add+=customers[j]*grumpy[j];
-                j++;
             }
             ans=max(ans,sum+add);
         }
