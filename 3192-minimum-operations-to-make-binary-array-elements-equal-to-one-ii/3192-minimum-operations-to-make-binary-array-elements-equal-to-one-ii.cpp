@@ -10,7 +10,7 @@ public:
             if(flipped){
                 nums[i]=!nums[i];
             }
-            if(nums[i]!=nums[0]){
+            if(nums[0]!=nums[i]){
                 flipped=!flipped;
                 ans++;
             }
@@ -19,17 +19,12 @@ public:
     }
 };
 
+
+
 /*
 
-0,1,1,0,1
+0   1   1   0   1
 
-0   0   0   1   0
-
-0   0   0   0   1
-
-0   0   0   0   0
-
-1   1   1   1   1
 
 
 */
