@@ -1,31 +1,28 @@
 class Solution {
 public:
     typedef long long ll;
-    long long maximumTotalCost(vector<int>& nums) {
-        vector<pair<ll,ll>> p;
-        int as=nums[0];
-        int sa=nums[0];
-        p.push_back({as,sa});
-        for(int i=1;i<nums.size();i++){
-            if(i%2==0){
-                as+=nums[i];
-                sa-=nums[i];
-            } else {
-                as-=nums[i];
-                sa+=nums[i];
-            }
-            p.push_back({as,sa});
+    ll maximumTotalCost(vector<int>& nums) {
+        vector<vector<ll>> cache(nums.size(),vector<ll>(2,-1e15));
+        return solve(nums,0,0,0,cache);
+    }
+
+    ll solve(vector<int>& nums,int index,int isStart,int sign,vector<vector<ll>>& cache){
+        if(index>=nums.size())
+            return 0ll;
+
+        if(cache[index][sign]!=-1e15)
+            return cache[index][sign];
+
+        int mul=-1;
+        if(!sign)
+            mul=1;
+
+        if(isStart==0){
+            cache[index][sign]=max(cache[index][sign],nums[index]+solve(nums,index+1,1,1,cache));
+        } else {
+            cache[index][sign]=max(cache[index][sign],(mul*nums[index])+solve(nums,index+1,1,!sign,cache));
+            cache[index][sign]=max(cache[index][sign],solve(nums,index,0,0,cache));
         }
-        ll ans=as;
-        for(int i=1;i<=nums.size();i++){
-            ll t;
-            if(i%2==0){
-                t=p[i-1].second+p.back().first-p[i-1].first;
-            } else {
-                t=p[i-1].first+p.back().second-p[i-1].second;
-            }
-            ans=max(ans,t);
-        }
-        return ans;
+        return cache[index][sign];
     }
 };
