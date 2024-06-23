@@ -10,8 +10,8 @@ public:
         
         for (int i = 1; i < n; ++i) {
             ll t=max(dp[i-1][1],dp[i-1][0]);
-            dp[i][0] = max(dp[i-1][1] - nums[i], dp[i-1][0]);
-            dp[i][1] = max(t + nums[i], dp[i-1][1]);
+            dp[i][0] = dp[i-1][1] - nums[i];
+            dp[i][1] = t + nums[i];
         }
         
         return max(dp[n-1][0], dp[n-1][1]);
