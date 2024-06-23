@@ -1,20 +1,17 @@
 class Solution {
 public:
     typedef long long ll;
-    ll maximumTotalCost(vector<int>& nums) {
-        int n = nums.size();
-        vector<vector<ll>> dp(n, vector<ll>(2,-1e15));
+    ll maximumTotalCost(vector<int>& nums) { 
+        ll sub = nums[0]; 
+        ll add = nums[0];
         
-        dp[0][0] = nums[0]; 
-        dp[0][1] = nums[0];
-        
-        for (int i = 1; i < n; ++i) {
-            ll t=max(dp[i-1][1],dp[i-1][0]);
-            dp[i][0] = dp[i-1][1] - nums[i];
-            dp[i][1] = t + nums[i];
+        for (int i = 1; i < nums.size(); ++i) {
+            ll t=max(add,sub);
+            sub = add - nums[i];
+            add = t + nums[i];
         }
         
-        return max(dp[n-1][0], dp[n-1][1]);
+        return max(add, sub);
     }
 };
 
