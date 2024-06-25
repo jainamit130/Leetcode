@@ -129,34 +129,21 @@ public:
 
     }
 
-       long long minimumArea(vector<vector<int>>& grid, int st_i, int en_i, int st_j, int en_j) {
-        long long top = -1, bottom = -1, left = -1, right = -1;
-        
-        for(int i=st_i;i<=en_i;i++)
-        {
-            for(int j=st_j;j<=en_j;j++)
-            {
-                if(grid[i][j]==1)
-                {
-                    if(top==-1) top=i;
-                    bottom=i;
+    int minimumArea(vector<vector<int>>& grid,int startI,int endI,int startJ,int endJ) {
+        int minI=INT_MAX;int minJ=INT_MAX;
+        int maxI=INT_MIN;int maxJ=INT_MIN;
+        for(int i=startI;i<=endI;i++){
+            for(int j=startJ;j<=endJ;j++){
+                if(grid[i][j]==1){
+                    minI=min(minI,i);
+                    minJ=min(minJ,j);
+                    maxI=max(maxI,i);
+                    maxJ=max(maxJ,j);
                 }
             }
-        } // n*m
-        
-        for(int i=st_j;i<=en_j;i++)
-        {
-            for(int j=st_i;j<=en_i;j++)
-            {
-                if(grid[j][i]==1)
-                {
-                    if(left==-1) left=i;
-                    right=i;
-                }
-            }
-        } //n*m
-        
-        long long area = (right-left+1)*(bottom-top+1);
-        return area;
+        }
+        if(minI==INT_MAX || minJ==INT_MAX || maxI==INT_MIN || maxJ==INT_MIN)
+            return 900;
+        return (maxI-minI+1)*(maxJ-minJ+1);
     }
 };
