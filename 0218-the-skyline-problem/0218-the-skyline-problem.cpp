@@ -13,21 +13,20 @@ public:
             return lhs[0]<rhs[0];
         });
         vector<vector<int>> ans;
-        multiset<int> pq;
-        pq.insert(0);
+        map<int,int> pq;
+        pq[0]=1;
         int currH=0;
         for(auto c:corners){
             if(c[1]>0){
-                pq.insert(c[1]);
+                pq[c[1]]++;
             } else {
-                auto it = pq.find(-c[1]); 
-                if (it != pq.end()) {
-                    pq.erase(it); 
-                }
+                pq[-c[1]]--;
+                if(pq[-c[1]]==0)
+                    pq.erase(-c[1]);
             }
-            if(currH != *pq.rbegin()){
-                ans.push_back({c[0],*pq.rbegin()});
-                currH = *pq.rbegin();
+            if(currH != pq.rbegin()->first){
+                ans.push_back({c[0],pq.rbegin()->first});
+                currH = pq.rbegin()->first;
             }
         }
         return ans;
