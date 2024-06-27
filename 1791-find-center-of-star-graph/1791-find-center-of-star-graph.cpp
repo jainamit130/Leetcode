@@ -4,7 +4,6 @@ public:
         int n=edges.size()+1;
         vector<vector<int>> adj(n+1);
         for(auto e:edges){
-            cout<<e[0]<<endl;
             adj[e[0]].push_back(e[1]);
             adj[e[1]].push_back(e[0]);
         }
