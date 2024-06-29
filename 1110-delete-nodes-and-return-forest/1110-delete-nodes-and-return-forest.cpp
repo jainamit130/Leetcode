@@ -12,26 +12,26 @@
 class Solution {
 public:
     vector<TreeNode*> delNodes(TreeNode* root, vector<int>& to_delete) {
-        vector<int> nodes(1001);
+        unordered_set<int> nodes;
         for(int i=0;i<to_delete.size();i++){
-            nodes[to_delete[i]]=1;
+            nodes.insert(to_delete[i]);
         }
         vector<TreeNode*> ans;
         dfs(root,nodes,ans);
-        if(!nodes[root->val]){
+        if(nodes.find(root->val)==nodes.end()){
             ans.push_back(root);
         }
         return ans;
     }
 
-    TreeNode* dfs(TreeNode* root,vector<int> nodes,vector<TreeNode*>& ans){
+    TreeNode* dfs(TreeNode* root,unordered_set<int> nodes,vector<TreeNode*>& ans){
         if(!root){
             return NULL;
         }
 
         root->left=dfs(root->left,nodes,ans);
         root->right=dfs(root->right,nodes,ans);
-        if(nodes[root->val]){
+        if(nodes.find(root->val)!=nodes.end()){
             if(root->left){
                 ans.push_back(root->left);
             }
