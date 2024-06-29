@@ -29,8 +29,8 @@ public:
             return NULL;
         }
 
-        dfs(root->left,nodes,ans);
-        dfs(root->right,nodes,ans);
+        root->left=dfs(root->left,nodes,ans);
+        root->right=dfs(root->right,nodes,ans);
         if(nodes[root->val]){
             if(root->left){
                 ans.push_back(root->left);
