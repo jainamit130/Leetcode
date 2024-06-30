@@ -48,21 +48,23 @@ public:
         Union* alice=new Union(n);
         Union* bob=new Union(n);
         int ans=0;
-        sort(edges.begin(),edges.end(),greater<vector<int>>());
         for(int i=0;i<edges.size();i++){
-            int n1=edges[i][1]-1;
-            int n2=edges[i][2]-1;
             if(edges[i][0]==3){
                 bool a=alice->unionElements(n1,n2);
                 bool b=bob->unionElements(n1,n2);
                 if(a || b) {
                     ans++;
                 }
-            } else if(edges[i][0]==1){
+            } 
+        }
+        for(int i=0;i<edges.size();i++){
+            int n1=edges[i][1]-1;
+            int n2=edges[i][2]-1;
+            if(edges[i][0]==1){
                 if(alice->unionElements(n1,n2)){
                     ans++;
                 }
-            } else {
+            } else if(edges[i][0]==2){
                 if(bob->unionElements(n1,n2)){
                     ans++;
                 }
