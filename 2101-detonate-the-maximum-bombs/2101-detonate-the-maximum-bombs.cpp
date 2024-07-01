@@ -26,16 +26,15 @@ public:
         return ans;
     }
 
-    int countDetonation(vector<vector<int>>& adj, int node, vector<int>& visited) {
-        visited[node] = 1;
-        int count = 1; 
-        
-        for (int neighbor : adj[node]) {
-            if (visited[neighbor] == -1) { 
-                count += countDetonation(adj, neighbor, visited); 
-            }
+    int countDetonation(vector<vector<int>>& adj,int node,vector<int>& visited){
+        if(visited[node]==1){
+            return 0;
         }
-        
-        return count; 
+        int count=1;
+        visited[node]=1;
+        for(int i=0;i<adj[node].size();i++){
+            count+=countDetonation(adj,adj[node][i],visited);
+        }
+        return count;
     }
 };
