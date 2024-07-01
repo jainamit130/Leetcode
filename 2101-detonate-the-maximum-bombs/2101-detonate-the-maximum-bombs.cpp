@@ -27,15 +27,15 @@ public:
     }
 
     int countDetonation(vector<vector<int>>& adj, int node, vector<int>& visited) {
-        visited[node] = 1; // Mark the current node as visited
-        int count = 1; // Initialize count with 1 (counting the current node itself)
+        visited[node] = 1;
+        int count = 1; 
         
         for (int neighbor : adj[node]) {
-            if (visited[neighbor] == -1) { // If neighbor node is not visited
-                count += countDetonation(adj, neighbor, visited); // Recursively count nodes reachable from neighbor
+            if (visited[neighbor] == -1) { 
+                count += countDetonation(adj, neighbor, visited); 
             }
         }
         
-        return count; // Return the total count of reachable nodes from the starting node
+        return count; 
     }
 };
