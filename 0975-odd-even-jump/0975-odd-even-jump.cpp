@@ -54,14 +54,6 @@ public:
             st.insert(arr[i]);
             indexes[arr[i]]=i;
         }
-
-        // for (int i = 0; i < arr.size(); i++) {
-        //     cout << eveOdd[i].first << " ";
-        //     cout << eveOdd[i].second << " ";
-        //     cout << firstBigFirstSmall[i].first << " ";
-        //     cout << firstBigFirstSmall[i].second << " ";
-        //     cout << endl;
-        // }
         return ans;
     }
 };
