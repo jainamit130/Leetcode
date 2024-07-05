@@ -1,83 +1,63 @@
+#include <bits/stdc++.h>
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+
+using namespace __gnu_pbds;
+using namespace std;
+
+typedef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update> ordered_set;
+
+typedef pair<int,int> pii;
+
 class Solution {
-using IntPair = pair<int, int>; // {value, index}
-
-// cache values
-const int UNDEFINED = INT_MAX;
-const int INVALID = 0;
-const int VALID = 1;
-
-// cache indexes
-const int EVEN_JUMP = 0;
-const int ODD_JUMP = 1;
-
-// comparators
-static bool ascendingCompare(const IntPair& a, const IntPair& b) {
-    if (a.first != b.first) return a.first < b.first;
-    return a.second < b.second;
-}
-
-static bool descendingCompare(const IntPair& a, const IntPair& b) {
-    if (a.first != b.first) return a.first > b.first;
-    return a.second < b.second;
-}
-
-public:
-    // O(nlogn) time | O(n) space
+public:   
     int oddEvenJumps(vector<int>& arr) {
-        int n = arr.size();
-        
-        // sort values and indexes to determine
-        // next absolute greater and next absolute smaller
-        vector<IntPair> pairs(n);
-        for (int i = 0; i < n; ++i) {
-            pairs[i] = {arr[i], i};
+        vector<int> indexes(100001, -1);
+        ordered_set st;
+        vector<pii> eveOdd(arr.size(), {0, 0});
+        eveOdd[arr.size() - 1] = {1, 1}; 
+        vector<pii> firstBigFirstSmall(arr.size(), {-1, -1}); 
+        int ans = 1;
+        indexes[arr.back()] = arr.size() - 1;
+        st.insert(arr.back());
+        for (int i = arr.size() - 2; i >= 0; i--) {
+            int firstBig = -1;
+            int firstSmall = -1;
+            int order = st.order_of_key(arr[i]);
+            if (order != 0)
+                firstSmall = indexes[*st.find_by_order(order - 1)];
+            auto it = st.upper_bound(arr[i]);
+            if (it != st.end()) {
+                firstBig = indexes[*it];
+            }
+            firstBigFirstSmall[i] = {firstBig, firstSmall};
+            if (indexes[arr[i]] != -1) {
+                cout<<indexes[arr[i]]<<" "<<i<<endl;
+                firstBigFirstSmall[i] = {indexes[arr[i]], indexes[arr[i]]};
+                firstSmall = indexes[arr[i]];
+                firstBig = indexes[arr[i]];
+            }
+
+            // For Even Check FirstSmall's Odd
+            if (firstSmall != -1) {
+                eveOdd[i].first = eveOdd[firstSmall].second;
+            }
+
+            // For Odd Check FirstBig's Even
+            if (firstBig != -1) {
+                eveOdd[i].second = eveOdd[firstBig].first;
+            }
+
+            if (eveOdd[i].second) {
+                ans++;
+            }
+            st.insert(arr[i]);
+            indexes[arr[i]]=i;
         }
-        sort(pairs.begin(), pairs.end(), ascendingCompare);
-        vector<int> absoluteNextGreater = nextValuablePositions(pairs);
-        
-        sort(pairs.begin(), pairs.end(), descendingCompare);
-        vector<int> absoluteNextSmaller = nextValuablePositions(pairs);
-
-        // dp and base cases
-        vector<vector<int>> dp(n, vector<int>(2, INVALID));
-        dp[n - 1][EVEN_JUMP] = VALID;
-        dp[n - 1][ODD_JUMP] = VALID;
-
-        int res = 0;
-        for (int i = n - 1; i >= 0; --i) {
-            int oddJumpIndex = absoluteNextGreater[i];
-            int evenJumpIndex = absoluteNextSmaller[i];
-
-            if (oddJumpIndex < n && dp[oddJumpIndex][EVEN_JUMP] == VALID) {
-                dp[i][ODD_JUMP] = VALID;
-            }
-            if (evenJumpIndex < n && dp[evenJumpIndex][ODD_JUMP] == VALID) {
-                dp[i][EVEN_JUMP] = VALID;
-            }
-            if (dp[i][ODD_JUMP] == VALID) {
-                ++res;
-            }
-        }
-
-        return res;
-    }
-
-    // monotonic stack
-    vector<int> nextValuablePositions(vector<IntPair>& sortedPairs) {
-        int n = sortedPairs.size();
-        vector<int> res(n, UNDEFINED);
-        stack<IntPair> stk;
-
-        for (int i = 0; i < n; ++i) {
-            while (!stk.empty() && sortedPairs[i].second > stk.top().second) {
-                res[stk.top().second] = sortedPairs[i].second;
-                stk.pop();
-            }
-            stk.push(sortedPairs[i]);
-        }
-        return move(res);
+        return ans;
     }
 };
+
 
 /*
 
