@@ -2,20 +2,46 @@ class Solution {
 public:
     long long maximumPoints(vector<int>& enemyEnergies, int currentEnergy) {
         sort(enemyEnergies.begin(),enemyEnergies.end());
-        int i=0,j=enemyEnergies.size()-1;
-        long long ans=0;
+        int points=0;
+        int n=enemyEnergies.size();
+        int i=0,j=n-1;
         while(i<=j){
-            if(enemyEnergies[i]>currentEnergy){
-                if(ans==0){
+            if(currentEnergy<enemyEnergies[i]){
+                if(points==0){
                     return 0;
                 }
                 currentEnergy+=enemyEnergies[j];
                 j--;
             } else {
-                ans=ans+(currentEnergy/enemyEnergies[i]);
-                currentEnergy=currentEnergy%enemyEnergies[i];
+                points++;
+                currentEnergy-=enemyEnergies[i];
             }
         }
-        return ans;
+        return points;
     }
 };
+
+/*
+
+points=1
+Choose a enemy eng
+    curr>=enemy => curr-=enmy
+    curr<enemy => 
+                    if(points>=1){
+                        curr+=enemy
+                        mark enemy
+                    }
+
+2   2   3
+ij
+current=1
+points=3
+
+
+
+
+
+
+
+
+*/
