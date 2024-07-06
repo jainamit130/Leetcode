@@ -1,28 +1,22 @@
 class Solution {
 public:
     int passThePillow(int n, int time) {
-        bool signPositive=true;
-        int i=1;
+        int round=time/(n-1);
+        int sign=1;
+        int start=1;
+        if(round%2!=0){
+            sign=0;
+            start=n;
+        }
+        time=time%(n-1);
         while(time){
-            if(i==n+1){
-                i=n-1;
-                signPositive=false;
-            } else if(i==0){
-                i=2;
-                signPositive=true;
-            }
-            if(signPositive){
-                i++;
+            if(sign){
+                start++;
             } else {
-                i--;
+                start--;
             }
             time--;
         }
-        if(i==n+1){
-                i=n-1;
-            } else if(i==0){
-                i=2;
-            }
-        return i;
+        return start;
     }
 };
