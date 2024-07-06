@@ -18,6 +18,11 @@ public:
             }
             time--;
         }
+        if(i==n+1){
+                i=n-1;
+            } else if(i==0){
+                i=2;
+            }
         return i;
     }
 };
