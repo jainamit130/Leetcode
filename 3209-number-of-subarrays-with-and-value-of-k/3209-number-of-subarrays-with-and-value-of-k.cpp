@@ -2,7 +2,7 @@ class Solution {
 public:
     long long countSubarrays(vector<int>& nums, int k) {
         unordered_map<int,int> mp1;
-        long long ans=0;
+        int ans=0;
         for(int i=0;i<nums.size();i++){
             unordered_map<int,int> mp2;
             if((nums[i]&k)==k){
