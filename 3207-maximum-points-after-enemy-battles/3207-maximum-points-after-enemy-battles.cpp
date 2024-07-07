@@ -2,7 +2,7 @@ class Solution {
 public:
     long long maximumPoints(vector<int>& enemyEnergies, int currentEnergy) {
         sort(enemyEnergies.begin(),enemyEnergies.end());
-        int points=0;
+        long long points=0;
         int n=enemyEnergies.size();
         int i=0,j=n-1;
         while(i<=j){
@@ -13,8 +13,8 @@ public:
                 currentEnergy+=enemyEnergies[j];
                 j--;
             } else {
-                points++;
-                currentEnergy-=enemyEnergies[i];
+                points+=(currentEnergy/enemyEnergies[i]);
+                currentEnergy=currentEnergy%enemyEnergies[i];
             }
         }
         return points;
@@ -33,9 +33,9 @@ Choose a enemy eng
                     }
 
 2   2   3
-ij
-current=1
-points=3
+i       j
+current=6
+points=0
 
 
 
