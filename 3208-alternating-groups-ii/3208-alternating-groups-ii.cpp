@@ -4,12 +4,12 @@ public:
         deque<int> dq;
         int ans=0;
         int n=colors.size();
-        for(int i=0;i<=n+k-1;i++){
+        for(int i=0;i<n+k;i++){
             int index=i%n;
             if(dq.size()==k){
                 ans++;
                 dq.pop_front();
-            }
+            } 
 
             if(!dq.empty() && dq.back()==colors[index]){
                 dq.clear();
