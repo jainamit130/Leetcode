@@ -2,8 +2,9 @@ class Solution {
 public:
     string getEncryptedString(string s, int k) {
         string ans="";
-        for(int i=0;i<s.length();i++){
-            ans+=s[(i+k)%s.length()];
+        int n=s.length();
+        for(int i=0;i<n;i++){
+            ans+=s[(i+k)%n];
         }
         return ans;
     }
