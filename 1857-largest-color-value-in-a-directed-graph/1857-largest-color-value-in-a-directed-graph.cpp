@@ -1,50 +1,62 @@
 class Solution {
 public:
-    int flag=0;
     int largestPathValue(string colors, vector<vector<int>>& edges) {
-        vector<vector<int>> adj(colors.length());
-        for(int i=0;i<edges.size();i++){
-            adj[edges[i][0]].push_back(edges[i][1]);
+        int n = colors.size();
+        vector<vector<int>> adj(n);
+        vector<int> inDegree(n, 0);
+
+        // Build adjacency list and in-degree array
+        for (auto& edge : edges) {
+            int u = edge[0], v = edge[1];
+            adj[u].push_back(v);
+            inDegree[v]++;
         }
 
-        // for(int i=0;i<colors.length();i++){
-        //     cout<<i<<" -> ";
-        //     for(int j=0;j<adj[i].size();j++){
-        //         cout<<adj[i][j]<<" ,";
-        //     }
-        //     cout<<endl;
-        // }
-        int ans=0;
-        vector<int> visited(colors.length());
-        vector<int> v(colors.length(),-1);
-        for(int i=0;i<colors.length();i++){
-            if(visited[i]==1 || v[i]!=-1){
-                continue;
+        int ans = 0;
+        vector<vector<int>> dp(n, vector<int>(26, 0));
+        vector<int> visited(n, 0); // 0: unvisited, 1: visiting, 2: visited
+
+        for (int i = 0; i < n; ++i) {
+            if (visited[i] == 0) {
+                if (!dfs(i, adj, colors, dp, visited)) {
+                    return -1; // Cycle detected
+                }
             }
-            vector<int> alpha(26);
-            int t=dfs(adj,i,alpha,visited,colors,v);
-            if(flag){
-                return -1;
-            }
-            ans=max(ans,t);
         }
+
+        // Find the maximum color count in dp array
+        for (int i = 0; i < n; ++i) {
+            for (int c = 0; c < 26; ++c) {
+                ans = max(ans, dp[i][c]);
+            }
+        }
+
         return ans;
     }
 
-    int dfs(vector<vector<int>>& adj,int node,vector<int>& alpha,vector<int>& visited,string& colors,vector<int>& v){
-        if(visited[node]){
-            flag=1;
-            return INT_MIN;
+private:
+    bool dfs(int node, vector<vector<int>>& adj, string& colors, vector<vector<int>>& dp, vector<int>& visited) {
+        if (visited[node] == 1) {
+            return false; // Cycle detected
         }
-        alpha[colors[node]-'a']++;
-        visited[node]=1;
-        v[node]=1;
-        int t=alpha[colors[node]-'a'];
-        for(int i=0;i<adj[node].size();i++){
-            t=max(t,dfs(adj,adj[node][i],alpha,visited,colors,v));
+        if (visited[node] == 2) {
+            return true; // Already visited
         }
-        visited[node]=0;
-        alpha[colors[node]-'a']--;
-        return t;
+
+        visited[node] = 1; // Mark node as visiting
+
+        for (int neighbor : adj[node]) {
+            if (!dfs(neighbor, adj, colors, dp, visited)) {
+                return false; // Propagate cycle detection
+            }
+            for (int c = 0; c < 26; ++c) {
+                dp[node][c] = max(dp[node][c], dp[neighbor][c]);
+            }
+        }
+
+        dp[node][colors[node] - 'a']++;
+
+        visited[node] = 2; // Mark node as visited
+        return true;
     }
 };
