@@ -1,8 +1,3 @@
-#include <vector>
-#include <cmath>
-#include <algorithm>
-using namespace std;
-
 class Solution {
 public:
     int racecar(int target) {
@@ -22,7 +17,7 @@ private:
         } else {
             dp[target] = n + 1 + racecarHelper((1 << n) - 1 - target, dp);
             for (int i = 0; i < n - 1; ++i) {
-                dp[target] = min(dp[target], n + i + 1 + racecarHelper(target - (1 << (n - 1)) + (1 << i) + 1, dp));
+                dp[target] = min(dp[target], n + i + 1 + racecarHelper(target - (1 << (n - 1)) + (1 << i), dp));
             }
         }
         return dp[target];
