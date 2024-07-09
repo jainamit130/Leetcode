@@ -13,30 +13,17 @@ public:
 
         int a=0;
         for(int i=0;i<s.length();i++){
-            if(s[i]=='I'){
-                if(i<s.length()-1 && (s[i+1]=='V' || s[i+1]=='X')){
-                    a+=mp[s[i+1]]-mp[s[i]];;
-                    i++;
-                } else {
-                    a+=mp[s[i]];
-                }
-            } else if(s[i]=='X'){
-                if(i<s.length()-1 && (s[i+1]=='L' || s[i+1]=='C')){
-                    a+=mp[s[i+1]]-mp[s[i]];;
-                    i++;
-                } else {
-                    a+=mp[s[i]];
-                }
-            } else if(s[i]=='C'){
-                if(i<s.length()-1 && (s[i+1]=='D' || s[i+1]=='M')){
-                    a+=mp[s[i+1]]-mp[s[i]];
-                    i++;
-                } else {
-                    a+=mp[s[i]];
-                }
-            } else {
-                a+=mp[s[i]];
-            }
+            a+=mp[s[i]];
+            if(s[i]=='I' && i<s.length()-1 && (s[i+1]=='V' || s[i+1]=='X')){
+                a+=mp[s[i+1]]-2*mp[s[i]];
+                i++;
+            } else if(s[i]=='X' && i<s.length()-1 && (s[i+1]=='L' || s[i+1]=='C')){
+                a+=mp[s[i+1]]-2*mp[s[i]];
+                i++;
+            } else if(s[i]=='C' && i<s.length()-1 && (s[i+1]=='D' || s[i+1]=='M')){
+                a+=mp[s[i+1]]-2*mp[s[i]];
+                i++;
+            } 
         }
         return a;
     }
