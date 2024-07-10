@@ -1,18 +1,18 @@
 class Solution {
 public:
-    int minOperations(vector<string>& logs) {
-        vector<string> paths_stack;
+    int minOperations(std::vector<std::string>& logs) {
+        int res = 0;
 
         for (const string& log : logs) {
             if (log == "../") {
-                if (!paths_stack.empty()) {
-                    paths_stack.pop_back();
+                if (res > 0) {
+                    res--;
                 }
             } else if (log != "./") {
-                paths_stack.push_back(log);
+                res++;
             }
         }
 
-        return paths_stack.size();
+        return res;
     }
 };
