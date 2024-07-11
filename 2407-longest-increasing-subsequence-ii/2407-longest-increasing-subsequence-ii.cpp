@@ -51,15 +51,15 @@ class SegmentTree{
         }
 };
 
-SegmentTree* construct(int leftI,int rightI,vector<int>& nums){
+SegmentTree* construct(int leftI,int rightI){
     if(leftI==rightI){
-        return new SegmentTree(leftI,rightI,nums[leftI]);
+        return new SegmentTree(leftI,rightI,-1);
     }
 
     int midIndex=(leftI+rightI)/2;
     SegmentTree* root=new SegmentTree(leftI,rightI,0);
-    SegmentTree* leftTree=construct(leftI,midIndex,nums);
-    SegmentTree* rightTree=construct(midIndex+1,rightI,nums);
+    SegmentTree* leftTree=construct(leftI,midIndex);
+    SegmentTree* rightTree=construct(midIndex+1,rightI);
     root->left=leftTree;
     root->right=rightTree;
     root->maxNum=max(leftTree->maxNum,rightTree->maxNum);
@@ -75,8 +75,7 @@ public:
         }
         stack<int> st;
         SegmentTree* root;
-        vector<int> vec(maxN+k+1,-1); 
-        root=construct(0,vec.size()-1,vec);
+        root=construct(0,maxN+k);
         int ans=1;
         for(int i=nums.size()-1;i>=0;i--){
             int n=nums[i];
