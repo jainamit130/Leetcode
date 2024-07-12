@@ -19,21 +19,24 @@ public:
 
         int size=st.size();
         string t="";
-        for(int i=0;i<ans.length();i++){
+        for(int i=ans.length()-1;i>=0;i--){
             if(ans[i]=='(' && size){
                 size--;
                 continue;
             }
             t+=ans[i];
         }
+        reverse(t.begin(),t.end());
         return t;
     }
 };
 
 
 /*
+(   )   )   (   )   (   (   (   
+        i
 
 
-
+st: ( ) 
 
 */
