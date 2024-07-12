@@ -1,32 +1,39 @@
-//Approach1
 class Solution {
 public:
     string minRemoveToMakeValid(string s) {
-        unordered_set<int> indexesToDelete;
-        stack<int> indexes;
-        for(int i=0;i<s.length();i++){
-            if(s[i]=='(')
-                indexes.push(i);
-            else if(s[i]==')'){
-                if(indexes.empty()){
-                    indexesToDelete.insert(i);
-                } else {
-                    indexes.pop();
-                }
-            }
-        }
-        while(!indexes.empty()){
-            indexesToDelete.insert(indexes.top());
-            indexes.pop();
-        }
+        stack<int> st;
         string ans="";
         for(int i=0;i<s.length();i++){
-            if(indexesToDelete.find(i)!=indexesToDelete.end()){
-                continue;
+            if(s[i]=='('){
+                st.push(i);
+                ans+=s[i];
+            } else if(s[i]==')') {
+                if(!st.empty()){
+                    st.pop();
+                    ans+=s[i];
+                }  
             } else {
                 ans+=s[i];
             }
         }
-        return ans;
+
+        int size=st.size();
+        string t="";
+        for(int i=0;i<ans.length();i++){
+            if(ans[i]=='(' && size){
+                size--;
+                continue;
+            }
+            t+=ans[i];
+        }
+        return t;
     }
 };
+
+
+/*
+
+
+
+
+*/
