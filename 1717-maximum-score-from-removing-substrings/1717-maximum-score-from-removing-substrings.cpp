@@ -37,7 +37,6 @@ public:
             }
             }
         }
-        // printStack(st2);
         stack<char> st3;
         while(!st2.empty()){
             st3.push(st2.top());
@@ -47,11 +46,6 @@ public:
             char firstChar=st3.top();
             string word(1, firstChar);
             word += secondChar;
-            // cout<<"---------st2-----"<<endl;
-            // printStack(st2);
-            // cout<<"----------st3----"<<endl;
-            // printStack(st3);
-            // cout<<word<<" "<<nimpStr<<endl;
             if(word==nimpStr){
                 ans+=nimp;
                 st3.pop();
@@ -64,24 +58,6 @@ public:
         }
         return ans;
     }
-
-
-// void printStack(std::stack<char> st) {
-//     std::stack<char> temp;
-
-//     while (!st.empty()) {
-//         temp.push(st.top());
-//         st.pop();
-//     }
-
-//     while (!temp.empty()) {
-//         std::cout << temp.top() << " ";
-//         st.push(temp.top());
-//         temp.pop();
-//     }
-
-//     std::cout << std::endl;
-// }
 };
 
 
