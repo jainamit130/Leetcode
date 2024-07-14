@@ -13,20 +13,10 @@ public:
                 vFactor+=1;
                 ans+=(long long)horizontalCut[i]*hFactor;
                 i--;  
-            } else if(horizontalCut[i]<verticalCut[j]) {
+            } else if(horizontalCut[i]<=verticalCut[j]) {
                 hFactor+=1;
                 ans+=(long long)verticalCut[j]*vFactor; 
                 j--;
-            } else {
-                if(m-hFactor>n-vFactor){
-                    hFactor+=1;
-                    ans+=verticalCut[j]*vFactor; 
-                    j--;
-                } else {
-                    vFactor+=1;
-                    ans+=(long long)horizontalCut[i]*hFactor;
-                    i--; 
-                }
             }
         }
 
