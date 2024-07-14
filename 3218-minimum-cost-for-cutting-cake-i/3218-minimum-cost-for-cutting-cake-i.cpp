@@ -13,7 +13,7 @@ public:
                 vFactor+=1;
                 ans+=horizontalCut[i]*hFactor;
                 i--;  
-            } else if(horizontalCut[i]<verticalCut[j]) {
+            } else if(horizontalCut[i]<=verticalCut[j]) {
                 hFactor+=1;
                 ans+=verticalCut[j]*vFactor; 
                 j--;
