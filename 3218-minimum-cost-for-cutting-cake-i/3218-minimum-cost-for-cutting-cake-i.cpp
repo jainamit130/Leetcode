@@ -17,17 +17,7 @@ public:
                 hFactor+=1;
                 ans+=verticalCut[j]*vFactor; 
                 j--;
-            } else {
-                if(m-hFactor>n-vFactor){
-                    hFactor+=1;
-                    ans+=verticalCut[j]*vFactor; 
-                    j--;
-                } else {
-                    vFactor+=1;
-                    ans+=horizontalCut[i]*hFactor;
-                    i--; 
-                }
-            }
+            } 
         }
 
         while(i>=0){
