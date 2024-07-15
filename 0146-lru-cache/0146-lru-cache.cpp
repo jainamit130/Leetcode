@@ -35,11 +35,7 @@ public:
         }
         
         node->prev = last;
-        
-        if (last) {
-            last->next = node;
-        }
-        
+        last->next = node;
         last = node;
         
         if (!first) {
