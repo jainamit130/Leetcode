@@ -40,13 +40,28 @@ class UnionFind{
 class Solution {
 public:
     vector<int> findRedundantDirectedConnection(vector<vector<int>>& edges) {
-        UnionFind* u=new UnionFind(edges.size());
-        vector<int> ans;
+        vector<int> indegree(edges.size(),-1);
+        int a=-1,b=-1;
         for(int i=0;i<edges.size();i++){
+            if(indegree[edges[i][1]-1]!=-1){
+                a=i;
+                b=indegree[edges[i][1]-1];
+            }
+            indegree[edges[i][1]-1]=i;
+        }
+        UnionFind* u= new UnionFind(edges.size());
+        for(int i=0;i<edges.size();i++){
+            if(a==i){
+                continue;
+            }
             if(u->unionize(edges[i][0],edges[i][1])){
-                ans={edges[i][0],edges[i][1]};
+                if(a!=-1){
+                    return edges[b];
+                } else {
+                    return edges[i];
+                }
             }
         }
-        return ans;
+        return edges[a];
     }
 };
