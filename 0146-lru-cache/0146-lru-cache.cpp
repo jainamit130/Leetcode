@@ -11,7 +11,7 @@ public:
 class LRUCache {
 public:
     int totalCapacity;
-    std::unordered_map<int, NodeList*> mp;
+    unordered_map<int, NodeList*> mp;
     NodeList* first;
     NodeList* last;
     
@@ -78,12 +78,7 @@ public:
         
         if (mp.size() > totalCapacity) {
             NodeList* toDelete = first;
-            first = first->next;
-            
-            if (first) {
-                first->prev = nullptr;
-            }
-            
+            first = first->next;           
             mp.erase(toDelete->key);
             delete toDelete;
         }
