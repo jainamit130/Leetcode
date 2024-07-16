@@ -81,10 +81,12 @@ public:
         }
 
         Node* node = new Node(0,0);
-        node->topLeft=constructQuadTree(grid,prefix,startRow,startCol,endRow/2,endCol/2);
-        node->topRight=constructQuadTree(grid,prefix,startRow,(endCol/2)+1,endRow/2,endCol);
-        node->bottomLeft=constructQuadTree(grid,prefix,(endRow/2)+1,startCOl,endRow,endCol/2);
-        node->bottomRight=constructQuadTree(grid,prefix,(endRow/2)+1,(endCol/2)+1,endRow,endCol);
+        int midRow=(startRow+endRow)/2;
+        int midCol=(startCol+endCol)/2;
+        node->topLeft=constructQuadTree(grid,prefix,startRow,startCol,midRow,midCol);
+        node->topRight=constructQuadTree(grid,prefix,startRow,midCol+1,midRow,endCol);
+        node->bottomLeft=constructQuadTree(grid,prefix,midRow+1,startCol,endRow,midCol);
+        node->bottomRight=constructQuadTree(grid,prefix,midRow+1,midCol+1,endRow,endCol);
         return node;
     }
 };
