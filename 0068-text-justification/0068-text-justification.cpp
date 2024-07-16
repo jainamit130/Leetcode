@@ -1,75 +1,78 @@
 class Solution {
 public:
     vector<string> fullJustify(vector<string>& words, int maxWidth) {
-        int c=0;
-        string line=""; 
-        vector<string> sentence;
-        int i=0;
+        queue<string> q;
+        vector<string> ans;
         int count=0;
+        int i=0;
         while(i<words.size()){
-            if(c+words[i].length()<=maxWidth)
-            {
-                line+=words[i];
-                line+=" ";
-                c+=words[i].length();
-                c++;
-                count++;
-            }
-            else {
-                line.pop_back();
-                justify(line,count,maxWidth,0);
-                sentence.push_back(line);
-                line=words[i]+" ";
-                c=words[i].length()+1;
-                count=1;
-            }
-            i++;
-        }
-        line.pop_back();
-        justify(line,count,maxWidth,1);
-        sentence.push_back(line);
-        return sentence;
-    }
-
-    void justify(string& line,int wordCount,int maxWidth,int last){
-        int n=maxWidth-line.length();
-        int flag=1;
-        int copyWordCount=wordCount;
-        //  cout<<line<<" "<<wordCount<<endl;
-        if(!last) {
-            if(wordCount!=1){
-                while(copyWordCount!=0){
-                    for(int j=0;j<line.length();j++){
-                        if(line[j]==' ' && flag){
-                            line.insert(j," ");
-                            n--;
-                            flag=0;
-                            // cout<<line<<"1";
-                            copyWordCount--;
-                        } else if(line[j]!=' ' && !flag){
-                            // cout<<"2";
-                            flag=1;
+            if(count+words[i].length()-1>=maxWidth){
+                count--;
+                int diff=maxWidth-count;
+                int gaps=q.size()-1;
+                int extras=0;
+                int evenD=0;
+                if(gaps>0){
+                    extras=diff%gaps;
+                    evenD=diff/gaps;
+                }
+                diff=diff-extras-evenD*gaps;
+                string line="";
+                while(!q.empty()){
+                    line+=q.front();
+                    if(gaps>0) {
+                        line+=" ";
+                        for(int j=0;j<evenD;j++){
+                            line+=" ";
                         }
-                        if(n==0)
-                            break;
-                    }
-                    if(n!=0)
-                        copyWordCount=wordCount;
-                    else
-                        break;
+                        if(extras>0){
+                            line+=" ";
+                            extras--;
+                        }
+                        gaps--;
+                    } 
+                    q.pop();
+                }
+                for(int i=0;i<diff;i++){
+                    line+=" ";
+                }
+                ans.push_back(line);
+                count=0;
+                if(i==words.size()){
+                    break;
+                }
+            } else {
+                count+=words[i].length()+1;
+                q.push(words[i]);
+                i++;
+            }
+        }
+        string line="";
+        int remaining=maxWidth;
+        while(!q.empty()){
+            line+=q.front();
+            remaining-=q.front().length();
+            q.pop();
+            if(q.size()){
+                line+=" ";
+                remaining--;
+            } else {
+                while(remaining){
+                    line+=" ";
+                    remaining--;
                 }
             }
-            else{
-                while(n){
-                line+=' ';
-                    n--; 
-                }
-            }
-         } else {
-             while(n){
-                line+=' ';
-                n--;  
-             }
-         }
+        }
+        ans.push_back(line);
+        return ans;
     }
 };
+
+
+/*
+["Science","is","what","we","understand","well","enough","to","explain","to","a","computer.","Art","is","everything","else","we","do"]
+
+
+
+
+*/
