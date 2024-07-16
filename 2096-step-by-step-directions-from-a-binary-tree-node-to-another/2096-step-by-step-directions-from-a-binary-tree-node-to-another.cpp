@@ -13,16 +13,12 @@ class Solution {
 public:
     string getDirections(TreeNode* root, int startValue, int destValue) {
         string srcDicrections="";
-        int srcDepth=0;
         string directions="";
-        int depth=0;
-        directionsPlease(root,startValue,directions,depth,srcDicrections,srcDepth);
+        directionsPlease(root,startValue,directions,srcDicrections);
 
         string destDicrections="";
-        int destDepth=0;
         directions="";
-        depth=0;
-        directionsPlease(root,destValue,directions,depth,destDicrections,destDepth);
+        directionsPlease(root,destValue,directions,destDicrections);
 
         string ans="";
         int i=0;
@@ -68,25 +64,22 @@ public:
         return ans;
     }
 
-    void directionsPlease(TreeNode* root,int searchValue,string& curr,int& depth,string& directions,int& deep){
+    void directionsPlease(TreeNode* root,int searchValue,string& curr,string& directions){
         if(!root){
             return;
         }
 
         if(root->val==searchValue){
             directions=curr;
-            deep=depth;
             return;
         }
 
         curr+='L';
-        depth+=1;
-        directionsPlease(root->left,searchValue,curr,depth,directions,deep);
+        directionsPlease(root->left,searchValue,curr,directions);
         curr.pop_back();
         curr+='R';
-        directionsPlease(root->right,searchValue,curr,depth,directions,deep);
+        directionsPlease(root->right,searchValue,curr,directions);
         curr.pop_back();
-        depth-=1;
         return;
     }
 };
