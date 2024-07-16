@@ -14,11 +14,15 @@ public:
     string getDirections(TreeNode* root, int startValue, int destValue) {
         string srcDicrections="";
         int srcDepth=0;
-        directionsPlease(root,startValue,"",0,srcDicrections,srcDepth);
+        string directions="";
+        int depth=0;
+        directionsPlease(root,startValue,directions,depth,srcDicrections,srcDepth);
 
         string destDicrections="";
         int destDepth=0;
-        directionsPlease(root,destValue,"",0,destDicrections,destDepth);
+        directions="";
+        depth=0;
+        directionsPlease(root,destValue,directions,depth,destDicrections,destDepth);
 
         string ans="";
         int i=0;
@@ -64,7 +68,7 @@ public:
         return ans;
     }
 
-    void directionsPlease(TreeNode* root,int searchValue,string curr,int depth,string& directions,int& deep){
+    void directionsPlease(TreeNode* root,int searchValue,string& curr,int& depth,string& directions,int& deep){
         if(!root){
             return;
         }
@@ -75,8 +79,14 @@ public:
             return;
         }
 
-        directionsPlease(root->left,searchValue,curr+'L',depth+1,directions,deep);
-        directionsPlease(root->right,searchValue,curr+'R',depth+1,directions,deep);
+        curr+='L';
+        depth+=1;
+        directionsPlease(root->left,searchValue,curr,depth,directions,deep);
+        curr.pop_back();
+        curr+='R';
+        directionsPlease(root->right,searchValue,curr,depth,directions,deep);
+        curr.pop_back();
+        depth-=1;
         return;
     }
 };
