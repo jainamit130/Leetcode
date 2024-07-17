@@ -1,33 +1,46 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
 class Solution {
 public:
-    TreeNode* deleteNodes(TreeNode* root, set<int> st, vector<TreeNode*>& result) {
-        if(!root)
-            return NULL;
-        root->left  = deleteNodes(root->left , st, result); //left  se deleted nodes
-        root->right = deleteNodes(root->right, st, result); //right se deleted nodes
-        
-        if(st.count(root->val)) { //if I have to delete this root, then put root->left and root->right in result
-            if(root->left  != NULL)
-                result.push_back(root->left);
-            if(root->right != NULL)
-                result.push_back(root->right);
-            return NULL;
-        }
-        else
-            return root;
-    }
     vector<TreeNode*> delNodes(TreeNode* root, vector<int>& to_delete) {
-        set<int> st;
-        for(int i:to_delete)
-            st.insert(i);
-        
-        vector<TreeNode*> result;
-        deleteNodes(root, st, result); // <-- it will not consider root
-        
-        //So, check here if root is to be deleted or not
-        if(!st.count(root->val)) {
-            result.push_back(root);
+        vector<int> nodes(1001);
+        for(int i=0;i<to_delete.size();i++){
+            nodes[to_delete[i]]=1;
         }
-        return result;
+        vector<TreeNode*> ans;
+        dfs(root,nodes,ans);
+        if(!nodes[root->val]){
+            ans.push_back(root);
+        }
+        return ans;
     }
+
+    TreeNode* dfs(TreeNode* root,vector<int> nodes,vector<TreeNode*>& ans){
+        if(!root){
+            return NULL;
+        }
+
+        root->left=dfs(root->left,nodes,ans);
+        root->right=dfs(root->right,nodes,ans);
+        if(nodes[root->val]){
+            if(root->left){
+                ans.push_back(root->left);
+            }
+            if(root->right){
+                ans.push_back(root->right);
+            }
+            return NULL;
+        }
+        return root;
+    }
+
 };
