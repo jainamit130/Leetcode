@@ -10,16 +10,12 @@ public:
     }
     
     vector<int> shuffle() {
-        set<int> visited;
-        vector<int> shuffled;
-        int i=original.size();
+        vector<int> shuffled=original;
+        int i=original.size()-1;
         while(i){
-            int t=rand()%original.size();
-            if(visited.find(t)==visited.end()) {
-                visited.insert(t);
-                shuffled.push_back(original[t]);
-                i--;
-            }
+            int t=rand()%i;
+            swap(shuffled[i],shuffled[t]);
+            i--;
         }
         return shuffled;
     }
