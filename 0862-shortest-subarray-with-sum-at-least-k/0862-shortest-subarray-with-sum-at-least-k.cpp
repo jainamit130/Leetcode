@@ -9,7 +9,7 @@ public:
         long long sum=0;
         for(int i=0;i<nums.size();i++){
             sum+=nums[i];
-            while(!prefix.empty() && sum<prefix.back()){
+            while(!prefix.empty() && sum<=prefix.back()){
                 prefix.pop_back();
                 indexes.pop_back();
             }
