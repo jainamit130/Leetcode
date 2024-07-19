@@ -14,7 +14,7 @@ public:
             int startInterval=intervals[i][0];
             int endInterval=intervals[i][1];
             while(i+1<intervals.size() && endInterval>=intervals[i+1][0]){
-                endInterval=intervals[i+1][1];
+                endInterval=max(intervals[i+1][1],endInterval);
                 i++;
             }
             ans.push_back({startInterval,endInterval});
