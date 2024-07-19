@@ -22,8 +22,9 @@ public:
                 i++;
             }
         }
-        if(count>0)
-            s.erase(i-count-1,count+1);
+        while(s.back()==' '){
+            s.pop_back();
+        }
         return s;
     }
 };
