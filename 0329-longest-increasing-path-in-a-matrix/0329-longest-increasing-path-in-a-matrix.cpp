@@ -1,19 +1,18 @@
 class Solution {
 public:
-    vector<vector<int>> dir={{0,1},{1,0},{-1,0},{0,-1}};
+    vector<vector<int>> dir={{0,1},{0,-1},{1,0},{-1,0}};
     int longestIncreasingPath(vector<vector<int>>& matrix) {
+        priority_queue<vector<int>> pq;
         int m=matrix.size();
         int n=matrix[0].size();
-        priority_queue<vector<int>> pq;
+        vector<vector<int>> dp(m,vector<int>(n,0));
         for(int i=0;i<m;i++){
             for(int j=0;j<n;j++){
                 pq.push({matrix[i][j],i,j});
             }
         }
         int ans=INT_MIN;
-        vector<vector<int>> dp(m,vector<int>(n,0));
         while(!pq.empty()){
-            int val=pq.top()[0];
             int row=pq.top()[1];
             int col=pq.top()[2];
             pq.pop();
@@ -28,7 +27,7 @@ public:
                 }
             }
             dp[row][col]=dpVal;
-            ans=max(dpVal,ans);
+            ans=max(ans,dpVal);
         }
         return ans;
     }
