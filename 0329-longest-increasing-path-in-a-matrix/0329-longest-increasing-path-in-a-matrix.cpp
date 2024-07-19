@@ -2,40 +2,34 @@ class Solution {
 public:
     vector<vector<int>> dir={{0,1},{1,0},{-1,0},{0,-1}};
     int longestIncreasingPath(vector<vector<int>>& matrix) {
-        vector<vector<int>> cache(matrix.size()+1,vector<int>(matrix[0].size()+1,-1));
-        vector<vector<int>> adj;
-        int ans=1;
-        for(int i=0;i<matrix.size();i++){
-            for(int j=0;j<matrix[0].size();j++){
-                ans=max(ans,dfs(i,j,matrix,cache));
+        int m=matrix.size();
+        int n=matrix[0].size();
+        priority_queue<vector<int>> pq;
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                pq.push({matrix[i][j],i,j});
             }
+        }
+        int ans=INT_MIN;
+        vector<vector<int>> dp(m,vector<int>(n,0));
+        while(!pq.empty()){
+            int val=pq.top()[0];
+            int row=pq.top()[1];
+            int col=pq.top()[2];
+            pq.pop();
+            int dpVal=1;
+            for(int i=0;i<dir.size();i++){
+                int nr=row+dir[i][0];
+                int nc=col+dir[i][1];
+                if(nr>=0 && nr<m && nc>=0 && nc<n){
+                    if(matrix[row][col]<matrix[nr][nc]){
+                        dpVal=max(dpVal,dp[nr][nc]+1);
+                    }
+                }
+            }
+            dp[row][col]=dpVal;
+            ans=max(dpVal,ans);
         }
         return ans;
-    }
-
-    bool isValid(int row,int col,int m,int n){
-        if(row<0 || row>=m || col<0 || col>=n)
-            return false;
-        return true;
-    }
-
-    int dfs(int row,int col,vector<vector<int>>& matrix,vector<vector<int>>& cache){
-        if(!isValid(row,col,matrix.size(),matrix[0].size())){
-            return 0;
-        }
-
-        if(cache[row][col]!=-1){
-            return cache[row][col];
-        }
-
-         cache[row][col]=1;
-        for(int i=0;i<dir.size();i++){
-            int newr=row+dir[i][0];
-            int newc=col+dir[i][1];
-            if(isValid(newr,newc,matrix.size(),matrix[0].size()) && matrix[newr][newc]>matrix[row][col]){
-                 cache[row][col]=max( cache[row][col],1+dfs(newr,newc,matrix,cache));
-            }
-        }
-        return  cache[row][col];
     }
 };
