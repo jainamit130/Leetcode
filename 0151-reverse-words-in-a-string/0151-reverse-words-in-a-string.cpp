@@ -1,39 +1,29 @@
 class Solution {
 public:
     string reverseWords(string s) {
-        int i = 0;
-        string t = "";
-        int start = -1;
-        int flag1 = 0;
-        stack<string> st;
+        reverse(s.begin(),s.end());
+        int i=0;
+        int count=0;
+        int index=-1;
 
-        while (i < s.length()) {
-            if (s[i] == ' ') {
-                if (flag1) {
-                    t = s.substr(start, i - start);
-                    st.push(t);
-                    start = -1;
-                    flag1 = 0;
+        while(i<s.length()){
+            if(s[i]==' '){
+                i++;
+                count++;
+            } else {
+                s.erase(i-count,count);
+                i-=count;
+                count=0;
+                int startIndex=i;
+                while(i<s.length() && s[i]!=' '){
+                    i++;
                 }
-            } else if (s[i] != ' ') {
-                if (start == -1)
-                    start = i;
-                flag1 = 1;
+                reverse(s.begin()+startIndex,s.begin()+i);
+                i++;
             }
-
-            i++;
         }
-        if (s[s.length() - 1] != ' ') {
-            st.push(s.substr(start, i - start));
-        }
-
-        t = "";
-        while (!st.empty()) {
-            t += st.top();
-            st.pop();
-            if (!st.empty())
-                t += " ";
-        }
-        return t;
+        if(count>0)
+            s.erase(i-count-1,count+1);
+        return s;
     }
 };
