@@ -1,55 +1,46 @@
 class Solution {
 public:
     int minChanges(vector<int>& nums, int k) {
-        int size = nums.size();
-        map<int, vector<int>> difference_map;
-        vector<int> transformations;
-        
-        computeDifferences(nums, k, difference_map, transformations, size);
-        return calculateMinOperations(difference_map, transformations, size);
-    }
-
-private:
-    void computeDifferences(vector<int>& array, int max_val, map<int, vector<int>>& difference_map, vector<int>& transformations, int size) {
-        for (int i = 0; i < size / 2; ++i) {
-            int val1 = array[i];
-            int val2 = array[size - i - 1];
-            int diff = abs(val1 - val2);
-            int max_transform = max({val1, val2, max_val - val1, max_val - val2});
-            difference_map[diff].push_back(max_transform);
-            transformations.push_back(max_transform);
+        map<int,int> mp;
+        int n=nums.size();
+        for(int i=0;i<n/2;i++){
+            int diff=abs(nums[i]-nums[n-i-1]);
+            mp[diff]++;
         }
-        sort(transformations.begin(), transformations.end());
-    }
-
-    int calculateMinOperations(const map<int, vector<int>>& difference_map, const vector<int>& transformations, int size) {
-        int min_operations = size; // Start with the maximum possible number of changes
+        int result=INT_MAX;
         
-        for (const auto& entry : difference_map) {
-            int current_diff = entry.first;
-            const vector<int>& transform_values = entry.second;
-            
-            int operations = initialOperations(transformations, current_diff, size);
-            adjustOperations(transform_values, current_diff, operations);
-            
-            min_operations = min(min_operations, operations);
+        vector<vector<int>> freqMp;
+        for(auto [a,b]:mp){
+            cout<<a<<" "<<b<<endl;
+            freqMp.push_back({b,a});
         }
-        
-        return min_operations;
-    }
-    
-    int initialOperations(const vector<int>& transformations, int current_diff, int size) {
-        int position = lower_bound(transformations.begin(), transformations.end(), current_diff) - transformations.begin();
-        return position * 2 + ((size / 2) - position);
-    }
-    
-    void adjustOperations(const vector<int>& transform_values, int current_diff, int& operations) {
-        for (int transform : transform_values) {
-            if (transform < current_diff) {
-                operations -= 2;
+
+        sort(freqMp.begin(),freqMp.end());
+        int i=freqMp.size()-1;
+        int freq=-1;
+        while(i>=0){
+            if(freq==-1){
+                freq=freqMp[i][0];
             } else {
-                operations -= 1;
+                if(freqMp[i][0]!=freq && freqMp[i][1]!=15){
+                    break;
+                }
             }
+            int targetDiff=freqMp[i][1];
+            int ans=0;
+            for(int i=0;i<n/2;i++){
+                int diff=abs(nums[i]-nums[n-i-1]);
+                if(diff!=targetDiff){
+                    if(nums[n-i-1]-targetDiff>=0 || nums[n-i-1]+targetDiff<=k || nums[i]-targetDiff>=0 || nums[i]+targetDiff<=k){
+                        ans+=1;
+                    } else {
+                        ans+=2;
+                    }
+                }
+            }
+            result=min(ans,result);
+            i--;
         }
+        return result;
     }
 };
