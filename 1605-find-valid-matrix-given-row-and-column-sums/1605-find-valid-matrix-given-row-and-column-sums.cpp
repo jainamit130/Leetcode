@@ -4,7 +4,7 @@ public:
         int m=rowSum.size();
         int n=colSum.size();
         vector<vector<int>> mat(m,vector<int>(n));    
-        int total=0;
+        long long total=0;
         for(int i=0;i<m;i++){
             mat[i][0]=rowSum[i];
             total+=rowSum[i];
@@ -15,11 +15,11 @@ public:
         return mat;
     }
 
-    void fix(vector<vector<int>>& mat,int m,vector<int>& colSum,int col,int& total){
-        int finalSum=colSum[col];
-        int excess=total-finalSum;
+    void fix(vector<vector<int>>& mat,int m,vector<int>& colSum,int col,long long& total){
+        long long finalSum=colSum[col];
+        long long excess=total-finalSum;
         for(int i=0;i<m;i++){
-            int remove=min(excess,mat[i][col]);
+            int remove=min(excess,(long long)mat[i][col]);
             mat[i][col+1]=remove;
             mat[i][col]-=remove;
             excess-=remove;
