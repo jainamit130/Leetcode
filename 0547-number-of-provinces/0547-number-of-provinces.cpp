@@ -16,13 +16,7 @@ public:
         for(int i=0;i<isConnected.size();i++){
             ans+=dfs(adj,i,visited);
         }
-        // for(int i=0;i<adj.size();i++){
-        //     cout<<i<<" -> ";
-        //     for(int j=0;j<adj[i].size();j++){
-        //         cout<<adj[i][j]<<" ";
-        //     }
-        //     cout<<endl;
-        // }
+
         return ans;
     }
 
