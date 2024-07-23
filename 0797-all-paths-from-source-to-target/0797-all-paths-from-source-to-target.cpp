@@ -15,11 +15,10 @@ public:
         return ans;
     }
 
-    void dfs(int source, vector<vector<int>>& adj, vector<int>& curr) {
+    void dfs(int source, vector<vector<int>>& adj, vector<int> curr) {
         if (source == adj.size() - 1) {
             curr.push_back(source);
             ans.push_back(curr);
-            curr.pop_back();
             return;
         }
 
@@ -27,7 +26,6 @@ public:
         for (int i = 0; i < adj[source].size(); i++) {
             dfs(adj[source][i], adj, curr);
         }
-        curr.pop_back();
         return;
     }
 };
