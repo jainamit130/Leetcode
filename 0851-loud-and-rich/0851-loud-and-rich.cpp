@@ -11,26 +11,27 @@ public:
         for (int i = 0; i < n; i++) {
             if(ans[i]==-1) {
                 vector<int> visited(n);
-                dfs(adj, i, i, INT_MAX, visited, quiet);
+                dfs(adj, i, visited, quiet);
             }
         }
         return ans;
     }
 
-    pair<int,int> dfs(vector<vector<int>>& adj, int node,int index,int currVal,vector<int>& visited, vector<int>& quiet) {
+    pair<int,int> dfs(vector<vector<int>>& adj, int node,vector<int>& visited, vector<int>& quiet) {
         visited[node] = 1;
-        currVal=quiet[node];
-        index=node;
+        int currVal=quiet[node];
+        int index=node;
         for (int i = 0; i < adj[node].size(); i++) {
             if(visited[adj[node][i]]!=1){
-                auto returnedPair=dfs(adj, adj[node][i], index,currVal, visited, quiet);
+                auto returnedPair=dfs(adj, adj[node][i], visited, quiet);
                 if(currVal>returnedPair.second){
                     currVal=returnedPair.second;
                     index=returnedPair.first;
                 }
             }
         }
-        ans[node]=index;
+        if(ans[node]==-1)
+            ans[node]=index;
         return {index,currVal};
     }
 };
