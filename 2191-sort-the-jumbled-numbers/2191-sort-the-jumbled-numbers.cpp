@@ -1,30 +1,45 @@
 class Solution {
 public:
-    vector<int> sortJumbled(vector<int>& mapping, vector<int>& vec) {
-        vector<vector<int>> nums;
-        for(int i=0;i<vec.size();i++){
-            nums.push_back({getMapVal(mapping,vec[i]),i});
+static bool cmp(pair<int,int>&a,pair<int,int>&b){
+    return (a.second<b.second);
+}
+    vector<int> sortJumbled(vector<int>& mapping, vector<int>& nums) {
+        vector<pair<int,int>>dummy;
+        for(int i=0;i<nums.size();i++){
+            int number=nums[i];
+            int neww=0;
+            stack<int>s;
+            if(number==0){
+                s.push(number);
+            }
+            while(number!=0){
+                int index=number%10;
+                s.push(index);
+                number/=10;
+            }
+            while(!s.empty()){
+                int index=s.top();
+                s.pop();
+                neww=neww*10+mapping[index];
+            }
+            dummy.push_back({nums[i],neww});
         }
-        sort(nums.begin(),nums.end(),[&](auto lhs,auto rhs){
-            if(lhs[0]==rhs[0])
-                return lhs[1]<rhs[1];
-            return lhs[0]<rhs[0];
-        });
-        vector<int> ans(vec.size());
-        for(int i=0;i<vec.size();i++){
-            ans[i]=vec[nums[i][1]];
+        int n=dummy.size();
+        // for(int i=0;i<n-1;i++){
+        //    for(int j=0;j<n-1;j++){ 
+        //       if(dummy[j]>dummy[j+1]){
+        //         swap(dummy[j],dummy[j+1]);
+        //         swap(nums[j],nums[j+1]);
+        //       }
+        //    }
+        // }
+       
+        sort(dummy.begin(),dummy.end(),cmp);
+        vector<int>ans;
+        for(int i=0;i<n;i++){
+            ans.push_back(dummy[i].first);
         }
         return ans;
-    }
-
-    int getMapVal(vector<int>& mapping,int x){
-        if (x==0) return mapping[0];
-        int z=0;
-        for(int pow10=1; x>0; pow10*=10){
-            auto [q, r]=div(x, 10);
-            z+=mapping[r]*pow10;
-            x=q;
-        }
-        return z;
+        
     }
 };
