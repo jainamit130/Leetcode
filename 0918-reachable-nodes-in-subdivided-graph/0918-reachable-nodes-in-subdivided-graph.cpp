@@ -1,7 +1,7 @@
 class Solution {
 public:
     int reachableNodes(vector<vector<int>>& edges, int maxMoves, int n) {
-        priority_queue<vector<int>,vector<vector<int>>,greater<vector<int>>> pq;
+        priority_queue<vector<int>> pq;
         unordered_map<int,unordered_map<int,int>> adj;
         for(int i=0;i<edges.size();i++){
             adj[edges[i][0]][edges[i][1]]=edges[i][2];
