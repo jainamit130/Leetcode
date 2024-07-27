@@ -60,7 +60,7 @@ public:
         return ans;
     }
 
-    void solve(vector<vector<int>>& distances, int& src, int& dst,
+    void solve(vector<vector<int>>& distances, int& src,
                vector<vector<vector<int>>>& adj) {
         priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>>
             pq;
