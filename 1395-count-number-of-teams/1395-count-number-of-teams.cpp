@@ -11,18 +11,17 @@ public:
                 if(i==j){
                     continue;
                 }
-                if(j<i && rating[j]<rating[i]){
-                    smaller1++;
-                } 
-                if(j>i && rating[j]>rating[i]){
-                    larger1++;
-                } 
-                if(j>i && rating[j]<rating[i]){
-                    smaller2++;
-                } 
-                if(j<i && rating[j]>rating[i]){
-                    larger2++;
-                } 
+                if(j<i){
+                    if(rating[j]<rating[i])
+                        smaller1++;
+                    if(rating[j]>rating[i])
+                        larger2++;
+                } else {
+                    if(rating[j]>rating[i])
+                        larger1++;
+                    if(rating[j]<rating[i])
+                        smaller2++;
+                }
             }
             ans+=smaller1*larger1;
             ans+=smaller2*larger2;
