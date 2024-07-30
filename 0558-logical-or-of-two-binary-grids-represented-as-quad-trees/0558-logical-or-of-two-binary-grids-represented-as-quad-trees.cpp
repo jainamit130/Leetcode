@@ -55,20 +55,16 @@ public:
             return new Node(quadTree1->val || quadTree2->val,true);
         }
 
-        Node* root=new Node();
-        root->topLeft=intersect(quadTree1->topLeft,quadTree2->topLeft);
-        root->topRight=intersect(quadTree1->topRight,quadTree2->topRight);
-        root->bottomLeft=intersect(quadTree1->bottomLeft,quadTree2->bottomLeft);
-        root->bottomRight=intersect(quadTree1->bottomRight,quadTree2->bottomRight);
-        
-        root->isLeaf=(root->topLeft->isLeaf && root->topRight->isLeaf && root->bottomLeft->isLeaf && root->bottomRight->isLeaf && root->topLeft->val == root->topRight->val && root->topRight->val == root->bottomLeft->val && root->bottomLeft->val == root->bottomRight->val);
-        if(root->isLeaf){
-            root->val=root->topLeft->val;
-             root->topLeft=NULL;
-        root->topRight=NULL;
-        root->bottomLeft=NULL;
-        root->bottomRight=NULL;
+        Node* topLeft = intersect(quadTree1->topLeft, quadTree2->topLeft);
+        Node* topRight = intersect(quadTree1->topRight, quadTree2->topRight);
+        Node* bottomLeft = intersect(quadTree1->bottomLeft, quadTree2->bottomLeft);
+        Node* bottomRight = intersect(quadTree1->bottomRight, quadTree2->bottomRight);
+
+        if (topLeft->isLeaf && topRight->isLeaf && bottomLeft->isLeaf && bottomRight->isLeaf && 
+            topLeft->val == topRight->val && topRight->val == bottomLeft->val && bottomLeft->val == bottomRight->val) {
+            return new Node(topLeft->val, true);
+        } else {
+            return new Node(false, false, topLeft, topRight, bottomLeft, bottomRight);
         }
-        return root;
     }
 };
