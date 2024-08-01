@@ -18,8 +18,9 @@ public:
         }
 
         int gcd=mini;
+        int flag=0;
         for(int i=2;i<=mini;i++){
-            int flag=0;
+            flag=0;
             for(int j=0;j<mp.size();j++){
                 if(mp[j]%i!=0){
                     flag=1;
@@ -31,11 +32,8 @@ public:
                 break;
             }
         }
-
-        for(auto n:mp){
-            if(n%gcd!=0){
-                return false;
-            }
+        if(flag==1){
+            return false;
         }
         return true;
     }
