@@ -18,8 +18,15 @@ public:
         }
 
         int gcd=mini;
-        for(int i=2;i*i<=mini;i++){
-            if(mini%i==0){
+        for(int i=2;i<=mini;i++){
+            int flag=0;
+            for(int j=0;j<mp.size();j++){
+                if(mp[j]%i!=0){
+                    flag=1;
+                    break;
+                }
+            }
+            if(flag==0){
                 gcd=i;
                 break;
             }
