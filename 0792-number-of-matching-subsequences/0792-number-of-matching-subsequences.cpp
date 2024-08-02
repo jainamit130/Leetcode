@@ -7,16 +7,6 @@ public:
             indexes[j][s[j]-'a']=j;
         }
 
-        // for(int i=0;i<indexes.size();i++){
-        //     cout<<i<<endl;
-        //     for(int j=0;j<26;j++){
-        //         if(indexes[i][j]!=-1){
-        //             cout<<(char)(j+'a')<<" -> "<<indexes[i][j]<<endl;
-        //         }
-        //     }
-        //     cout<<endl;
-        // }
-
         int count=0;
         for(int i=0;i<words.size();i++){
             int flag=0;
