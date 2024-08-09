@@ -3,12 +3,22 @@ public:
     int earliestSecondToMarkIndices(vector<int>& nums, vector<int>& changeIndices) {
         int n=nums.size();
         int m=changeIndices.size();
-        for(int time=n;time<=m;time++){
+        int start=n;
+        int end=m;
+        int ans=INT_MAX;
+        while(start<=end){
+            int time=(start+end)/2;
             if(allIndicesMarked(time,nums,changeIndices)){
-                return time;
+                ans=min(ans,time);
+                end=time-1;
+            } else {
+                start=time+1;
             }
         }
-        return -1;
+        if(ans==INT_MAX){
+            return -1;
+        }
+        return ans;
     }
 
     bool allIndicesMarked(int time,vector<int>& nums,vector<int>& changedIndices){
