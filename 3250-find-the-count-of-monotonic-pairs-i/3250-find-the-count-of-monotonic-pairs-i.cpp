@@ -22,8 +22,8 @@ public:
         }
 
         cache[index][arr1B]=0;
-        for(int i=0;i<=nums[index];i++){
-            if(i>=arr1B && (nums[index]-i)<=arr2B)
+        for(int i=arr1B;i<=nums[index];i++){
+            if((nums[index]-i)<=arr2B)
                 cache[index][arr1B]=(cache[index][arr1B]+solve(nums,index+1,i,cache))%mod;
         }
         return cache[index][arr1B];
