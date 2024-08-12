@@ -76,7 +76,7 @@ public:
             for(int i=0;i<1001;i++){
                 prefix.push_back((prefix.back()+dp[i])%mod);
             }
-            for(int arr1B=0;arr1B<1001;arr1B++){
+            for(int arr1B=0;arr1B<((index<n-1)?(nums[index+1]+1):(1001));arr1B++){
                 int arr2B=1000;
                 if(index>0){
                     arr2B=nums[index-1]-arr1B;
