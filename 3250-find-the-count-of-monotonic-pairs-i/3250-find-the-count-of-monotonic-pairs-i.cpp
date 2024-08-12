@@ -3,27 +3,34 @@ public:
     int mod=1e9+7;
     int countOfPairs(vector<int>& nums) {
         int n=nums.size();
-        vector<vector<vector<int>>> cache(n+1,vector<vector<int>>(51,vector<int>(51,-1))); 
-        return solve(nums,0,0,50,cache);
+        vector<vector<int>> cache(n+1,vector<int>(51,-1)); 
+        int ans=solve(nums,0,0,cache);
+        return cache[0][0];
     }
 
-    int solve(vector<int>& nums,int index,int arr1B,int arr2B,vector<vector<vector<int>>> & cache){
+    int solve(vector<int>& nums,int index,int arr1B,vector<vector<int>> & cache){
         if(index>=nums.size()){
             return 1;
         }
 
-        if(cache[index][arr1B][arr2B]!=-1){
-            return cache[index][arr1B][arr2B];
+        int arr2B=50;
+        if(index>0){
+            arr2B=nums[index-1]-arr1B;
+        }
+
+        if(cache[index][arr1B]!=-1){
+            return cache[index][arr1B];
         }
 
         int ans=0;
         for(int newArr1B=arr1B;newArr1B<=nums[index];newArr1B++){
             int newArr2B=nums[index]-newArr1B;
             if(newArr2B<=arr2B){
-                ans=(ans+solve(nums,index+1,newArr1B,newArr2B,cache))%mod;
+                ans+=solve(nums,index+1,newArr1B,cache)%mod;
+                ans=ans%mod;
             }
         }
-        return cache[index][arr1B][arr2B]=ans;
+        return cache[index][arr1B]=ans;
     }
 };
 
