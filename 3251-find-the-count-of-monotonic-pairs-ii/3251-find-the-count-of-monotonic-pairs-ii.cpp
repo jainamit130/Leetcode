@@ -87,7 +87,7 @@ public:
                 int l=max(nums[index]-arr2B,arr1B);
                 int r=nums[index];
                 if(l<=r){
-                    nextDp[arr1B]=(prefix[r+1]%mod-prefix[l]%mod)%mod;
+                    nextDp[arr1B]=(prefix[r+1]-prefix[l]+mod)%mod;
                 }
             }
             dp=nextDp;
