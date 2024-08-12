@@ -81,9 +81,7 @@ public:
                 if(index>0){
                     arr2B=nums[index-1]-arr1B;
                 }
-                if(arr2B<0){
-                    break;
-                }
+
                 int l=max(nums[index]-arr2B,arr1B);
                 int r=nums[index];
                 if(l<=r){
