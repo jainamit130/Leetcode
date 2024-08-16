@@ -15,11 +15,11 @@ public:
 
         for(int i=0;i<m;i++){
             for(int j=0;j<n;j++){
-                if(rowPrefix[i]==1 && colPrefix[j]==1){
+                if(mat[i][j] && rowPrefix[i]==1 && colPrefix[j]==1){
                     ans++;
                 }
             }
         }
-        return ans/3;
+        return ans;
     }
 };
