@@ -20,12 +20,8 @@ public:
             return {NULL,NULL};
         }
 
-        Node* tail=head;
-        while(tail->next){
-            tail=tail->next;
-        }
-        auto flatChild=solve(head->child);
-        auto flatNext=solve(head->next);
+        auto flatChild=solve(head->child); // 3 3
+        auto flatNext=solve(head->next); // N N
         if(flatChild.first){
             head->next=flatChild.first;
             flatChild.second->next=flatNext.first;
@@ -34,11 +30,15 @@ public:
             head->next=flatNext.first;
         }
         if(flatNext.first){
-            if(flatChild.first){
+            if(flatChild.second){
                 flatNext.first->prev=flatChild.second;
             } else {
                 flatNext.first->prev=head;
             }
+        }
+        Node* tail=head;
+        while(tail->next){
+            tail=tail->next;
         }
         head->child=NULL;
         return {head,tail};
