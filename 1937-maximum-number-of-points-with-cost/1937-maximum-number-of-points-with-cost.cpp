@@ -22,9 +22,9 @@ public:
 
                 int k=n-j-1;
                 if(k<n-1){
-                    right[k]=max(left[k+1]-1,main[k]);
+                    right[k]=max(right[k+1]-1,main[k]);
                 } else {
-                    left[k]=main[k];
+                    right[k]=main[k];
                 }
             }
 
