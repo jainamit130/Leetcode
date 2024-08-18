@@ -1,46 +1,46 @@
 class Solution {
 public:
     long long maximumValueSum(vector<vector<int>>& board) {
-        int m = board.size();
-        int n = board[0].size();
-        
-        vector<vector<pair<int, int>>> max3(m);  
-        
-        for (int i = 0; i < m; ++i) {
-            priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;  
-            
-            for (int j = 0; j < n; ++j) {
-                pq.push({board[i][j], j});
-                if (pq.size() > 3) {
-                    pq.pop();
+        int m=board.size(); // row size
+        int n=board[0].size(); // col size
+        vector<vector<pair<int,int>>> max3(m);
+        //O(m*n*log(3)) = O(m*n)
+        for(int i=0;i<m;i++){
+            priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> minHeap;
+            for(int j=0;j<n;j++){
+                minHeap.push({board[i][j],j});
+                if(minHeap.size()>3){
+                    minHeap.pop();
                 }
             }
-            
-            while (!pq.empty()) {
-                max3[i].push_back(pq.top());
-                pq.pop();
+
+            while(!minHeap.empty()){
+                max3[i].push_back(minHeap.top());
+                minHeap.pop();
             }
         }
 
-        long long maxSum = LLONG_MIN;
-
-        for (int row1 = 0; row1 < m; ++row1) {
-            for (int row2 = row1 + 1; row2 < m; ++row2) {
-                for (int row3 = row2 + 1; row3 < m; ++row3) {
-                    for (auto [val1, col1] : max3[row1]) {
-                        for (auto [val2, col2] : max3[row2]) {
-                            if (col2 == col1) continue; 
-                            for (auto [val3, col3] : max3[row3]) {
-                                if (col3 == col1 || col3 == col2) continue; 
-                                long long currentSum = (long long)val1 + val2 + val3;
-                                maxSum = max(maxSum, currentSum);
+        //Brute Force O(m^3 * 27)
+        long long ans=LLONG_MIN;
+        for(int i=0;i<m-2;i++){
+            for(int j=i+1;j<m-1;j++){
+                for(int k=j+1;k<m;k++){
+                    for(auto [val1,col1]:max3[i]){
+                        for(auto [val2,col2]:max3[j]){
+                            if(col1==col2){
+                                continue;
                             }
+                            for(auto [val3,col3]:max3[k]){
+                                if(col1==col3 || col2==col3){
+                                  continue;
+                                }
+                                ans=max(ans,(long long)val1+val2+val3);
+                            }    
                         }
                     }
                 }
             }
         }
-
-        return maxSum;
+        return ans;
     }
 };
