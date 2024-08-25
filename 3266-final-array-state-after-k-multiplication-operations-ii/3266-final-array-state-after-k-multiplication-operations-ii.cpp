@@ -37,7 +37,7 @@ public:
             minHeap.push({nums[i], i});
         }
 
-        while (k > 0 && minHeap.top().first * multiplier <= m) {
+        while (k > 0 && (long long)minHeap.top().first * multiplier <= m) {
             auto [value, index] = minHeap.top();
             minHeap.pop();
             value = (value * multiplier) % mod;
