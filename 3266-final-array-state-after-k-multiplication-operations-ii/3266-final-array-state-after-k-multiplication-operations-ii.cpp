@@ -1,9 +1,3 @@
-#include <iostream>
-#include <vector>
-#include <queue>
-#include <cmath>
-using namespace std;
-
 long long modExp(int base, int exp, int mod) {
     if (exp == 0) {
         return 1;  
