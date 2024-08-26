@@ -20,21 +20,25 @@ public:
 
 class Solution {
 public:
-    vector<int> nodes;
+    using pni=pair<Node*,int>;
     vector<int> postorder(Node* root) {
-        solve(root);
-        return nodes;
-    }
-
-    void solve(Node* root){
-        if(!root){
-            return;
+        if(root==NULL){
+            return {};
         }
-
-        for(int i=0;i<root->children.size();i++){
-            solve(root->children[i]);
+        stack<pni> st;
+        vector<int> ans;
+        st.push({root,0});
+        while(!st.empty()){
+            int index=st.top().second;
+            Node* parent=st.top().first;
+            st.pop();
+            if(index==parent->children.size()){
+                ans.push_back(parent->val);
+            } else {
+                st.push({parent,index+1});
+                st.push({parent->children[index],0});
+            }
         }
-        nodes.push_back(root->val);
-        return;
+        return ans;
     }
 };
