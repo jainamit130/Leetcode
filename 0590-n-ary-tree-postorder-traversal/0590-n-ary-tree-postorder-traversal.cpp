@@ -22,14 +22,19 @@ class Solution {
 public:
     vector<int> nodes;
     vector<int> postorder(Node* root) {
+        solve(root);
+        return nodes;
+    }
+
+    void solve(Node* root){
         if(!root){
-            return {};
+            return;
         }
 
         for(int i=0;i<root->children.size();i++){
-            postorder(root->children[i]);
+            solve(root->children[i]);
         }
         nodes.push_back(root->val);
-        return nodes;
+        return;
     }
 };
