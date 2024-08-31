@@ -1,80 +1,118 @@
 class Solution {
-    long long vectorToNumber(const vector<int>& num) {
-        long long ans = 0;
-        for (int digit : num) {
-            ans = ans * 10 + digit;
-        }
-        return ans;
-    }
-
-    long long fact(int n){
-        long long ans = 1;
-        for(int i=2 ; i<=n ; i++) ans *= i;
-        return ans;
-    }
-
-    long long calculatePermutations(map<int, int>& count) {
-        int n = 0;
-        for (auto& entry : count) {
-            n += entry.second;
-        }
-
-        long long totalPermutations = fact(n);
-
-        for (auto& entry : count) {
-            totalPermutations /= fact(entry.second);
-        }
-
-        return totalPermutations;
-    }
-
-    // Function to calculate permutations starting with zero
-    long long calculatePermutationsStartingWithZero(map<int, int> count) {
-        if (count.find(0) == count.end() || count[0] == 0) {
-            return 0;
-        }
-
-        count[0]--; // Fix one zero as the first digit
-
-        long long permutationsWithZero = calculatePermutations(count);
-        return permutationsWithZero;
-    }
-
 public:
-    set<map<int,int>>m;
-    void generatePalindrome(vector<int>& num, int left, int right, int k) {
-        if (left > right) {
-            long long palindrome = vectorToNumber(num);
-            if (palindrome % k == 0) {
-                map<int,int>temp;
-                while(palindrome){
-                    temp[palindrome%10]++;
-                    palindrome /= 10;
-                }
-                m.insert(temp);
-            }
-            return;
+    long long vectorToNum(vector<int>& nums){
+        long long num=0;
+        for(int i=0;i<nums.size();i++){
+            num=num*10+nums[i];
         }
-
-        // Set the current digit to all possible values from 0 to 9
-        for (int digit = (left == 0) ? 1 : 0; digit <= 9; ++digit) {
-            num[left] = num[right] = digit;
-            generatePalindrome(num, left + 1, right - 1, k);
+        return num;
+    }
+    
+    long long factorial(int n){
+        long long prod=1;
+        for(int i=2;i<=n;i++){
+            prod*=i;
         }
+        return prod;
     }
 
-    long long countGoodIntegers(int n, int k) {
-        vector<int> num(n);
-        generatePalindrome(num, 0, n-1, k);
-        long long ans = 0;
+    long long permutations(map<int,int> mp,int n){
+        long long totalCount=factorial(n);
+        for(auto [num,count]:mp){
+            if(count>1)
+                totalCount/=factorial(count);
+        }
+        return totalCount;
+    }
 
-        for(auto i : m){
-            long long totalPermutations = calculatePermutations(i),
-            permutationsStartingWithZero = calculatePermutationsStartingWithZero(i),
-            permutationsNotStartingWithZero = totalPermutations - permutationsStartingWithZero;
-            
-            ans += permutationsNotStartingWithZero;
+    set<map<int,int>> mp_st;
+    long long countGoodIntegers(int n, int k) {
+        vector<int> nums(n); 
+        genratingPermutations(nums,0,n-1,k);
+
+        long long ans=0;
+        for(auto mp:mp_st){
+            int prev=ans;
+            ans+= permutations(mp,n);
+            if(mp.find(0)!=mp.end() && mp[0]>0){
+                mp[0]--;
+                ans-=permutations(mp,n-1);
+            } 
         }
         return ans;
+    }
+    void genratingPermutations(vector<int>& nums,int left,int right,int k){
+        if(left>right){
+            long long palindromicNum = vectorToNum(nums);
+            if(palindromicNum%k==0){
+                map<int,int> mp1;
+                while(palindromicNum){
+                    mp1[palindromicNum%10]++;
+                    palindromicNum/=10;
+                }
+                mp_st.insert(mp1);
+            }
+            return; 
+        }
+            for(int digit=0; digit<=9;digit++){
+                if(left==0 && digit==0){
+                    continue;
+                }
+                nums[left]=digit;
+                nums[right]=digit;
+                genratingPermutations(nums,left+1,right-1,k);
+            }
     }
 };
+
+
+/*
+
+n=3 k=5
+
+
+5   5   2   3 => n! / (commonIntegers!) - permutationsStartingWithZero
+
+
+5   5   0   2 => 0   5  5   2  => 3!/2!
+5 -> 2
+0 -> 0
+2 -> 1
+
+5   0   5 => 550;  505 => 2 (Edge Case)
+5   1   5 => 551;  515; 155 => 3
+5   2   5 => 3
+5   3   5 => 3
+5   4   5 => 3
+5   5   5 => 1 (Edge Case)
+5   6   5 => 3
+5   7   5 => 3
+5   8   5 => 3
+5   9   5 => 3
+ Total = 27 possibilities
+
+
+Steps :
+
+1=> Generate All Palindromic Numbers  which are divisible by k and of total length n => 
+Ex: n=5 
+
+0   0   0   0   0
+1   0   0   0   1
+1   1   0   1   1
+1   1   1   1   1
+1   2   0   2   1
+
+
+4   6   7   6   4
+
+
+6   4   7   4   6
+
+
+
+
+10^(n/2)
+
+
+*/
