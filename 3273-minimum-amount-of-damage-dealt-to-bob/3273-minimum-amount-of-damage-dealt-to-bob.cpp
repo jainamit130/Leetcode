@@ -8,12 +8,13 @@ public:
             enemyData.emplace_back(enemyDamage[i], enemyHealth[i]);
         }
 
-        sort(enemyData.begin(), enemyData.end(), [](auto lhs,auto rhs){
-            if(lhs.first==rhs.first){
-                return lhs.second<rhs.second;
-            }
-            return lhs.first>rhs.first;
-        });
+        auto weightComparator = [attackPower](const std::pair<int, int>& first, const std::pair<int, int>& second) {
+            long long weightFirst = static_cast<long long>(first.first) * ((second.second + attackPower - 1) / attackPower);
+            long long weightSecond = static_cast<long long>(second.first) * ((first.second + attackPower - 1) / attackPower);
+            return weightFirst > weightSecond;
+        };
+
+        std::sort(enemyData.begin(), enemyData.end(), weightComparator);
 
         long long totalDamage = 0;
         long long accumulatedDamage = 0;
