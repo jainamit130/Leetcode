@@ -4,27 +4,29 @@ public:
         int numEnemies = enemyDamage.size();
         std::vector<std::pair<int, int>> enemyData;
 
+        long long accumulatedDamage = 0;
         for (int i = 0; i < numEnemies; i++) {
+            accumulatedDamage += enemyDamage[i];
             enemyData.emplace_back(enemyDamage[i], enemyHealth[i]);
         }
 
-        auto weightComparator = [attackPower](const std::pair<int, int>& first, const std::pair<int, int>& second) {
-            long long weightFirst = static_cast<long long>(first.first) * ((second.second + attackPower - 1) / attackPower);
-            long long weightSecond = static_cast<long long>(second.first) * ((first.second + attackPower - 1) / attackPower);
-            return weightFirst > weightSecond;
-        };
-
-        std::sort(enemyData.begin(), enemyData.end(), weightComparator);
+        sort(enemyData.begin(), enemyData.end(), [&](auto lhs,auto rhs){
+            auto dps1 = 1.0*(lhs.first)/ceil((1.0*lhs.second)/(1.0*attackPower));
+            auto dps2 = 1.0*(rhs.first)/ceil((1.0*rhs.second)/(1.0*attackPower));
+            if(dps1==dps2){
+                if(lhs.first==rhs.first){
+                    return lhs.second<rhs.second;
+                } else {
+                    return lhs.first>rhs.first;
+                }
+            }
+            return dps1>dps2;
+        });
 
         long long totalDamage = 0;
-        long long accumulatedDamage = 0;
 
         for (const auto& enemy : enemyData) {
-            accumulatedDamage += enemy.first;
-        }
-
-        for (const auto& enemy : enemyData) {
-            int hitsNeeded = (enemy.second + attackPower - 1) / attackPower;
+            int hitsNeeded = ceil((1.0*enemy.second) / (1.0*attackPower));
             totalDamage += accumulatedDamage * hitsNeeded;
             accumulatedDamage -= enemy.first;
         }
