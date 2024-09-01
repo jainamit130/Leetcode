@@ -17,22 +17,20 @@ public:
     }
 
     long long permutations(map<int,int> mp,int n){
-        long long totalCount=factorial(n);
-        for(auto [num,count]:mp){
-            if(count>1)
-                totalCount/=factorial(count);
+        long long totalCount=factorial(n); // n!
+        for(auto [num,commonIntegerCount]: mp){
+            totalCount/=factorial(commonIntegerCount); // n!/(commonIntegerCount!)
         }
         return totalCount;
     }
 
     set<map<int,int>> mp_st;
     long long countGoodIntegers(int n, int k) {
-        vector<int> nums(n); 
-        genratingPermutations(nums,0,n-1,k);
+        vector<int> num(n); 
+        genratingPermutations(num,0,n-1,k);
 
         long long ans=0;
         for(auto mp:mp_st){
-            int prev=ans;
             ans+= permutations(mp,n);
             if(mp.find(0)!=mp.end() && mp[0]>0){
                 mp[0]--;
@@ -41,6 +39,8 @@ public:
         }
         return ans;
     }
+
+    // 10^(n/2)  
     void genratingPermutations(vector<int>& nums,int left,int right,int k){
         if(left>right){
             long long palindromicNum = vectorToNum(nums);
@@ -54,14 +54,14 @@ public:
             }
             return; 
         }
-            for(int digit=0; digit<=9;digit++){
-                if(left==0 && digit==0){
-                    continue;
-                }
-                nums[left]=digit;
-                nums[right]=digit;
-                genratingPermutations(nums,left+1,right-1,k);
-            }
+        for(int digit=0; digit<=9; digit++){
+            if(digit==0 && left==0){
+                continue;
+            } 
+            nums[left]=digit;
+            nums[right]=digit;
+            genratingPermutations(nums,left+1,right-1,k);
+        }
     }
 };
 
