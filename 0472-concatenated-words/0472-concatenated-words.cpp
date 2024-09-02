@@ -31,7 +31,7 @@ public:
         bool ans=false;
         ans=ans||solve(word,st,curr+word[index],index+1,cache);
         if(st.find(curr)!=st.end()){
-            ans=ans||solve(word,st,"",index,cache);
+            ans=ans||solve(word,st,""+word[index],index+1,cache);
         }
         return cache[curr][index]=ans;
     }
