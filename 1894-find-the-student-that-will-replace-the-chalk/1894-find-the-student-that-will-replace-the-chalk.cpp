@@ -1,15 +1,15 @@
 class Solution {
 public:
     int chalkReplacer(vector<int>& chalk, int k) {
-        int totalChalksToBeUsed = 0;
+        long long totalChalksToBeUsed = 0;
         for(int i=0;i<chalk.size();i++){
-            totalChalksToBeUsed+=chalk[i];
-            if(totalChalksToBeUsed>=k){
+            totalChalksToBeUsed=totalChalksToBeUsed+chalk[i];
+            if(totalChalksToBeUsed>k){
                 return i;
             }
         }
 
-        k=k-((k/totalChalksToBeUsed)*totalChalksToBeUsed);
+        k=k-((long long)(k/totalChalksToBeUsed)*(long long)totalChalksToBeUsed);
         for(int i=0;i<chalk.size();i++){
             k-=chalk[i];
             if(k<0){
