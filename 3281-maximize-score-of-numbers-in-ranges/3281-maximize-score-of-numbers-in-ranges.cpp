@@ -24,10 +24,10 @@ public:
     }
 
     bool isPossible(vector<int>& start,int d,int minDiff){
-        int choosen = start[0]+minDiff;
+        long long choosen = start[0]+minDiff;
         for(int i=1;i<start.size();i++){
             if(start[i]+d>=choosen){
-                choosen=max(choosen,start[i])+minDiff;
+                choosen=max(choosen,(long long)start[i])+minDiff;
             } else {
                 return false;
             }
