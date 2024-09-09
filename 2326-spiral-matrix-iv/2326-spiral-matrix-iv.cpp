@@ -11,35 +11,24 @@
 class Solution {
 public:
     vector<vector<int>> spiralMatrix(int m, int n, ListNode* head) {
-        vector<vector<int>> dir={ {0,1,n+1}, {1,0,m-1}, {0,-1,n-1}, {-1,0,m-2} };
         vector<vector<int>> ans(m,vector<int>(n,-1));
-        int index = 0;
-        int row=0,col=0;
-        int c=0;
+        vector<vector<int>> dir={ {0,1}, {1,0}, {0,-1}, {-1,0} };
         ListNode* ptr=head;
+        int row=0;
+        int col=0;
+        int index=0;
         while(ptr){
-            if(index==0){
-                if(c%2==0){
-                    dir[index][2]-=2;
-                } else {
-                    dir[index][2]-=1;
-                }
-                c++;
-            }
-            int count = dir[index][2];
-            int colDir = dir[index][1];
-            int rowDir = dir[index][0];
-            while(ptr && count>0){
+            while(ptr && row>=0 && row<m && col>=0 && col<n && ans[row][col]==-1){
                 ans[row][col]=ptr->val;
-                row=row+rowDir;
-                col=col+colDir;
+                row+=dir[index][0];
+                col+=dir[index][1];
                 ptr=ptr->next;
-                count--;
             }
-            if(index!=0){
-                dir[index][2]-=2;
-            }
+            row-=dir[index][0];
+            col-=dir[index][1];
             index=(index+1)%4;
+            row+=dir[index][0];
+            col+=dir[index][1];
         }
         return ans;
     }
