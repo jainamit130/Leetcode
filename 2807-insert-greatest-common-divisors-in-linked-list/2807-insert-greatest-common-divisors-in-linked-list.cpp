@@ -5,13 +5,14 @@ public:
         while(ptr && ptr->next){
                 int num1= ptr->val;
                 int num2= ptr->next->val;
-                int gcd = min(num1,num2);
-                for(;gcd>=1;gcd--){
-                    if(num1%gcd==0 && num2%gcd==0){
-                        break;
-                    }
-                }
-                ListNode* gcdNode = new ListNode(gcd);
+                int gcd_val = gcd(num1,num2); 
+                // min(num1,num2);
+                // for(;gcd_val>=1;gcd_val--){
+                //     if(num1%gcd_val==0 && num2%gcd_val==0){
+                //         break;
+                //     }
+                // }
+                ListNode* gcdNode = new ListNode(gcd_val);
                 ListNode* temp = ptr->next;
                 ptr->next=gcdNode;
                 gcdNode->next = temp;
