@@ -7,6 +7,7 @@ public:
         vector<long long> prefix;
         prefix.push_back(0);
         int n=nums.size();
+        // O(n)
         for(int i=0;i<n;i++){
             prefix.push_back(prefix.back()+nums[i]);
         }
