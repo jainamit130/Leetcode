@@ -1,7 +1,7 @@
 class Solution {
 public:
     int countConsistentStrings(string allowed, vector<string>& words) {
-        long long allowedChars = 0;
+        long allowedChars = 0;
         for(auto c:allowed){
             int pos = c-'a';
             allowedChars = allowedChars | (1<<pos);
@@ -9,7 +9,7 @@ public:
 
         int ans=0;
         for(auto word:words){
-            long long currChars = 0;
+            long currChars = 0;
             for(auto c:word){
                 int pos = c-'a';
                 currChars = currChars | (1<<pos);
