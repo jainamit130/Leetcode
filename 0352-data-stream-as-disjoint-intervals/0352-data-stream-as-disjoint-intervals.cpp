@@ -1,39 +1,57 @@
 class SummaryRanges {
 public:
-    vector<int> vals;
-    unordered_set<int> st;
+    map<int,int> mp;
     SummaryRanges() {
         
     }
     
     void addNum(int value) {
-        if(st.find(value)!=st.end()){
-            return;
+        auto nextPtr = mp.lower_bound(value);
+        bool nextMergePossible = true;
+        bool prevMergePossible = true;
+        auto prevPtr = nextPtr;
+        if(nextPtr == mp.begin()){
+            prevMergePossible=false;
         }
-        st.insert(value);
-        vals.push_back(value);
-        sort(vals.begin(),vals.end());
+        if(nextPtr == mp.end()){
+            nextMergePossible=false;
+        }
+        // 4 Cases 
+        // Case 1: Merged to prev
+        bool prevMerged = false;
+        if(prevMergePossible){
+            --prevPtr;
+            if(prevPtr->second+1>=value){
+                prevMerged = true;
+                prevPtr->second = max(prevPtr->second+1,value);
+            }
+        }
+
+        // Case 2: Merged to next
+        bool nextMerged = false;
+        if(nextMergePossible && nextPtr->first<=value+1){
+            nextMerged=true;
+            mp[min(nextPtr->first-1,value)]=nextPtr->second;
+            mp.erase(nextPtr->first);
+        }
+
+        // Case 2: Both merge possible?
+        if(nextMerged && prevMerged){
+            mp[prevPtr->first]=mp[value];
+            mp.erase(value);
+        }
+
+        // Case 4: Merged to neither
+        if(!nextMerged && !prevMerged){
+            mp[value]=value;
+        }
+        return;
     }
     
     vector<vector<int>> getIntervals() {
         vector<vector<int>> intervals;
-        int i=0;
-        while(i<vals.size()){
-            int start=i;
-            int end=vals.size()-1;
-            int index = start;
-            while(start<=end){
-                int mid=(start+end)/2;
-                if((mid-i+vals[i])==vals[mid]){
-                    index=mid;
-                    start=mid+1;
-                } else {
-                    end=mid-1;
-                }
-            }
-            intervals.push_back({vals[i],vals[index]});
-            i=index+1;
-        }
+        for(auto interval : mp)
+            intervals.push_back({interval.first, interval.second});
         return intervals;
     }
 };
@@ -43,21 +61,4 @@ public:
  * SummaryRanges* obj = new SummaryRanges();
  * obj->addNum(value);
  * vector<vector<int>> param_2 = obj->getIntervals();
- 
- 
- 2  3   6   9   4   11  14  10
- 
- 2  2
-
-
-2   2
-
-3   3
-
-4   4
-
-8   8
-
-11  11
- 
  */
