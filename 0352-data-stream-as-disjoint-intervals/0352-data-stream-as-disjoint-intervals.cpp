@@ -7,6 +7,9 @@ public:
     
     void addNum(int value) {
         auto nextPtr = mp.lower_bound(value);
+        if(nextPtr->first == value){
+            return;
+        }
         bool nextMergePossible = true;
         bool prevMergePossible = true;
         auto prevPtr = nextPtr;
@@ -23,7 +26,7 @@ public:
             --prevPtr;
             if(prevPtr->second+1>=value){
                 prevMerged = true;
-                prevPtr->second = max(prevPtr->second+1,value);
+                prevPtr->second = max(prevPtr->second,value);
             }
         }
 
@@ -31,7 +34,7 @@ public:
         bool nextMerged = false;
         if(nextMergePossible && nextPtr->first<=value+1){
             nextMerged=true;
-            mp[min(nextPtr->first-1,value)]=nextPtr->second;
+            mp[min(nextPtr->first,value)]=nextPtr->second;
             mp.erase(nextPtr->first);
         }
 
