@@ -4,14 +4,21 @@ public:
         int count = 1;
         int maxVal = nums[0];
         int ans=1;
-        for(int i=1;i<nums.size();i++){
-            if(nums[i]==nums[i-1]){
+        int val=nums[0];
+        for(int i=1;i<=nums.size();i++){
+            if(i<nums.size() && nums[i]==nums[i-1]){
                 count++;
             } else {
-                if(nums[i-1]>=maxVal){
+                if(val>maxVal){
+                    ans=count;
+                    maxVal=val;
+                } else if(val==maxVal){
                     ans=max(ans,count);
-                    maxVal = nums[i-1];
                 }
+                if(i==nums.size()){
+                    break;
+                }
+                val=nums[i];
                 count=1;
             }
         }
