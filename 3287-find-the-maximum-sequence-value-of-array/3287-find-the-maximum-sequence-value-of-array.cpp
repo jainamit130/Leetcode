@@ -1,61 +1,69 @@
-#include <vector>
-#include <unordered_set>
-#include <algorithm>
-#include <climits>
-
-using namespace std;
-
 class Solution {
 public:
     int maxValue(vector<int>& nums, int k) {
         int n = nums.size();
-        
-        // Create 2D arrays of unordered_set to store OR values for left and right parts
-        vector<vector<unordered_set<int>>> left(n, vector<unordered_set<int>>(k + 1));
-        vector<vector<unordered_set<int>>> right(n, vector<unordered_set<int>>(k + 1));
 
-        // Initialize the sets
-        left[0][0].insert(0);
-        left[0][1].insert(nums[0]);
+        vector<vector<vector<bool>>> left(n, vector<vector<bool>>(k + 1, vector<bool>(128, false)));
+        vector<vector<vector<bool>>> right(n, vector<vector<bool>>(k + 1, vector<bool>(128, false)));
 
-        // Fill left DP table with OR results
+        // Initialize the bitmask arrays
+        left[0][0][0] = true;
+        left[0][1][nums[0]] = true;
+
+        // Fill left DP table with OR results using bitmasking
         for (int i = 1; i < n - k; ++i) {
-            left[i][0].insert(0);
+            left[i][0][0] = true;
             for (int j = 1; j <= k; ++j) {
-                left[i][j].insert(left[i - 1][j].begin(), left[i - 1][j].end());
-                for (int v : left[i - 1][j - 1]) {
-                    left[i][j].insert(v | nums[i]);
+                for (int v = 0; v < 128; ++v) {
+                    // Carry over previous OR results
+                    if (left[i - 1][j][v]) left[i][j][v] = true;
+
+                    // Compute new OR results by including nums[i]
+                    if (left[i - 1][j - 1][v]) {
+                        left[i][j][v | nums[i]] = true;
+                    }
                 }
             }
         }
 
-        // Initialize right DP table
-        right[n - 1][0].insert(0);
-        right[n - 1][1].insert(nums[n - 1]);
+        // Initialize right DP table with OR results
+        right[n - 1][0][0] = true;
+        right[n - 1][1][nums[n - 1]] = true;
 
         int result = 0;
 
         // Special case for k = 1
         if (k == 1) {
-            for (int l : left[n - 2][k]) {
-                result = max(result, l ^ nums[n - 1]);
+            for (int l = 0; l < 128; ++l) {
+                if (left[n - 2][k][l]) {
+                    result = max(result, l ^ nums[n - 1]);
+                }
             }
         }
 
         // Fill right DP table and compute the max XOR
         for (int i = n - 2; i >= k; --i) {
-            right[i][0].insert(0);
+            right[i][0][0] = true;
             for (int j = 1; j <= k; ++j) {
-                right[i][j].insert(right[i + 1][j].begin(), right[i + 1][j].end());
-                for (int v : right[i + 1][j - 1]) {
-                    right[i][j].insert(v | nums[i]);
+                for (int v = 0; v < 128; ++v) {
+                    // Carry over previous OR results
+                    if (right[i + 1][j][v]) right[i][j][v] = true;
+
+                    // Compute new OR results by including nums[i]
+                    if (right[i + 1][j - 1][v]) {
+                        right[i][j][v | nums[i]] = true;
+                    }
                 }
             }
+        }
 
-            // Calculate the maximum XOR by combining left and right
-            for (int l : left[i - 1][k]) {
-                for (int r : right[i][k]) {
-                    result = max(result, l ^ r);
+        for(int i=1;i<n;i++){
+            for (int g = 0; g < 128; ++g) {
+                if(left[i-1][k][g]){
+                    for (int v = 0; v < 128; ++v) {
+                        if(right[i][k][v])
+                            result=max(result,g^v);
+                    }
                 }
             }
         }
