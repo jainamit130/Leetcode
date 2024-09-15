@@ -6,7 +6,7 @@ public:
         int a=coordinates[k][0];
         int b=coordinates[k][1];
 
-        sort(coordinates.begin(),coordinates.end(),[](const vector<int>& lhs, const vector<int>& rhs){
+        sort(coordinates.begin(),coordinates.end(),[](auto& lhs,auto& rhs){
             if(lhs[0]==rhs[0]){
                 return lhs[1]>rhs[1];
             }
