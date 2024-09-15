@@ -3,7 +3,7 @@ public:
     int maxEnvelopes(vector<vector<int>>& envelopes) {
         sort(envelopes.begin(),envelopes.end(),[](auto lhs,auto rhs){
             if(lhs[0]==rhs[0]){
-                return lhs[1]>rhs[1];
+                return lhs[1]<rhs[1];
             } 
             return lhs[0]<rhs[0];
         });
