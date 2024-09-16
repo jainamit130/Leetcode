@@ -1,6 +1,6 @@
 class Solution {
 public:
-    int getTime(string time){
+    int getTime(string& time){
         return (time[0]-48)*10 + (time[1]-48);
     }
     int findMinDifference(vector<string>& timePoints) {
@@ -22,11 +22,7 @@ public:
             int min2 = getTime(timePoints[i].substr(3));
             int time2 = hour2*60+min2;
             
-            //making both 0
             int diff = 1440-max(time1,time2)+min(time1,time2);
-
-
-            //making both 
             ans=min(ans,min(diff,abs(time2-time1)));
         }
         return ans;
