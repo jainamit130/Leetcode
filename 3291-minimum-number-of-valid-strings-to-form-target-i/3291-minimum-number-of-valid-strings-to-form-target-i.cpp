@@ -1,54 +1,67 @@
-class Trie {
+class TrieNode {
 public:
-    Trie* children[26];
-    Trie() {
+    TrieNode* childs[26];
+    TrieNode() {
         for (int i = 0; i < 26; ++i) {
-            children[i] = nullptr;
+            childs[i] = nullptr;
         }
     }
+};
 
-    void constructTree(Trie* node, string word) {
-        for (char ch : word) {
-            if (!node->children[ch - 'a']) {
-                node->children[ch - 'a'] = new Trie();
+class Trie {
+public:
+    TrieNode* root;
+    Trie() {
+        root = new TrieNode();
+    }
+
+    void insert(string word) {
+        TrieNode* temp = root;
+        for (char c : word) {
+            int idx = c - 'a';
+            if (temp->childs[idx] == nullptr) {
+                temp->childs[idx] = new TrieNode();
             }
-            node = node->children[ch - 'a'];
+            temp = temp->childs[idx];
         }
     }
 };
 
 class Solution {
 public:
-    int minValidStrings(vector<string>& words, string target) {
-        vector<int> cache(target.length()+1,-1);
-        Trie* root = new Trie();
-        for(auto word:words)
-            root->constructTree(root,word);
-        int ans=solve(root,target,0,cache);
-        return ans== INT_MAX ? -1 : ans;
+    int n;
+    string target;
+    vector<int> dp;
+
+    int solve(int i, TrieNode* root) {
+        if (i == n) return 0;
+        if (dp[i] != -1) return dp[i];
+
+        TrieNode* temp = root;
+        int res = INT_MAX;
+
+        for (int j = i; j < n; ++j) {
+            int idx = target[j] - 'a';
+            if (temp->childs[idx] == nullptr) break;
+            temp = temp->childs[idx];
+            int t = solve(j + 1, root);
+            if (t != INT_MAX) {
+                res = min(res, t + 1);
+            }
+        }
+        return dp[i] = res;
     }
 
-    int solve(Trie* root,string target,int index,vector<int>& cache){
-        if(index>=target.length()){
-            return 0;
+    int minValidStrings(vector<string>& words, string target) {
+        Trie trie;
+        for (string word : words) {
+            trie.insert(word);
         }
+        n = target.size();
+        this->target = target;
+        dp = vector<int>(n, -1);
 
-        if(cache[index]!=-1){
-            return cache[index];
-        }
-
-        int ans=INT_MAX;
-        Trie* ptr = root;
-        for(int i=index;i<target.length();i++){
-            if(!ptr->children[target[i]-'a']){
-                break;
-            }
-            ptr=ptr->children[target[i]-'a'];
-            int subAns = solve(root,target,i+1,cache);
-            if(subAns!=INT_MAX){
-                ans=min(ans,1+subAns);
-            }
-        }
-        return cache[index]=ans;
+        int res = solve(0, trie.root);
+        return res == INT_MAX ? -1 : res;
     }
 };
