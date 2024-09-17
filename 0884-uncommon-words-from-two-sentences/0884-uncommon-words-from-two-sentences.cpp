@@ -12,6 +12,7 @@ public:
             }
         }
         word="";
+        unordered_map<string,int> mp2;
         vector<string> ans;
         for(int i=0;i<=s2.length();i++){
             if(i==s2.length() || s2[i]==' '){
