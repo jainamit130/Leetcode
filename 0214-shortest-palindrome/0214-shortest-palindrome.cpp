@@ -1,49 +1,54 @@
 class Solution {
 public:
-    string shortestPalindrome(string s) {
-        string p=s;
-        reverse(p.begin(),p.end());
-        string rev=p;
-        p+=s;
-        vector<int> lps(p.length());
-        computeLPS(p,lps);
-        int len=lps.back();
-        while(len){
-            rev.pop_back();
-            len--;
-        }
-        return rev+s;
-    }
-
-    void computeLPS(string pattern, vector<int>& lps) {
-        int M = pattern.length();
-        int len = 0; 
-        
-        lps[0] = 0; 
-        
+    void lps(string & pattern , int & n , vector<int>&lpss)
+    {
         int i = 1;
-        while (i < M) {
-            if (pattern[i] == pattern[len]) {
-                len++;
-                lps[i] = len;
+        int j = 0;
+        while(i<n)
+        {
+            if(pattern[i]==pattern[j])
+            {
+                j++;
+                lpss[i]=j;
                 i++;
-            } else {
-                if (len != 0) {
-                    len = lps[len - 1]; 
-                } else {
-                    lps[i] = 0;
+            }
+            else 
+            {
+                if(j==0)
+                {
+                    lpss[i]=0;
                     i++;
+                }
+                else
+                {
+                    j = lpss[j-1];
                 }
             }
         }
     }
+    string shortestPalindrome(string s) 
+    {
+        string t=s;
+        reverse(s.begin(),s.end());
+        t+="#";
+        t+=s;
+        reverse(s.begin(),s.end());
+        int n = t.size();
+        vector<int> lpss(n);
+        
+        lps(t,n,lpss);
+
+        int matchedSubStr = lpss[n-1];
+
+        string tobeAdded = s.substr(matchedSubStr);
+        reverse(tobeAdded.begin(),tobeAdded.end());
+        return tobeAdded + s;    
+    }
 };
-
-
 /*
 
 a   a   c   e   c   a   a   a
-i   
+i
 
 a   a   a   c   e   c   a   a
 j
