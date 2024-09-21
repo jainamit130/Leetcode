@@ -1,26 +1,26 @@
 class Solution {
 public:
     int minValidStrings(vector<string>& words, string target) {
-        int len = target.length()-1;
+        int len = target.length();
         int n = words.size();
         vector<vector<int>> lps(n);
         for(int i=0;i<n;i++){
             vector<int> temp(words[i].length()+len+1);
-            calcLps(temp,words[i]+target);
+            calcLps(temp,words[i]+'#'+target);
             lps[i]=temp;
         }
         int ans=0;
-        while(len>=0){
-            int match = 0;
+        while(len>0){
+            int jump = 0;
             for(int i=0;i<words.size();i++){
                 int currIndex = words[i].length()+len;
-                match=max(match,lps[i][currIndex]);
+                jump=max(jump,lps[i][currIndex]);
             }
             ans++;
-            if(match==0){
+            if(jump==0){
                 return -1;
             }
-            len-=match;
+            len-=jump;
         }
         return ans;
     }
