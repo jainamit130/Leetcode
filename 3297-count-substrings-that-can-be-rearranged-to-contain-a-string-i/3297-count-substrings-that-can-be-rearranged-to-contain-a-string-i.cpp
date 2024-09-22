@@ -9,13 +9,15 @@ public:
             prefixFreq[i+1][word1[i]-'a']++;
         }
 
+        vector<int> toSearch(26);
+        for(int j=0;j<n;j++){
+            toSearch[word2[j]-'a']++;
+        }
+
         long long ans=0;
         for(int i=0;i<m;i++){
-            vector<int> toSearch=prefixFreq[i];
-            for(int j=0;j<n;j++){
-                toSearch[word2[j]-'a']++;
-            }
             ans+=m-binarySearch(toSearch,i,prefixFreq,m);
+            toSearch[word1[i]-'a']++;
         }
         return ans;
     }
