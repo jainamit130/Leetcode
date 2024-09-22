@@ -1,15 +1,14 @@
 class Solution {
 public:
     long long minNumberOfSeconds(int mountainHeight, vector<int>& wt) {
-    long long l = 1, r = 100000000000LL * mountainHeight / wt.size();
+    long long l = 1, r = 1e18;
 
     while (l < r) {
         long long m = (l + r) / 2;
-        long long h = 0; // Total height reduction
+        long long h = 0; 
 
-        // Accumulate height reductions using a loop
         for (int t : wt) {
-            h += static_cast<long long>(sqrt(m / static_cast<double>(t) * 2 + 0.25) - 0.5);
+            h += (long long)(sqrt(m / (double)(t) * 2 + 0.25) - 0.5);
         }
 
         if (h < mountainHeight)
