@@ -1,7 +1,7 @@
 class Solution {
 public:
     int longestCommonPrefix(vector<int>& arr1, vector<int>& arr2) {
-        set<int> allPossiblePrefix;
+        unordered_set<int> allPossiblePrefix;
         int ans=0;
         findAllPrefixes(arr1,allPossiblePrefix);
         for(int i=0;i<arr2.size();i++){
@@ -18,7 +18,7 @@ public:
         return ans;
     }
 
-    void findAllPrefixes(vector<int>& arr,set<int>& allPossiblePrefix){
+    void findAllPrefixes(vector<int>& arr,unordered_set<int>& allPossiblePrefix){
         for(int i=0;i<arr.size();i++){
             int number=arr[i];
             while(number){
