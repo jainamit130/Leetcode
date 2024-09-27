@@ -2,6 +2,7 @@ class MyCalendarTwo {
 public:
     map<int,int> mp;
     MyCalendarTwo() {
+        
     }
     
     bool book(int start, int end) {
@@ -19,6 +20,7 @@ public:
         return true;
     }
 };
+
 
 /**
  * Your MyCalendarTwo object will be instantiated and called as such:
