@@ -37,6 +37,7 @@ public:
                 newPtr->next=temp;
                 newPtr->prev=temp->prev;
                 temp->prev=newPtr;
+                newPtr->prev->next=newPtr;
             } else {
                 newPtr->prev=maxi;
                 maxi->next=newPtr;
