@@ -23,7 +23,7 @@ public:
         return ans;
     }
 
-    int getValidIndex(string word,int index,vector<vector<int>>& vowelPrefix,int choice,int k){
+    int getValidIndex(string& word,int index,vector<vector<int>>& vowelPrefix,int choice,int k){
         int start=index;
         int end=word.length()-1;
         int ans=(choice==1)?start-1:word.length();
