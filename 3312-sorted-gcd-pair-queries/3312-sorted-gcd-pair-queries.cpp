@@ -17,7 +17,7 @@ public:
 
         vector<long long> gcdPairs(maxEle+1);
         for(int i=maxEle;i>=1;i--){
-            gcdPairs[i]=(long long)(countAsDivisor[i]*(countAsDivisor[i]-1)/2);
+            gcdPairs[i]=((long long)countAsDivisor[i]*(countAsDivisor[i]-1)/2);
             for(int j=2*i;j<=maxEle;j+=i){
                 gcdPairs[i]-=gcdPairs[j];
             }
