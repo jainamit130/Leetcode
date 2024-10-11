@@ -5,7 +5,7 @@ public:
         if(i>j) return 0;
         if(dp[i][j][extra]!=-1) return dp[i][j][extra];
         int maxi = (grp[i]+extra)*(grp[i]+extra)+func(i+1,j,0,num,grp);
-        for(int ind = i+2; ind<=j; ind+=2){
+        for(int ind = i+1; ind<=j; ind++){
             if(num[i]==num[ind]){
                 maxi = max(maxi,func(i+1,ind-1,0,num,grp)+func(ind,j,extra+grp[i],num,grp));
             }
