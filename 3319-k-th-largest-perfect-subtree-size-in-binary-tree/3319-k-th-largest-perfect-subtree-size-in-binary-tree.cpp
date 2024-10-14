@@ -34,7 +34,7 @@ public:
         if(size!=k){
             return -1;
         }
-        return mp.rbegin()->first;
+        return mp.begin()->first;
     }
 
     pair<int,bool> solve(TreeNode* root,int& k){
