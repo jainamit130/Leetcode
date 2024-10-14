@@ -12,54 +12,53 @@
 class Solution {
 public:
     map<int,int> mp;
-    int size = 0;
+    int sum=0;
     int kthLargestPerfectSubtree(TreeNode* root, int k) {
         auto [cnt,perfect] = solve(root,k);
-
-        if(cnt>0 && perfect){
+        if(perfect && cnt>0){
+            sum+=1;
             mp[cnt]++;
-            size++;
+            processMap(k);
         }
-
-        processMap(mp,size,k);
-        if(size!=k){
+        if(sum<k){
             return -1;
         }
         return mp.begin()->first;
     }
 
-    pair<int,bool> solve(TreeNode* root,int& k){
+    pair<int,bool> solve(TreeNode* root,int k){
         if(!root){
             return {0,true};
         }
 
         auto [cntL,perfectL] = solve(root->left,k);
         auto [cntR,perfectR] = solve(root->right,k);
-        if(cntL>0 && perfectL) {
+        if(perfectL && cntL>0){
+            sum+=1;
             mp[cntL]++;
-            size++;
         }
-        if(cntR>0 && perfectR){
+        if(perfectR && cntR>0){
+            sum+=1;
             mp[cntR]++;
-            size++;
         }
 
-        processMap(mp,size,k);
-        if(cntL==cntR && perfectL && perfectR){
+        processMap(k);
+
+        if(perfectL && perfectR && cntL==cntR){
             return {cntL+cntR+1,true};
-        } 
+        }
         return {max(cntL,cntR),false};
     }
 
-    void processMap(map<int,int>& mp,int& size,int k){
-        while(size>k){
-            auto [num,count]=*mp.begin();
+    void processMap(int k){
+        while(sum>k){
+            auto [smallest,count]= *mp.begin();
             if(count==1){
-                mp.erase(num);
+                mp.erase(smallest);
             } else {
-                mp[num]--;
+                mp[smallest]-=1;
             }
-            size--;
+            sum--;
         }
     }
 };
