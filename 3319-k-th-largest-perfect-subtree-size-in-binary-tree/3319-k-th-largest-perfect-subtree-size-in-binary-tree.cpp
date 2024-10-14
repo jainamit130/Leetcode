@@ -21,16 +21,7 @@ public:
             size++;
         }
 
-        while(size>k){
-            auto [num,count]=*mp.begin();
-            if(count==1){
-                mp.erase(num);
-            } else {
-                mp[num]--;
-            }
-            size--;
-        }
-
+        processMap(mp,size,k);
         if(size!=k){
             return -1;
         }
@@ -53,6 +44,14 @@ public:
             size++;
         }
 
+        processMap(mp,size,k);
+        if(cntL==cntR && perfectL && perfectR){
+            return {cntL+cntR+1,true};
+        } 
+        return {max(cntL,cntR),false};
+    }
+
+    void processMap(map<int,int>& mp,int& size,int k){
         while(size>k){
             auto [num,count]=*mp.begin();
             if(count==1){
@@ -62,9 +61,5 @@ public:
             }
             size--;
         }
-        if(cntL==cntR && perfectL && perfectR){
-            return {cntL+cntR+1,true};
-        } 
-        return {max(cntL,cntR),false};
     }
 };
