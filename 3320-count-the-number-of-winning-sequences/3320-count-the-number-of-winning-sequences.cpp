@@ -16,7 +16,7 @@ public:
             return game>=1;
         }
 
-        if (game + n < 0 || game + n > 2 * n) return 0;
+        if (game + n < 0) return 0;
 
         if(cache[index][game+n][mpIndex[last]]!=-1){
             return cache[index][game+n][mpIndex[last]];
