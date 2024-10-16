@@ -1,51 +1,54 @@
 class Solution {
 public:
     string longestDiverseString(int a, int b, int c) {
-        //using max heap
-        priority_queue<pair<int,char>>pq;
-        if(a)
-        pq.push({a,'a'});
-        if(b)
-        pq.push({b,'b'});
-        if(c)
-        pq.push({c,'c'});
+        priority_queue<vector<int>> pq;
+        if(a>0)
+            pq.push({a,0});
+        if(b>0)
+            pq.push({b,1});
+        if(c>0)
+            pq.push({c,2});
         string ans="";
         while(pq.size()>1){
-            pair<int,char>one = pq.top();pq.pop();
-            pair<int,char>two = pq.top();pq.pop();
-            if(one.first>=2){
-                ans+=one.second;
-                ans+=one.second;
-                one.first-=2;
+            int index = pq.top()[1];
+            int count = pq.top()[0];
+            pq.pop();
+            int repeat = min(2,count);
+            int nextIndex=-1;
+            int nextCount=-1;
+            int nextRepeat=-1;
+            if(!pq.empty()){
+                nextIndex = pq.top()[1];
+                nextCount = pq.top()[0];
+                nextRepeat = count-repeat<nextCount?min(2,nextCount):1;
             }
-            else{
-                ans+=one.second;
-                one.first-=1;
+
+            ans+=(char)(index+'a');
+            if(repeat==2){
+                ans+=(char)(index+'a');
+                if(nextIndex>=0){
+                    ans+=(char)(nextIndex+'a');
+                    if(nextRepeat==2){
+                        ans+=(char)(nextIndex+'a');
+                    }
+                    pq.pop();
+                    if(nextCount>nextRepeat)
+                        pq.push({nextCount-nextRepeat,nextIndex});
+                }
             }
-            if(two.first>=2 && two.first>=one.first){
-                ans+=two.second;
-                ans+=two.second;
-                two.first-=2;
-            }
-            else{
-                ans+=two.second;
-                two.first-=1;
-            }
-            if(one.first>0)
-                pq.push(one);
-            if(two.first>0)
-                pq.push(two);
+            if(count>repeat)
+                pq.push({count-repeat,index});
         }
-        if(pq.empty())
-            return ans;
-        if(pq.top().first>=2){
-            ans+=pq.top().second;
-            ans+=pq.top().second;
-        }
-        else{
-            ans+=pq.top().second;
+
+        if(!pq.empty()){
+            int index = pq.top()[1];
+            int count = pq.top()[0];
+            int repeat = min(count,2);
+            ans+=(char)(index+'a');
+            if(repeat==2){
+                ans+=(char)(index+'a');
+            }
         }
         return ans;
-        
     }
 };
