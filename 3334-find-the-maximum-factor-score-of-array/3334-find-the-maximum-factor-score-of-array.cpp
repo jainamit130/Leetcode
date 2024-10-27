@@ -1,40 +1,38 @@
-
-
 class Solution {
 public:
-    int calculateGCD(const vector<int>& nums) {
-        int gcd_val = nums[0];
-        for (int i = 1; i < nums.size(); ++i) {
-            gcd_val = gcd(gcd_val, nums[i]);
-        }
-        return gcd_val;
-    }
-
-    long long calculateLCM(const vector<int>& nums) {
-        long long lcm_val = nums[0];
-        for (int i = 1; i < nums.size(); ++i) {
-            lcm_val = (lcm_val * nums[i]) / gcd(static_cast<long long>(lcm_val), static_cast<long long>(nums[i]));
-        }
-        return lcm_val;
-    }
-
     long long maxScore(vector<int>& nums) {
-        int totalGCD = calculateGCD(nums);
-        long long totalLCM = calculateLCM(nums);
+        int n = nums.size();
+        if (n == 0) return 0;
+        if (n == 1) return nums[0] * nums[0];
 
-        long long maxFactorScore = 1LL * totalGCD * totalLCM;
-        
-        for (int i = 0; i < nums.size(); ++i) {
-            vector<int> temp=nums;
-            temp.erase(temp.begin()+i);
+        vector<int> pregcd(n, 0), postgcd(n, 0);
+        vector<long long> prelcm(n, 0), postlcm(n, 0);
+        pregcd[0] = prelcm[0] = nums[0];
 
-            if (!temp.empty()) {
-                int gcd = calculateGCD(temp);
-                long long lcm = calculateLCM(temp);
-                maxFactorScore = max(maxFactorScore, 1LL * gcd * lcm);
-            }
+        --n;
+        for (int i = 1; i <= n; ++i) {
+            pregcd[i] = gcd(nums[i], pregcd[i - 1]);
+            prelcm[i] = lcm(prelcm[i - 1], nums[i]);
         }
         
-        return maxFactorScore;
+        postgcd[n] = postlcm[n] = nums[n];
+        for (int i = n - 1; i >= 0; --i) { 
+            postgcd[i] = gcd(nums[i], postgcd[i + 1]);
+            postlcm[i] = lcm(postlcm[i + 1], nums[i]);
+        }
+        
+        long long res = max(
+            max(postlcm[0] * postgcd[0], postlcm[1] * postgcd[1]),
+            prelcm[n - 1] * pregcd[n - 1]
+        );
+        
+        long long cur;
+        for (int i = 1; i < n; ++i) {
+            cur = lcm(prelcm[i - 1], postlcm[i + 1]) *
+                    gcd(pregcd[i - 1], postgcd[i + 1]);
+            res = max(cur, res);
+        }
+
+        return res;
     }
 };
