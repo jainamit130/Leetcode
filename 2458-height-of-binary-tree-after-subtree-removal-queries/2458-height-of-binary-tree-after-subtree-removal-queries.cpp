@@ -11,37 +11,51 @@
  */
 class Solution {
 public:
-    unordered_map<int,int> l,r,height;
+    vector<int> levels;
+    vector<int> height;
+    vector<pair<int,int>> firstAndSecondMax;
     vector<int> treeQueries(TreeNode* root, vector<int>& queries) {
-        generateHeight(root);
-        preCompute(root->left,r[root->val],1);
-        preCompute(root->right,l[root->val],1);
-        vector<int> ans(queries.size());
+        levels.resize(1e5+1);
+        height.resize(1e5+1);
+        firstAndSecondMax.resize(1e5+1,{-1,-1});
+        solve(root,0);
+        vector<int> ans;
         for(int i=0;i<queries.size();i++){
-            ans[i]=height[queries[i]];
+            int currLevel = levels[queries[i]];
+            int currHeight = height[queries[i]];
+            int firstMax = firstAndSecondMax[currLevel].first;
+            int secondMax = firstAndSecondMax[currLevel].second;
+            if(currHeight==firstMax){
+                ans.push_back(secondMax+currLevel);
+            } else {
+                ans.push_back(firstMax+currLevel);
+            }
         }
         return ans;
     }
 
-    void preCompute(TreeNode* root,int maxPossible,int depth){
-        if(!root){
-            return;
-        }
-
-        height[root->val]=maxPossible;
-        preCompute(root->left,max(maxPossible,r[root->val]+depth),depth+1);
-        preCompute(root->right,max(maxPossible,l[root->val]+depth),depth+1);
-        return;
-    }
-
-    int generateHeight(TreeNode* root){
+    int solve(TreeNode* root,int level){
         if(!root){
             return 0;
         }
 
-        l[root->val]=generateHeight(root->left);
-        r[root->val]=generateHeight(root->right);
+        levels[root->val]=level;
+        int leftHeight = solve(root->left,level+1);
+        int rightHeight = solve(root->right,level+1);
+        height[root->val]=max(leftHeight,rightHeight);
 
-        return max(l[root->val],r[root->val])+1;
+        priority_queue<int,vector<int>,greater<int>> pq;
+
+        pair<int,int> heights = firstAndSecondMax[level];
+        pq.push(heights.first);
+        pq.push(heights.second);
+        pq.push(height[root->val]);
+        pq.pop();
+
+        heights.first=pq.top();
+        pq.pop();
+        heights.second=pq.top();
+        firstAndSecondMax[level]=heights;
+        return height[root->val]+1;
     }
 };
