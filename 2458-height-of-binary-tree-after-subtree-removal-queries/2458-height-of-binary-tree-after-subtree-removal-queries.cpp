@@ -11,26 +11,37 @@
  */
 class Solution {
 public:
+    unordered_map<int,int> l,r,height;
     vector<int> treeQueries(TreeNode* root, vector<int>& queries) {
-        unordered_map<int,int> mp;
+        generateHeight(root);
+        preCompute(root->left,r[root->val],1);
+        preCompute(root->right,l[root->val],1);
         vector<int> ans(queries.size());
         for(int i=0;i<queries.size();i++){
-            generateHeight(root,mp,queries[i]);
-            ans[i]=mp[root->val]-1;
+            ans[i]=height[queries[i]];
         }
         return ans;
     }
 
-    int generateHeight(TreeNode* root,unordered_map<int,int>& mp,int query){
+    void preCompute(TreeNode* root,int maxPossible,int depth){
+        if(!root){
+            return;
+        }
+
+        height[root->val]=maxPossible;
+        preCompute(root->left,max(maxPossible,r[root->val]+depth),depth+1);
+        preCompute(root->right,max(maxPossible,l[root->val]+depth),depth+1);
+        return;
+    }
+
+    int generateHeight(TreeNode* root){
         if(!root){
             return 0;
         }
 
-        if(root->val==query){
-            return 0;
-        }
+        l[root->val]=generateHeight(root->left);
+        r[root->val]=generateHeight(root->right);
 
-        mp[root->val]=max(1+generateHeight(root->left,mp,query),1+generateHeight(root->right,mp,query));
-        return mp[root->val];
+        return max(l[root->val],r[root->val])+1;
     }
 };
