@@ -1,7 +1,7 @@
 class Solution {
 public:
     int possibleStringCount(string word) {
-        char last=word[0];
+        char last = word[0];
         int count=1;
         int ans=1;
         for(int i=1;i<=word.length();i++){
@@ -13,6 +13,7 @@ public:
                 last=word[i];
             }
         }
+
         return ans;
     }
 };
