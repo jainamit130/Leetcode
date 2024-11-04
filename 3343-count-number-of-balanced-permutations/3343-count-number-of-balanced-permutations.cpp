@@ -38,7 +38,7 @@ public:
         target = sum/2;
         for(int i=1;i<=n;i++){
             fact[i]=(1LL*i*fact[i-1])%mod;
-            ifact[i]=binaryExpo(i,mod-2)%mod;
+            ifact[i]=binaryExpo(fact[i],mod-2)%mod;
         }
         cache.resize(10,vector<vector<int>>(n/2+1,vector<int>(sum+1,-1)));
         return solve(0,0,0); // Number,Odd Size,CurrSum
