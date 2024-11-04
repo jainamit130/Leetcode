@@ -8,7 +8,7 @@ public:
                 result = (base*result)%mod;
                 exp-=1;
             }
-            base = (1LL*base*base)%mod;
+            base = (1LL * base*base)%mod;
             exp/=2;
         }
         return result;
@@ -40,7 +40,7 @@ public:
             fact[i]=(1LL*i*fact[i-1])%mod;
             ifact[i]=binaryExpo(fact[i],mod-2)%mod;
         }
-        cache.resize(10,vector<vector<int>>(n/2+1,vector<int>(sum+1,-1)));
+        cache.resize(10,vector<vector<int>>(n/2+1,vector<int>(target+1,-1)));
         return solve(0,0,0); // Number,Odd Size,CurrSum
     }
 
@@ -54,11 +54,11 @@ public:
             }
         }
 
-        // if(currSum>target){
-        //     return 0;
-        // }
+        if(currSum>target){
+            return 0;
+        }
 
-        if(cache[num][oddSize][currSum]!=-1) {
+        if(cache[num][oddSize][currSum]!=-1){
             return cache[num][oddSize][currSum];
         }
 
@@ -85,7 +85,7 @@ Even Set Size= (n+1)/2
 Total/2 = target
 
 => Precompute and store the factorials
-=> n!/(a!*b!...) => (1/i!)%mod = i^(mod-2) => O(1)
+=> n!/(a!*b!...) => (1/i!)%mod = (i!)^(mod-2) => O(1)
 => I can choose few elements in the odd set and the remaining will go to the even set
 => While inside DP for every call i will compute the permutation of odd set and even set 
 
