@@ -3,8 +3,9 @@ public:
     vector<int> maximumBeauty(vector<vector<int>>& items, vector<int>& queries) {
         sort(items.begin(),items.end());
         int maxi = 0;
-        for(auto item:items) {
-            item[1]= max(maxi,item[1]);
+        for(auto& item:items) {
+            maxi = max(maxi,item[1]);
+            item[1] = maxi;
         }
         vector<int> ans;
         for(auto query:queries) {
@@ -25,3 +26,11 @@ public:
         return ans;
     }
 };
+
+/*
+
+193 732
+781 962
+864 962
+
+*/
