@@ -1,13 +1,12 @@
 class Solution {
 public:
     int smallestNumber(int n, int t) {
-        int prod;
         while(1){
-            prod = 1;
-            int copy = n;
-            while(copy) {
-                prod*=copy%10;
-                copy/=10;
+            int prod = 1;
+            int i =n;
+            while(i){
+                prod*=(i%10);
+                i/=10;
             }
 
             if(prod%t==0){
