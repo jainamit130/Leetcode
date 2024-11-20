@@ -28,8 +28,8 @@ class Solution {
                 curr[s.charAt(i)-'a']--;
                 i++;
             }
-            ans = Math.min(ans,s.length()-(j-i));
         }
+        ans = Math.min(ans,s.length()-(j-i));
         return ans;
     }
 
