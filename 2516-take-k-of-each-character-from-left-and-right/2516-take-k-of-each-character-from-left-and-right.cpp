@@ -1,9 +1,7 @@
 class Solution {
 public:
     int takeCharacters(string s, int k) {
-        if(k==0){
-            return 0;
-        }
+        if(k==0) return 0;
         vector<vector<int>> prefix;
         int ans = INT_MAX;
         prefix.push_back({0, 0, 0});
