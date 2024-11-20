@@ -1,6 +1,5 @@
 class Solution {
     public int takeCharacters(String s, int k) {
-        if(k==0) return 0;
         int n = s.length();
         int[] total = new int[3];
         int ans = Integer.MAX_VALUE;
@@ -31,8 +30,6 @@ class Solution {
             }
             ans = Math.min(ans,s.length()-(j-i));
         }
-
-
         return ans;
     }
 
