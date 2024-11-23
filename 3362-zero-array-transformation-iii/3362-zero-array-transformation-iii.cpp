@@ -9,7 +9,7 @@ public:
       while (k < nums.size()) {
         if (k > 0)
           v[k] += v[k - 1];
-        while (i < n && queries[i][0] <= k)
+        while (i < n && queries[i][0] <= k && queries[i][1]>=k)
             pq.push({queries[i][1], queries[i][0]}), i++;
         while (k < nums.size() && !pq.empty() && nums[k] + v[k] > 0 && pq.top().first >= k) {
           v[k] -= 1;
