@@ -20,10 +20,6 @@ class Solution {
             }
         }
 
-        int ans = 0;
-        for(Integer val:mp.values()) {
-            ans = Math.max(ans,val);
-        }
-        return ans;
+        return Collections.max(mp.values());
     }
 }
