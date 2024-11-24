@@ -8,7 +8,7 @@ public:
         }
 
         int ans = INT_MAX;
-        for(int i=1;i<=nums.size();i++) {
+        for(int i=l;i<=nums.size();i++) {
             for(int j=l;j<=r;j++) {
                 if(i-j>=0 && i-j<nums.size()){
                     if(prefix[i]-prefix[i-j]>0)
