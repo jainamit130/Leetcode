@@ -23,6 +23,8 @@ public:
     
     int getRandom() {
         auto it=st.begin();
+        int index = rand()%st.size();
+        advance(it,index);
         return *it;
     }
 };
