@@ -1,6 +1,6 @@
 class Solution {
 public:
-    vector<vector<int>> ans;
+    vector<int> path;
     vector<vector<int>> validArrangement(vector<vector<int>>& pairs) {
         unordered_map<int,vector<int>> adj;
         unordered_map<int,int> outDegrees;
@@ -18,18 +18,22 @@ public:
                 break;
             }
         }
-        cout<<start<<endl;
         dfs(adj,start);
+        vector<vector<int>> ans;
+        reverse(path.begin(),path.end());
+        for(int i=0;i<path.size()-1;i++) {
+            ans.push_back({path[i],path[i+1]});
+        }
         return ans;
     }
 
     void dfs(unordered_map<int,vector<int>>& adj,int node) {
         while(!adj[node].empty()) {
-            int nextNode = adj[node].back();
+            int neigh = adj[node].back();
             adj[node].pop_back();
-            ans.push_back({node,nextNode});
-            dfs(adj,nextNode);
+            dfs(adj,neigh);
         }
+        path.push_back(node);
         return;
     }
 };
