@@ -13,12 +13,11 @@ public:
 
         int maxDist = 0;
         for(int i=0;i<m;i++) {
-            maxDist = max(bfs(i,adj2,k-1),maxDist);
+            maxDist = max(bfs(i,adj2,k-1)+1,maxDist);
         }
         vector<int> ans;
-        cout<<maxDist<<endl;
         for(int i=0;i<n;i++) {
-            ans.push_back(bfs(i,adj1,k)+maxDist);
+            ans.push_back(bfs(i,adj1,k)+1+maxDist);
         }
         return ans;
     }
@@ -26,10 +25,7 @@ public:
     int bfs(int startNode, vector<vector<int>>& adj, int k) {
         int dist = 0;
         queue<int> q;
-        int ans = 1;
-        if(k<0){
-            return 0;
-        }
+        int ans = 0;
         vector<int> visited(adj.size());
         q.push(startNode);
         visited[startNode] = 1;
