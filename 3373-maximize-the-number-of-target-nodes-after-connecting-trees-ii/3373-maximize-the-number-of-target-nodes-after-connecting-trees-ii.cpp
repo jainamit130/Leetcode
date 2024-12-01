@@ -3,50 +3,50 @@ public:
     vector<int> maxTargetNodes(vector<vector<int>>& edges1, vector<vector<int>>& edges2) {
         int n = edges1.size()+1;
         int m = edges2.size()+1;
-        
-        // Construct Adjacency List
-        vector<vector<int>> adj1;
-        adj1 = construct(edges1);
 
-        vector<vector<int>> adj2;
-        adj2 = construct(edges2); 
+        // Construct Adj list
+        vector<vector<int>> adj1 = construct(edges1);
+        vector<vector<int>> adj2 = construct(edges2);
 
-        vector<int> parityTree2(m,-1);
-        bfs(0,adj2,parityTree2);
-        int maxCount = max(count(parityTree2.begin(),parityTree2.end(),1),count(parityTree2.begin(),parityTree2.end(),0));
-        
-        vector<int> parityTree1(n,-1);
-        bfs(0,adj1,parityTree1);
-        int totalEven = count(parityTree1.begin(),parityTree1.end(),0);
-        int totalOdd = count(parityTree1.begin(),parityTree1.end(),1);
+        vector<int> parity2(m,-1); // Tree2
+        vector<int> parity1(n,-1); // Tree1
 
+        bfs(0,adj2,parity2);
+        bfs(0,adj1,parity1);
+
+        int maxTree2 = max(count(parity2.begin(),parity2.end(),0),count(parity2.begin(),parity2.end(),1));
+
+        int countEven = count(parity1.begin(),parity1.end(),0);
+        int countOdd = count(parity1.begin(),parity1.end(),1);
+         
         vector<int> ans;
         for(int i=0;i<n;i++) {
-            if(parityTree1[i]==0) {
-                ans.push_back(totalEven + maxCount);
+            if(parity1[i]==0) {
+                // Take the count of 0 + Tree2 Count
+                ans.push_back(countEven+maxTree2);
             } else {
-                ans.push_back(totalOdd + maxCount);
+                // Take the count of 1 + Tree2 Count
+                ans.push_back(countOdd+maxTree2);
             }
         }
         return ans;
     }
 
-    void bfs(int startNode, vector<vector<int>>& adj,vector<int>& parity) {
+    void bfs(int startNode,vector<vector<int>>& adj,vector<int>& parity) {
         queue<int> q;
-        
         q.push(startNode);
-        parity[startNode] = 0;
+        parity[startNode] = 0; // Even Node
         int bit = 1;
         while(!q.empty()) {
             int size = q.size();
-            while(size) {
+            while(size){
                 int node = q.front();
                 q.pop();
                 size--;
-                for(auto neigh: adj[node]) {
+                for(auto neigh:adj[node]) {
                     if(parity[neigh]==-1) {
+                        parity[neigh]=bit;
                         q.push(neigh);
-                        parity[neigh] = bit;
                     }
                 }
             }
@@ -63,4 +63,5 @@ public:
         }
         return adj;
     }
+
 };
