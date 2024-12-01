@@ -16,7 +16,6 @@ public:
             maxDist = max(bfs(i,adj2,k-1),maxDist);
         }
         vector<int> ans;
-        cout<<maxDist<<endl;
         for(int i=0;i<n;i++) {
             ans.push_back(bfs(i,adj1,k)+maxDist);
         }
