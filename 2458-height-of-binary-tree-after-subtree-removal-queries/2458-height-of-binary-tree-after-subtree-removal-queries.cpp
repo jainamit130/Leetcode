@@ -20,6 +20,7 @@ public:
         firstAndSecondMax.resize(1e5+1,{-1,-1});
         solve(root,0);
         vector<int> ans;
+
         for(int i=0;i<queries.size();i++){
             int currLevel = levels[queries[i]];
             int currHeight = height[queries[i]];
@@ -42,20 +43,20 @@ public:
         levels[root->val]=level;
         int leftHeight = solve(root->left,level+1);
         int rightHeight = solve(root->right,level+1);
-        height[root->val]=max(leftHeight,rightHeight);
+        int currHeight = max(leftHeight, rightHeight);
+        height[root->val] = currHeight;
 
-        priority_queue<int,vector<int>,greater<int>> pq;
+        auto& maxPair = firstAndSecondMax[level];
+        int firstMax = maxPair.first;
+        int secondMax = maxPair.second;
 
-        pair<int,int> heights = firstAndSecondMax[level];
-        pq.push(heights.first);
-        pq.push(heights.second);
-        pq.push(height[root->val]);
-        pq.pop();
-
-        heights.first=pq.top();
-        pq.pop();
-        heights.second=pq.top();
-        firstAndSecondMax[level]=heights;
+        if (currHeight > firstMax) {
+            maxPair.second = firstMax;
+            maxPair.first = currHeight;
+        } else if (currHeight > secondMax) {
+            maxPair.second = currHeight;
+        }
+        firstAndSecondMax[level]=maxPair;
         return height[root->val]+1;
     }
 };
