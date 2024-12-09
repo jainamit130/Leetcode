@@ -1,29 +1,69 @@
 class Solution {
 public:
     vector<bool> isArraySpecial(vector<int>& nums, vector<vector<int>>& queries) {
-        int size = nums.size();
-        vector<bool> is_special(size - 1);
-        
-        for (int i = 0; i < size - 1; i++) {
-            is_special[i] = (nums[i] % 2 != nums[i + 1] % 2);
+        vector<bool>ans ;
+        int n = nums.size() ;
+
+        for(int i=0 ; i<n ; i++){
+            nums[i] = nums[i]%2;
         }
-        
-        vector<int> prefix_sum(size);
-        for (int i = 0; i < size - 1; i++) {
-            prefix_sum[i + 1] = prefix_sum[i] + (is_special[i] ? 1 : 0);
-        }
-        vector<bool> results(queries.size());
-        for (int j = 0; j < queries.size(); j++) {
-            int start = queries[j][0];
-            int end = queries[j][1];
-            if (end == start) {
-                results[j] = true;
-            } else {
-                int total_special_pairs = prefix_sum[end] - prefix_sum[start];
-                results[j] = (total_special_pairs == end - start);
+
+        vector<int>v;
+
+        for(int i=1 ; i<n ; i++){
+            if(nums[i] == nums[i-1]){
+                v.push_back(i);
             }
         }
+
+        int m = v.size();
+
+        for(auto q : queries){
+            int st = q[0];
+            int end = q[1];
+
+            int l = 0 ;
+            int r = m - 1 ;
+            int mid ;
+
+            int a = -1 ;
+            int b = -1 ;
+
+            while(l<=r){
+                mid = l + (r-l)/2;
+                if(v[mid] > st){
+                    a = v[mid] ;
+                    r = mid - 1 ;
+                }
+                else{
+                    l = mid + 1 ;
+                }
+            }
+
+            l = 0 ;
+            r = m - 1 ;
+
+            while(l<=r){
+                mid = l + (r-l)/2;
+                if(v[mid] <= end){
+                    b = v[mid] ;
+                    l = mid + 1 ;
+                }
+                else{
+                    r = mid - 1 ;
+                }
+            }
+
+            if( a != -1 && b != -1 && st< b && end >= a ){
+                ans.push_back(false);
+            }
+            else{
+                ans.push_back(true);
+            }
+
+        }
+
+        return ans ;
         
-        return results;
     }
 };
