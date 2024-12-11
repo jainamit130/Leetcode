@@ -1,18 +1,10 @@
 class Solution {
 public:
     int maximumBeauty(vector<int>& nums, int k) {
-        int maxE = INT_MIN;
-        int minE = INT_MAX;
+        vector<int> line(3e5+1);
         for(auto n:nums) {
-            maxE=max(maxE,n+k);
-            minE=min(minE,n-k);
-        }
-
-        vector<int> line(4e5+1);
-        for(auto n:nums) {
-            cout<<n-k+abs(minE)<<endl;
-            line[n-k+abs(minE)]++;
-            line[n+k+1+abs(minE)]--;
+            line[n-k+1e5+1]++;
+            line[n+k+1+1e5+1]--;
         }
         int ans = 0;
         int prefix = 0;
