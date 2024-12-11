@@ -1,10 +1,10 @@
 class Solution {
 public:
     int maximumBeauty(vector<int>& nums, int k) {
-        vector<int> line(3e5+1);
+        vector<int> line(3e5+2);
         for(auto n:nums) {
-            line[n-k+1e5+1]++;
-            line[n+k+1+1e5+1]--;
+            line[n-k+1e5]++;
+            line[n+k+1+1e5]--;
         }
         int ans = 0;
         int prefix = 0;
