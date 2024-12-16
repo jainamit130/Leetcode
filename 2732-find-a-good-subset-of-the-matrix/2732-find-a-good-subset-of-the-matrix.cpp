@@ -28,26 +28,24 @@ public:
         return {};
     }
 
-int checkAllChoices(unordered_map<string, int>& mp, vector<int>& initSum, string generatedStr, int index) {
-    if (index == initSum.size()) {
-        if (mp.find(generatedStr) != mp.end()) {
-            return mp[generatedStr]; 
+    int checkAllChoices(unordered_map<string,int>& mp,vector<int>& initSum,string generatedStr,int index) {
+        if(index==initSum.size()) {
+            if(mp.find(generatedStr)!=mp.end()) {
+                return mp[generatedStr];
+            } 
+            return -1;
         }
-        return -1; 
-    }
 
-    int ans = -1;
-
-    if (initSum[index] == 0) {
-        ans = checkAllChoices(mp, initSum, generatedStr + "0", index + 1);
-        if (ans == -1) {
-            ans = checkAllChoices(mp, initSum, generatedStr + "1", index + 1);
+        int ans = -1;
+        if(initSum[index]==0) {
+            ans = checkAllChoices(mp,initSum,generatedStr+"0",index+1);
+            if(ans==-1) {
+                ans = checkAllChoices(mp,initSum,generatedStr+"1",index+1);;
+            }
+        } else {
+            ans = checkAllChoices(mp,initSum,generatedStr+"0",index+1);
         }
-    } else {
-        ans = checkAllChoices(mp, initSum, generatedStr + "0", index + 1);
+
+        return ans;
     }
-
-    return ans;
-}
-
 };
