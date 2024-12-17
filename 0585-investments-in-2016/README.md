@@ -1,4 +1,4 @@
-<h2><a href="https://leetcode.com/problems/investments-in-2016">585. Investments in 2016</a></h2><h3>Medium</h3><hr><p>Table: <code>Insurance</code></p>
+<h2><a href="https://leetcode.com/problems/investments-in-2016/">585. Investments in 2016</a></h2><h3>Medium</h3><hr><p>Table: <code>Insurance</code></p>
 
 <pre>
 +-------------+-------+
