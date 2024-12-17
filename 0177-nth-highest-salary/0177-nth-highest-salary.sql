@@ -5,3 +5,12 @@ BEGIN
    Select salary into nth_salary From t where row_num=N;
   RETURN nth_salary;
 END
+
+
+-- CREATE FUNCTION getNthHighestSalary(N INT) RETURNS INT
+-- BEGIN
+--     Declare nth int;
+--     SET N = N-1;
+--     Select DISTINCT salary into nth from employee order by salary DESC LIMIT 1 OFFSET N;
+--   RETURN nth;
+-- END
