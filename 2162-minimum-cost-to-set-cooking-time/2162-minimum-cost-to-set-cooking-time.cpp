@@ -21,7 +21,7 @@ public:
             if(minutes>1)
                 ans2+=calcCost(to_string(minutes-1),curr,moveCost,pushCost);
             strSec = to_string(seconds + 60);
-            if(strSec.size()==1 && minutes!=0) {
+            if(strSec.size()==1) {
                 strSec="0"+strSec;
             }
             ans2+=calcCost(strSec,curr,moveCost,pushCost);
@@ -36,13 +36,11 @@ public:
         int cost = 0;
         int index = 0;
         while(index<nums.size()) {
-            if(curr==nums[index]) {
-                cost+=pushCost;
-            } else {
+            if(curr!=nums[index]) {
                 cost+=moveCost;
-                cost+=pushCost;
                 curr = nums[index];
             }
+            cost+=pushCost;
             index+=1;
         }
         return cost;
