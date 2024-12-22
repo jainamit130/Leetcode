@@ -16,16 +16,16 @@ public:
         return ans;
     }
 
-    bool check(string& s, int numOps, int mid, char startChar){
-    for(int i = 0; i < s.size(); ++i){
-        if(startChar == s[i]) numOps--;
-        startChar = (startChar == '0')?'1':'0';
+    bool check(string& s, int numOps, int mid, int alt){
+        for(int i = 0; i < s.size(); ++i){
+            if(to_string(alt)[0] != s[i]) numOps--;
+            alt = !alt;
+        }
+        return (numOps >= 0);
     }
-    return (numOps >= 0);
-}
 
-    bool isPossible(int numOps,string s,int maxPossibleLen) {
-        if(maxPossibleLen==1) return check(s, numOps, maxPossibleLen, '1') || check(s, numOps, maxPossibleLen, '0');
+    bool isPossible(int numOps,string& s,int maxPossibleLen) {
+        if(maxPossibleLen==1) return check(s, numOps, maxPossibleLen, 1) || check(s, numOps, maxPossibleLen, 0);
         int len = 1;
         for(int i=1;i<=s.length();i++) {
             if(i<s.length() && s[i]==s[i-1]) {
