@@ -1,13 +1,11 @@
 class Solution {
 public:
     int minimumDiameterAfterMerge(vector<vector<int>>& edges1, vector<vector<int>>& edges2) {
-        int n = edges1.size()+1;
-        int m = edges2.size()+1;
         vector<vector<int>> adj1 = constructAdj(edges1);
         vector<vector<int>> adj2 = constructAdj(edges2);
 
         int maxD1=0,maxD2=0;
-        vector<int> visited1(n),visited2(m);
+        vector<int> visited1(edges1.size()+1),visited2(edges2.size()+1);
         getMaxDiameter(adj1,0,visited1,maxD1);
         getMaxDiameter(adj2,0,visited2,maxD2);
 
