@@ -1,34 +1,25 @@
 class Solution {
 public:
+    vector<vector<int>> cache;
+    int totalSum = 0;
     int findTargetSumWays(vector<int>& nums, int target) {
-        int sum = accumulate(nums.begin(), nums.end(), 0);
-        vector<vector<int>> cache(nums.size()+1, vector<int>(2 * sum + 1, INT_MIN));
-        return solve(nums,target,0,0,sum,cache);
+        totalSum = accumulate(nums.begin(),nums.end(),0);
+        cache.resize(totalSum*4+1,vector<int>(nums.size()+1,INT_MIN));
+        return solve(nums,0,target);
     }
 
-    int solve(vector<int>& nums,int target,int currSum,int index,int sum,vector<vector<int>>& cache){
-        if(index>=nums.size()){
-            if(currSum==target)
+    int solve(vector<int>& nums,int index,int target) {
+        if(index>=nums.size()) {
+            if(target==0) {
                 return 1;
-            else
-                return 0;
+            }
+            return 0;
         }
 
-        int adjustedSum = currSum + sum;
+        if(cache[target+totalSum][index]!=INT_MIN) {
+            return cache[target+totalSum][index];
+        }
 
-        if(cache[index][adjustedSum]!=INT_MIN)
-            return cache[index][adjustedSum];
-    
-        int subtract = solve(nums,target,currSum-nums[index],index+1,sum,cache);
-        int add = solve(nums,target,currSum+nums[index],index+1,sum,cache);
-        return cache[index][adjustedSum]=subtract+add;
+        return cache[target+totalSum][index]=solve(nums,index+1,target-nums[index])+solve(nums,index+1,target+nums[index]);
     }
 };
-
-/*
-x
-
-target
-
-
-*/
