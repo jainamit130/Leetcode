@@ -1,10 +1,9 @@
 class Solution {
 public:
     vector<vector<int>> cache;
-    int totalSum = 0;
+    int totalSum = 2000;
     int findTargetSumWays(vector<int>& nums, int target) {
-        totalSum = accumulate(nums.begin(),nums.end(),0);
-        cache.resize(totalSum*4+1,vector<int>(nums.size()+1,INT_MIN));
+        cache.resize(1000*4+1,vector<int>(nums.size()+1,INT_MIN));
         return solve(nums,0,target);
     }
 
