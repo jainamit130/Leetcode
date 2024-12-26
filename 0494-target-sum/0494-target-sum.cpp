@@ -1,7 +1,6 @@
 class Solution {
 public:
     vector<vector<int>> cache;
-    int totalSum = 2000;
     int findTargetSumWays(vector<int>& nums, int target) {
         cache.resize(1000*4+1,vector<int>(nums.size()+1,INT_MIN));
         return solve(nums,0,target);
@@ -15,10 +14,10 @@ public:
             return 0;
         }
 
-        if(cache[target+totalSum][index]!=INT_MIN) {
-            return cache[target+totalSum][index];
+        if(cache[target+2000][index]!=INT_MIN) {
+            return cache[target+2000][index];
         }
 
-        return cache[target+totalSum][index]=solve(nums,index+1,target-nums[index])+solve(nums,index+1,target+nums[index]);
+        return cache[target+2000][index]=solve(nums,index+1,target-nums[index])+solve(nums,index+1,target+nums[index]);
     }
 };
