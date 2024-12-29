@@ -10,12 +10,15 @@ public:
             }
         }
 
+        for(auto& [key,vec]:mp) {
+            sort(vec.begin(),vec.end());
+        }
+
         long long ans = 0;
         for(int i=n-1;i>=6;i--) {
             for(int j=i-2;j>=4;j--) {
                 auto ratio = getRatio(nums[i],nums[j]);
                 if(mp.find(ratio)!=mp.end()) {
-                    sort(mp[ratio].begin(),mp[ratio].end());
                     int index = lower_bound(mp[ratio].begin(),mp[ratio].end(),j-1)-mp[ratio].begin();
                     ans=ans+1LL*index;
                 }
