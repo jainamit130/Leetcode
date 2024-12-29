@@ -2,11 +2,11 @@ class Solution {
 public:
     long long numberOfSubsequences(vector<int>& nums) {
         map<pair<int,int>,vector<int>> mp;
-        int n = nums.size();
-        for(int i=0;i<n-6;i++) {
-            for(int j=i+2;j<n-4;j++) {
-                auto ratio = getRatio(nums[i],nums[j]);
-                mp[ratio].push_back(j);
+        int n =nums.size();
+        for(int p=0;p<n-6;p++) {
+            for(int q=p+2;q<n-4;q++) {
+                auto ratio = getRatio(nums[p],nums[q]);
+                mp[ratio].push_back(q);
             }
         }
 
@@ -15,13 +15,13 @@ public:
         }
 
         long long ans = 0;
-        for(int i=n-1;i>=6;i--) {
-            for(int j=i-2;j>=4;j--) {
-                auto ratio = getRatio(nums[i],nums[j]);
+        for(int s=n-1;s>=6;s--) {
+            for(int r=s-2;r>=4; r--) {
+                auto ratio = getRatio(nums[s],nums[r]);
                 if(mp.find(ratio)!=mp.end()) {
-                    int index = lower_bound(mp[ratio].begin(),mp[ratio].end(),j-1)-mp[ratio].begin();
-                    ans=ans+1LL*index;
-                }
+                    int index = lower_bound(mp[ratio].begin(),mp[ratio].end(),r-1)-mp[ratio].begin();
+                    ans = ans + index;
+                } 
             }
         }
         return ans;
@@ -41,10 +41,15 @@ public:
 
 /*
 
-3   3 => 1,3   1,3 => 1  9 ; 9  1 ; 3  3
-                   => 
 
 
+nums[p]/nums[q]  =  nums[s]/nums[r]
+
+
+x/y -> 1,8,8,5,5,11
+
+m/n -> 
+lower_bound search of index(m)-1
 
 
 */
