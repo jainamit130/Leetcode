@@ -19,7 +19,10 @@ public:
     long long prod(vector<int> arr) {
         long long prod = 1;
         for(auto n:arr) {
-            prod=prod*1LL*n;
+            prod=prod*n;
+            if(prod>2520) {
+                return prod;
+            }
         }
         return prod;
     }
