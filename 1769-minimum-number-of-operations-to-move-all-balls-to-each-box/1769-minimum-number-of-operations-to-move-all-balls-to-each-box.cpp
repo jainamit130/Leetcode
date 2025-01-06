@@ -9,11 +9,6 @@ public:
             if(boxes[i]=='1')
                 suffixCount+=1;
         }
-        solve(boxes,ans,suffixCount,suffixAns);
-        return ans;
-    }
-
-    void solve(string nums,vector<int>& ans,int suffixCount,int suffixAns) {
         int prefixCount=0;
         int prefixAns=0;
         for(int i=0;i<nums.length();i++) {
@@ -28,6 +23,6 @@ public:
             }
             suffixAns-=suffixCount;
         }
-        return;
+        return ans;
     }
 };
