@@ -11,14 +11,13 @@ public:
         }
         int prefixCount=0;
         int prefixAns=0;
-        for(int i=0;i<nums.length();i++) {
-            
+        for(int i=0;i<boxes.length();i++) {
             prefixAns+=prefixCount;
-            if(nums[i]=='1') {
+            if(boxes[i]=='1') {
                 prefixCount++;
             }
             ans.push_back(prefixAns+suffixAns);
-            if(nums[i]=='1') {
+            if(boxes[i]=='1') {
                 suffixCount--;
             }
             suffixAns-=suffixCount;
