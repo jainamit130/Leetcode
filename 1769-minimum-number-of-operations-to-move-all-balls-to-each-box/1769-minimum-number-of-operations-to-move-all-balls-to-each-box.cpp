@@ -1,30 +1,32 @@
 class Solution {
 public:
     vector<int> minOperations(string boxes) {
-        vector<int> prefix,suffix,ans;
-        solve(boxes,prefix,suffix);
-        int n = boxes.size();
-        for(int i=0;i<n;i++) {
-            ans.push_back(prefix[i]+suffix[n-i-1]);
+        vector<int> ans;
+        int suffixCount = 0;
+        int suffixAns = 0;
+        for(int i=boxes.size()-1;i>=0;i--){
+            suffixAns+=suffixCount;
+            if(boxes[i]=='1')
+                suffixCount+=1;
         }
+        solve(boxes,ans,suffixCount,suffixAns);
         return ans;
     }
 
-    void solve(string& nums,vector<int>& prefix,vector<int>& suffix) {
-        int prefixCount=0,suffixCount = 0;
-        int prefixAns=0,suffixAns = 0;
-        int n = nums.length();
-        for(int i=0;i<n;i++) {
+    void solve(string nums,vector<int>& ans,int suffixCount,int suffixAns) {
+        int prefixCount=0;
+        int prefixAns=0;
+        for(int i=0;i<nums.length();i++) {
+            
             prefixAns+=prefixCount;
-            suffixAns+=suffixCount;
             if(nums[i]=='1') {
                 prefixCount++;
             }
-            if(nums[n-i-1]=='1') {
-                suffixCount++;
+            ans.push_back(prefixAns+suffixAns);
+            if(nums[i]=='1') {
+                suffixCount--;
             }
-            prefix.push_back(prefixAns);
-            suffix.push_back(suffixAns);
+            suffixAns-=suffixCount;
         }
         return;
     }
