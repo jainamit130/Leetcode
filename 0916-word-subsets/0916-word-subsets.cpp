@@ -3,8 +3,13 @@ public:
     vector<string> wordSubsets(vector<string>& words1, vector<string>& words2) {
         unordered_map<char,int> charCount1;
         for(auto word:words2) {
+            unordered_map<char,int> charCount;
             for(auto ch:word) {
-                charCount1[ch]++;
+                charCount[ch]++;
+            }
+
+            for(auto [ch,count]: charCount) {
+                charCount1[ch]=max(charCount1[ch],count);
             }
         }
         vector<string> ans;
