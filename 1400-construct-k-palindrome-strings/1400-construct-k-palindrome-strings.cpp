@@ -7,6 +7,7 @@ public:
         }
         int oddCount = 0;
         int possibleCount = 0;
+        int totalCount = 0;
         for(auto& count:mp) {
             if(count%2==1) {
                 oddCount++;
@@ -15,8 +16,10 @@ public:
             if(count>=2) {
                 possibleCount++;
             }
+
+            totalCount+=count;
         }
-        return possibleCount+oddCount>=k && max(oddCount-possibleCount,0)+(possibleCount>0)<=k;
+        return totalCount>=k && max(oddCount-possibleCount,0)+min(possibleCount,oddCount)<=k;
     }
 };
 
