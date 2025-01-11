@@ -6,7 +6,7 @@ public:
             mp[ch-'a']++;
         }
         int oddCount = 0;
-        int possibleCount = 0;
+        int evenCount = 0;
         int totalCount = 0;
         for(auto& count:mp) {
             if(count%2==1) {
@@ -14,12 +14,12 @@ public:
             } 
 
             if(count>=2) {
-                possibleCount++;
+                evenCount++;
             }
 
             totalCount+=count;
         }
-        return totalCount>=k && max(oddCount-possibleCount,0)+min(possibleCount,oddCount)<=k;
+        return totalCount>=k && max(oddCount-evenCount,0)+min(evenCount,oddCount)<=k;
     }
 };
 
