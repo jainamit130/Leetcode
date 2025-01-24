@@ -1,29 +1,28 @@
 class Solution {
 public:
-    set<int> safe;
+    vector<int> safe;
     vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
         int n=graph.size();
-        vector<vector<int>> adj(n);
-        for(int i=0;i<n;i++){
-            for(int j=0;j<graph[i].size();j++){
-                adj[i].push_back(graph[i][j]);
-            }
-        }
-
+        safe.resize(n);
         vector<int> visited(n);
         for(int i=0;i<n;i++){              
-            dfs(adj,visited,i);
+            dfs(graph,visited,i);
         }
-        vector<int> ans(safe.begin(),safe.end());
+        vector<int> ans;
+        for(int i=0;i<safe.size();i++){
+            if(safe[i]){
+                ans.push_back(i);
+            }
+        }
         return ans;
     }
 
     bool dfs(vector<vector<int>>& adj,vector<int>& visited,int node){
-        if(safe.find(node)!=safe.end())
+        if(safe[node])
             return true;
 
         if(adj[node].size()==0){
-            safe.insert(node);
+            safe[node]=1;
             return true;
         }
         
@@ -37,7 +36,7 @@ public:
             result&=dfs(adj,visited,adj[node][i]);
         }
         if(result){
-            safe.insert(node);
+            safe[node]=1;
         }
         return result;
     }
