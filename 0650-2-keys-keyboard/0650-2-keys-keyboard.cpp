@@ -1,19 +1,21 @@
 class Solution {
 public:
-    vector<vector<vector<int>>> cache;
     int minSteps(int n) {
-        cache.resize(n+n+1,vector<vector<int>>(n+n+1,vector<int>(2,-1)));
-        return solve(n,1,0,1);
+        vector<vector<int>> cache(n+1,vector<int>(n+1,-1));
+        return solve(n,1,0,cache);
     }
 
-    int solve(int& n,int count,int copyCount,int canCopy) {
+    int solve(int& n,int count,int copyCount,vector<vector<int>>& cache) {
         if(n==count) return 0;
         if(count>n) return 1001;
-        if(cache[count][copyCount][canCopy]!=-1) return cache[count][copyCount][canCopy];
+        if(cache[count][copyCount]!=-1) return cache[count][copyCount]; 
         int ans = 1001;
-        if(copyCount>0) ans = min(ans,1+solve(n,count+copyCount,copyCount,1));
-        if(canCopy) ans = min(ans,1+solve(n,count,count,0));
-        return cache[count][copyCount][canCopy]=ans;
+        if(copyCount==0) ans = min(ans,1+solve(n,count,count,cache));
+        else {
+            ans = min(ans,1+solve(n,count+copyCount,0,cache));
+            ans = min(ans,1+solve(n,count+copyCount,copyCount,cache));
+        }
+        return cache[count][copyCount]=ans;
     } 
 };
 
