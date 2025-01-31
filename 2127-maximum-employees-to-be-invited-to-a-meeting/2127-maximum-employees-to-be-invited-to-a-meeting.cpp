@@ -13,7 +13,7 @@ public:
         
         for (int i = 0; i < n; i++) {
             if (visited[i] == 0) {
-                vector<int> currTraversalVisitedSet(n, -1);
+                unordered_map<int,int> currTraversalVisitedSet;
                 visited[i] = 1;
                 currTraversalVisitedSet[i] = 0;
 
@@ -31,7 +31,7 @@ public:
     }
 
     int bfs(vector<vector<int>>& adj, int node1, int node2) {
-        queue<pair<int, int>> q;  // Use pair<int, int> to store the node and its distance
+        queue<pair<int, int>> q;  
         int maxLen = 0;
         q.push({node1, 0});
         
@@ -42,7 +42,7 @@ public:
             q.pop();
             
             for (int i = 0; i < adj[node].size(); i++) {
-                if (adj[node][i] != node2) {  // Avoid going back to node2
+                if (adj[node][i] != node2) {  
                     q.push({adj[node][i], len + 1});
                 }
             }
@@ -50,8 +50,8 @@ public:
         return maxLen;
     }
 
-    pair<int, int> dfs(vector<int>& adj, int node, int prevNode, vector<int>& visited, vector<int>& currTraversalVisitedSet) {
-        if (visited[node] == 1 && currTraversalVisitedSet[node] != -1) {
+    pair<int, int> dfs(vector<int>& adj, int node, int prevNode, vector<int>& visited, unordered_map<int,int>& currTraversalVisitedSet) {
+        if (visited[node] == 1 && currTraversalVisitedSet.find(node)!=currTraversalVisitedSet.end()) {
             return {node, currTraversalVisitedSet[prevNode] + 1 - currTraversalVisitedSet[node]};
         }
         if (visited[node] == 1) return {-1, 0};
