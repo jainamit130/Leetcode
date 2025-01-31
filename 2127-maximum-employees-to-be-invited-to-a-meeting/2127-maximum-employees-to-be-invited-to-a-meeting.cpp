@@ -2,7 +2,7 @@ class Solution {
 public:
     int maximumInvitations(vector<int>& adj) {
         int n = adj.size();
-        vector<vector<int>> invertAdj(n);
+        unordered_map<int,vector<int>> invertAdj;
         for(int i = 0; i < n; i++) {
             invertAdj[adj[i]].push_back(i);
         }
@@ -30,7 +30,7 @@ public:
         return max(totalOpenCircle, longestClosedCycle);
     }
 
-    int bfs(vector<vector<int>>& adj, int node1, int node2) {
+    int bfs(unordered_map<int,vector<int>>& adj, int node1, int node2) {
         queue<pair<int, int>> q;  
         int maxLen = 0;
         q.push({node1, 0});
