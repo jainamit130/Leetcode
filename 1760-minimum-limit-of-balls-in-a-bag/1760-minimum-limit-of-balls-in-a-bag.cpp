@@ -1,9 +1,14 @@
 class Solution {
 public:
+    priority_queue<int> heap;
     int minimumSize(vector<int>& nums, int maxOperations) {
         int start = 1;  
-        // O(log maxElement)
-        int end = *max_element(nums.begin(),nums.end());
+        int end = nums[0];
+        for(auto n:nums) {
+            heap.push(n);
+            end = max(n,end);
+        }
+
         int ans = end;
         // O(n log n)
         while(start<=end) {
@@ -20,11 +25,7 @@ public:
 
     // O(n log n)
     bool isValid(vector<int>& nums,int penalty,int maxOperations) {
-        priority_queue<int> pq;
-        // O(n log n)
-        for(auto n:nums) {
-            pq.push(n);
-        }
+        priority_queue<int> pq = heap;
         // O(m log n)
         while(!pq.empty() && pq.top()>penalty && maxOperations>=0) {
             int currPenalty = pq.top();
