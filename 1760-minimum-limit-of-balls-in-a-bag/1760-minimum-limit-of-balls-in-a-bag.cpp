@@ -23,14 +23,11 @@ public:
         return ans;
     }
 
-    // O(n log n)
+    // O(n)
     bool isValid(vector<int>& nums,int penalty,int maxOperations) {
-        priority_queue<int> pq = heap;
-        // O(m log n)
-        while(!pq.empty() && pq.top()>penalty && maxOperations>=0) {
-            int currPenalty = pq.top();
-            pq.pop();
-            maxOperations-=ceil(currPenalty/(double)penalty)-1;
+        for(int i=0;i<nums.size() && maxOperations>=0;i++) {
+            int currPenalty = nums[i];
+            if(currPenalty>penalty) maxOperations-=ceil(currPenalty/(double)penalty)-1;
         }
         return maxOperations>=0;
     }
