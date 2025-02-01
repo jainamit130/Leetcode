@@ -29,8 +29,7 @@ public:
         while(!pq.empty() && pq.top()>penalty && maxOperations>=0) {
             int currPenalty = pq.top();
             pq.pop();
-            pq.push(currPenalty-penalty);
-            maxOperations--;
+            maxOperations-=ceil(currPenalty/(double)penalty)-1;
         }
         return maxOperations>=0;
     }
@@ -38,7 +37,9 @@ public:
 
 /*
 
-
+9 -> 2  7
+7 -> 2  5
+5 -> 2  3
 
 What are the constraints?
 nums = [0,0,0]
