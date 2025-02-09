@@ -32,13 +32,6 @@ public:
         for(int rem=0;rem<divisor;rem++) {
             if(modMap[rem]!=0) newUpdatedMod[(rem*10+digit)%divisor] += modMap[rem];
         }
-        int i = 0;
-        // if(divisor == 9){
-        // for(auto n:newUpdatedMod) {
-        //     cout<<"newUpdatedMod["<<i<<"] -> "<<n<<endl;
-        //     i++;
-        // }}
-        // cout<<endl;
         modMap = newUpdatedMod;
         return;
     }
@@ -47,10 +40,7 @@ public:
 
 /*
 
-1   2   9   3   6
-
-
-0*
+3   33  63  93  
 
 
 
