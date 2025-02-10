@@ -11,52 +11,21 @@
 class Solution {
 public:
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-        ListNode* copy1=l1;
-        ListNode* copy2=l2;
-        int sum=0,carry=0;
-        while(copy1 && copy2){
-            sum=(copy1->val+copy2->val+carry);
-            carry=sum/10;
-            copy1->val=sum%10;
-            if(!copy1->next && !copy2->next && carry){
-                copy1->next=new ListNode(1);
-                copy1=NULL;
-                break;
-            }
-            if(!copy1->next && copy2->next){
-                copy1->next=copy2->next;
-                copy2=copy2->next;
-                copy1=NULL;
-                break;
-            }
-            copy1=copy1->next;
-            copy2=copy2->next;
+        ListNode* dummyHead = new ListNode(0);
+        ListNode* curr = dummyHead;
+        int carry = 0;
+        while (l1 != NULL || l2 != NULL || carry != 0) {
+            int x = l1 ? l1->val : 0;
+            int y = l2 ? l2->val : 0;
+            int sum = carry + x + y;
+            carry = sum / 10;
+            curr->next = new ListNode(sum % 10);
+            curr = curr->next;
+            l1 = l1 ? l1->next : nullptr;
+            l2 = l2 ? l2->next : nullptr;
         }
-        while(copy1){
-            if(!carry)
-                break;
-            sum=(copy1->val+carry);
-            carry=sum/10;
-            copy1->val=sum%10;
-            if(!copy1->next && carry){
-                copy1->next=new ListNode(1);
-                break;
-            }
-            copy1=copy1->next;
-        }
-        while(copy2){
-            if(!carry)
-                break;
-            sum=(copy2->val+carry);
-            carry=sum/10;
-            copy2->val=sum%10;
-            if(!copy2->next && carry){
-                copy2->next=new ListNode(1);
-                break;
-            }
-            copy2=copy2->next;
-        }
-
-        return l1;
+        ListNode* result = dummyHead->next;
+        delete dummyHead;  
+        return result;
     }
 };
