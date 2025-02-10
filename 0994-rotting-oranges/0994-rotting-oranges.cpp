@@ -1,70 +1,54 @@
 class Solution {
 public:
     int orangesRotting(vector<vector<int>>& grid) {
-        int m=grid.size();
-        int n=grid[0].size();
-        int good=0;
-        queue<pair<int,int>> q;
-        int time=-1;
-        for(int i=0;i<grid.size();i++){
-            for(int j=0;j<grid[0].size();j++){
-                if(grid[i][j]==2){
+        vector<vector<int>> dir = { {0,1}, {0,-1}, {1,0}, {-1,0} };
+        queue<vector<int>> q;
+        int m = grid.size();
+        int n = grid[0].size();
+        vector<vector<int>> visited(m,vector<int>(n,0));
+        int freshOranges = 0;
+        for(int i=0;i<m;i++) {
+            for(int j=0;j<n;j++) {
+                if(grid[i][j]==2) {
                     q.push({i,j});
+                    visited[i][j]=1;
+                } else {
+                    visited[i][j]=0;
                 }
-                if(grid[i][j]==1){
-                    good++;
-                }
+
+                if(grid[i][j]==1) freshOranges++;
             }
         }
-        if(good==0)
-            return 0;
-        while(!q.empty()){
-            int size=q.size();
-            while(size){
-                auto [row,col]=q.front();
+        int time = 0;
+        while(!q.empty()) {
+            int size = q.size();
+            while(size--) {
+                vector<int> indexes = q.front();
+                int row = indexes[0];
+                int col = indexes[1];
                 q.pop();
-                size--;
-                if(!valid(row,col,m,n))
-                    continue;
-                if(grid[row][col]==0 || grid[row][col]==-1)
-                    continue;
-                // cout<<row<<" "<<col<<" "<<time<<endl;
-                if(grid[row][col]==1)
-                    good--;
-                grid[row][col]=-1;
-                q.push({row+1,col});
-                q.push({row,col+1});
-                q.push({row,col-1});
-                q.push({row-1,col});
+                for(auto d:dir) {
+                    int newRow = row+d[0];
+                    int newCol = col+d[1];
+                    // Mark if the new orange is fresh
+                    if(isValid(newRow,newCol,m,n) && visited[newRow][newCol]==0 && grid[newRow][newCol]==1) {
+                        visited[newRow][newCol]=1;
+                        freshOranges--;
+                        q.push({newRow,newCol});
+                    }
+                }              
             }
             time++;
-            if(good==0)
-                break;
         }
-        // for(int i=0;i<grid.size();i++){
-        //     for(int j=0;j<grid[0].size();j++){
-        //         cout<<grid[i][j]<<" ";
-        //     }
-        //     cout<<endl;
-        // }
-        if(good==0)
-            return time;  
-        return -1;
+        if(freshOranges>0) return -1;
+        return max(0,time-1);
     }
 
-    bool valid(int r,int c,int m,int n){
-        if(r<0 || r>=m || c<0 || c>=n)
-            return false;
-        return true;
+    bool isValid(int row,int col,int m,int n) {
+        if(row>=0 && row<m && col>=0 && col<n) {
+            return true;
+        }
+        return false;
     }
 };
 
-
-/*
-queue =  01 0-1 -10
-
--1   -1   1
-0   1   1
-1   0   1
-
-*/
