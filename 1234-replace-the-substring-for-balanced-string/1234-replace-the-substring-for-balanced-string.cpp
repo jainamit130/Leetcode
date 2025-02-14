@@ -16,13 +16,14 @@ public:
         int i=0,j=0;
         int ans = compareFreq(windowFreq,extras)==0?0:s.length();
         if(ans==0) return 0;
-        while(j<s.length()) {
+        while(j<=s.length()) {
             // Shrink
             while(i<j && compareFreq(windowFreq,extras)!=1) {
                 ans = min(ans,j-i);
                 windowFreq[s[i]-'a']--;
                 i++;
             }
+            if(j==s.length()) break;
             // Expand
             windowFreq[s[j]-'a']++;
             j++;
