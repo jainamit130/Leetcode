@@ -4,7 +4,7 @@ public:
 
     double separateSquares(vector<vector<int>>& squares) {
         double start = 0;
-        double end = 1e18; 
+        double end = 1e10; 
 
         while (end - start > epsilon) {
             double mid = start + (end - start) / 2.0;
