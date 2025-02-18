@@ -26,8 +26,6 @@ public:
         int res = INT_MAX;
         int i=0,j=0,k=0;
 
-        if(group1.empty() && group2.empty() && group3.empty()) return 0;
-
         while((i+group2.length()+group3.length())<s.length()) {
             while(i<s.length() && matchIndexes1[i]!=group1.length()) i++;
             if(i>=s.length()) break;
