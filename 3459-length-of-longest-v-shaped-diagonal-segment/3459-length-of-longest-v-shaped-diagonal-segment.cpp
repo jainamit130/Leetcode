@@ -4,7 +4,7 @@ public:
         {1, {-1, 1}}, {2, {1, 1}}, {3, {1, -1}}, {4, {-1, -1}}};
     
     unordered_map<int, int> clockwise = {{1, 2}, {2, 3}, {3, 4}, {4, 1}};
-    int dp[501][501][2][5][2];
+    int dp[501][501][2][4][2];
     int m, n;
 
     int lenOfVDiagonal(vector<vector<int>>& grid) {
@@ -33,7 +33,7 @@ public:
         if(!isValid(row,col)) return 0;
         if(shouldBe2 && grid[row][col]!=2) return 0;
         if(!shouldBe2 && grid[row][col]!=0) return 0;
-        if(dp[row][col][turn][dir][shouldBe2]!=-1) return dp[row][col][turn][dir][shouldBe2];
+        if(dp[row][col][turn][dir-1][shouldBe2]!=-1) return dp[row][col][turn][dir-1][shouldBe2];
         int ans = 0; 
         
         int newRow = row + dirMp[dir][0];
@@ -46,7 +46,7 @@ public:
             ans = max(ans, 1 + solve(grid, row + newDir[0], col + newDir[1], 1, clockwise[dir], !shouldBe2));
         }
         
-        return dp[row][col][turn][dir][shouldBe2]=ans;
+        return dp[row][col][turn][dir-1][shouldBe2]=ans;
     }
 };
 
