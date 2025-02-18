@@ -1,62 +1,60 @@
 class Solution {
 public:
     int shortestMatchingSubstring(string s, string p) {
-        string group1="";
-        string group2="";
-        string group3="";
+        string group1 = "",group2="",group3="";
         int count = 0;
-        for(int i=0;i<p.length();i++) {
-            if(p[i]=='*') {
-                count++;
-            } else {
-                if(count==0) {
-                    group1+=p[i];
-                } else if(count==1){
-                    group2+=p[i];
-                } else {
-                    group3+=p[i];
-                }
+        for(auto ch:p) {
+            if(ch=='*') count++;
+            else {
+                if(count==0) group1+=ch;
+                if(count==1) group2+=ch;
+                if(count==2) group3+=ch;
             }
         }
 
-        vector<int> matchIndexes1 = getMatchingIndexes(group1, s);
-        vector<int> matchIndexes2 = getMatchingIndexes(group2, s);
-        vector<int> matchIndexes3 = getMatchingIndexes(group3, s);
+        vector<int> matchIndexes1 = getMatchingIndexes(group1,s);
+        vector<int> matchIndexes2 = getMatchingIndexes(group2,s);
+        vector<int> matchIndexes3 = getMatchingIndexes(group3,s);
 
-        int res = INT_MAX;
         int i=0,j=0,k=0;
+        int res = INT_MAX;
 
-        while((i+group2.length()+group3.length())<s.length()) {
-            while(i<s.length() && matchIndexes1[i]!=group1.length()) i++;
-            if(i>=s.length()) break;
+        int n = s.length();
+        int seg1 = group1.length();
+        int seg2 = group2.length();
+        int seg3 = group3.length();
+        while(i+seg2+seg3<s.length()) {
+            while(i<n && matchIndexes1[i]!=seg1) i++;
+            if(i>=n) break;
 
-            while(j<s.length() && (j<i+group2.length() || matchIndexes2[j]!=group2.length())) j++;
-            if(j>=s.length()) break;
+            j = i+seg2;
+            while(j<n && matchIndexes2[j]!=seg2) j++;
+            if(j>=n) break;
 
-            while(k<s.length() && (k<j+group3.length() || matchIndexes3[k]!=group3.length())) k++;
-            if(k>=s.length()) break;
+            k = j+seg3;
+            while(k<n && matchIndexes3[k]!=seg3) k++;
+            if(k>=n) break;
 
-            res = min(res,k-i+(int)group1.size());
+            res = min(res,k-i+seg1);
             i++;
         }
 
-
-        return res == INT_MAX ? -1 : res;
-    } 
+        return res==INT_MAX?-1:res;
+    }
 
     vector<int> getMatchingIndexes(string pattern,string s) {
-        vector<int> matchIndexes(s.length(),0);
+        vector<int> matchIndexes(s.length());
         if(pattern.length()==0) return matchIndexes;
-        vector<int> lps = getLPS(pattern);
+        vector<int> lps = getLPS(pattern); 
         int i=0,j=0;
         while(i<s.length()) {
             if(s[i]==pattern[j]) {
-                i++;
                 j++;
-                if(j==pattern.length()) {
-                    matchIndexes[i-1]=pattern.length();
+                if(pattern.length()==j) {
+                    matchIndexes[i]=pattern.length();
                     j = lps[j-1];
                 }
+                i++;
             } else {
                 if(j!=0) j = lps[j-1];
                 else i++;
@@ -68,7 +66,7 @@ public:
     vector<int> getLPS(string pattern) {
         vector<int> lps(pattern.length());
         int i=1;
-        int length=0;
+        int length = 0;
         while(i<pattern.length()) {
             if(pattern[length]==pattern[i]) {
                 length++;
@@ -85,7 +83,38 @@ public:
 
 
 /*
+length = 0
+                i
+a   a   a   c   a   a   a
+0   1   2   0
 
-    
+
+
+LPS[i] => from 0 to i whats the longest prefix which is equal to the suffix 
+
+LPS[0]=> 0 to 0 of pattern has 0 lps
+
+a   b   a   a   c   b   a   e   c   e   b   c   e
+
+
+0   0   2   0   0   0   2   0   0   0   0   0   0
+        i
+0   0   0   0   1   0   0   0   1   0   0   0   0
+                j
+0   0   0   0   0   0   0   0   0   2   0   0   2
+                                    k
+
+0011222  
+ba*c*ce
+
+ba
+c
+ce
+
+Steps:
+
+1. Get the groups
+2. for every group/pattern get the lps 
+3. now start a 3 pointer appraoch
 
 */
