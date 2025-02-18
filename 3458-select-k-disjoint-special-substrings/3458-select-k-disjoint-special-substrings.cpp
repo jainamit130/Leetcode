@@ -1,35 +1,52 @@
 class Solution {
 public:
     bool maxSubstringLength(string s, int k) {
-        unordered_map<char,int> mp;
-        for(auto ch:s) {
-            mp[ch]++;
-        }
-        int i=0,j=0;
-        int count = 0;
-        while(j<s.length()) {
-            if(mp[s[j]]!=1) {
-                count += (j-i);
-                j++;
-                i=j;
-            } else {
-                mp[s[j]]--;
-                if(mp[s[j]]==0) mp.erase(s[j]);
-                j++;
+        unordered_map<char,pair<int,int>> firstLastOcc;
+        vector<pair<int,int>> intervals;
+        int n = s.length();
+        for(int i=0;i<n;i++) {
+            if(firstLastOcc.find(s[i])==firstLastOcc.end()) {
+                firstLastOcc[s[i]].first = i;    
             }
+            firstLastOcc[s[i]].second = i;
         }
-        count+=j-i;
-        int freq = 1;
-        for(int i=1;i<=s.length();i++) {
-            if(i<s.length() && s[i]==s[i-1]) {
-                freq++;
-            } else {
-                if(mp[s[i-1]]==freq) {
-                    count+=1;
+
+        for(char ch='a';ch<='z';ch++) {
+            if(firstLastOcc.find(ch)==firstLastOcc.end()) continue;
+            auto [firstIndex,lastIndex] = firstLastOcc[ch];
+            if(lastIndex-firstIndex+1==n) continue;
+            bool flag = true;
+            int newLastIndex = lastIndex;
+            for(int j=firstIndex;j<=lastIndex;j++) {
+                if(firstLastOcc[s[j]].first<firstIndex) {
+                    flag=false;
+                    break;
                 }
-                freq = 1;
+                newLastIndex = max(firstLastOcc[s[j]].second,newLastIndex);
+            }
+            if(newLastIndex-firstIndex+1<n && flag) {
+                intervals.push_back({firstIndex,newLastIndex});
             }
         }
-        return count>=k;
+
+        sort(intervals.begin(),intervals.end(),[](auto lhs,auto rhs) {
+            return lhs.second<rhs.second;
+        });
+
+        int ans = 0;
+        int lastSelectedInterval = -1;
+        for(int i=0;i<intervals.size();i++) {
+            if(intervals[i].first>lastSelectedInterval) {
+                ans++;
+                lastSelectedInterval = intervals[i].second;
+            }
+        }
+        return ans>=k;
     }
 };
+
+/*
+
+
+
+*/
