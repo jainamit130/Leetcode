@@ -3,8 +3,7 @@ public:
     using pii = pair<int,int>;
     priority_queue<pii,vector<pii>,greater<pii>> minHeap;
     priority_queue<pii> maxHeap;
-    priority_queue<pii> latest;
-    unordered_map<int,int> timestampToVal;
+    map<int,int> timestampToVal;
     StockPrice() {
         
     }
@@ -13,14 +12,12 @@ public:
         timestampToVal[timestamp]=price;
         minHeap.push( {price,timestamp} );
         maxHeap.push( {price,timestamp} );
-        latest.push( {timestamp,price} );
     }
    
     int current() {
-        while(!latest.empty() && timestampToVal[latest.top().first]!=latest.top().second) {
-            latest.pop();
-        }
-        return latest.top().second;
+        auto itr = timestampToVal.end();
+        itr--;
+        return itr->second;
     }
     
     int maximum() {
