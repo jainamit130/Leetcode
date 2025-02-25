@@ -8,7 +8,7 @@ public:
         int end = n;
         int ans = n;
         while(start<=end) {
-            int mid = (start+end)/2;
+            int mid = start + (end-start)/2;
             if(isBadVersion(mid)) {
                 ans = mid;
                 end = mid-1;
