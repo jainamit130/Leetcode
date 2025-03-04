@@ -42,6 +42,7 @@ public:
                 ans+=destDicrections[j];
                 j++;
             }
+            return ans;
         }
 
         if(i<srcDicrections.length()){
@@ -49,6 +50,7 @@ public:
                 ans+='U';
                 i++;
             }
+            return ans;
         }
 
         if(i<destDicrections.length()){
@@ -56,6 +58,7 @@ public:
                 ans+=destDicrections[i];
                 i++;
             }
+            return ans;
         }
 
         return ans;
