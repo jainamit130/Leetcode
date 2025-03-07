@@ -1,4 +1,6 @@
-`    vector<int> closestPrimes(int left, int right) {
+class Solution {
+public:
+    vector<int> closestPrimes(int left, int right) {
     
     bool isprime[right+1];
     fill(isprime, isprime+right+1, true);
@@ -28,3 +30,4 @@
     if(r==-1) return {-1, -1};
     else return {l, r};
 }
+};
