@@ -13,17 +13,21 @@ class SegmentTree {
             value = val;
         }
 
-        SegmentTree* addNode(int leftIndex,int rightIndex,int value) {
+        void addNode(int leftIndex,int rightIndex,vector<int>& arr) {
             if(leftIndex == rightIndex) {
-                return new SegmentTree(leftIndex,rightIndex,value);
+                value = arr[leftIndex];
+                return;
             }
 
             int midIndex = (leftIndex+rightIndex)/2;
-            SegmentTree* newTree = new SegmentTree(leftIndex,rightIndex);
-            newTree->leftTree = addNode(leftIndex,midIndex,value);
-            newTree->rightTree = addNode(midIndex+1,rightIndex,value);
-            newTree->value = max(newTree->leftTree->value,newTree->rightTree->value);
-            return newTree;
+            SegmentTree* left = new SegmentTree(leftIndex,midIndex);
+            SegmentTree* right = new SegmentTree(midIndex+1,rightIndex);
+            this->leftTree = left;
+            this->rightTree = right;
+            left->addNode(leftIndex,midIndex,arr);
+            right->addNode(midIndex+1,rightIndex,arr);
+            value = max(left->value,right->value);
+            return;
         }
 
         bool update(int fruit) {   
@@ -39,7 +43,7 @@ class SegmentTree {
             if(this->leftTree->update(fruit)) {
                 this->value = max(this->leftTree->value,this->rightTree->value);
                 return true;
-            } else (this->rightTree->update(fruit)) {
+            } else if(this->rightTree->update(fruit)) {
                 this->value = max(this->leftTree->value,this->rightTree->value);
                 return true;
             }
@@ -51,10 +55,8 @@ class Solution {
 public:
     int numOfUnplacedFruits(vector<int>& fruits, vector<int>& baskets) {
         int n = fruits.size();
-        SegmentTree* tree = new SegmentTree(0,n);
-        for(int i=0;i<n;i++) {
-            tree = tree->addNode(0,n,baskets[i]);
-        }
+        SegmentTree* tree = new SegmentTree(0,n-1);
+        tree->addNode(0,n-1,baskets);
         int ans = 0;
         for(int i=0;i<n;i++) {
             if(!tree->update(fruits[i])) {
