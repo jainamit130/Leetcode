@@ -1,30 +1,19 @@
 class Solution {
 public:
-    unordered_map<int,int> cache[100][10][2][2];
-    void clean(){
-        for(int i=0; i<10; i++){
-            for(int sum=0; sum<100; sum++){
-                cache[sum][i][0][0] = {};
-                cache[sum][i][0][1] = {};
-                cache[sum][i][1][0] = {};
-                cache[sum][i][1][1] = {};
-            }
-        }
-    }
-
+    unordered_map<string,int> cache;
     int beautifulNumbers(int l, int r) {
-        string n1Str = to_string(l - 1);
-        string n2Str = to_string(r);
-        int subAns1 = solve(n2Str, 0, 1, 0, 1, 1);
-        clean();
-        int subAns2 = solve(n1Str, 0, 1, 0, 1, 1);
-        return subAns1 - subAns2;
+        int subAns1 = solve(to_string(l - 1), 0, 1, 0, 1, 1);
+        cache.clear();
+        int subAns2 = solve(to_string(r), 0, 1, 0, 1, 1);
+        return subAns2-subAns1;
     }
 
     int solve(string numStr, int index, int prod, int sum, int isTight,int hasLeadingZero) {
         if (index >= numStr.size()) return (sum != 0 && prod % sum == 0);
-        if(cache[sum][index][isTight][hasLeadingZero].find(prod)!=cache[sum][index][isTight][hasLeadingZero].end()) {
-            return cache[sum][index][isTight][hasLeadingZero][prod];
+        string key = to_string(index) + "-" + to_string(prod) + "-" + to_string(sum) + "-" + to_string(isTight) + "-" + to_string(hasLeadingZero);
+        
+        if (cache.find(key) != cache.end()) {
+            return cache[key];
         }
         int digitLimit = numStr[index] - '0';
         int upperBound = isTight ? digitLimit : 9;
@@ -36,7 +25,7 @@ public:
                 ans += solve(numStr, index + 1, prod * i, sum + i, digitLimit == i && isTight, 0);
             }
         }
-        return cache[sum][index][isTight][hasLeadingZero][prod]=ans;
+        return cache[key]=ans;
     }
 };
 
