@@ -2,14 +2,16 @@ class Solution {
 public:
     vector<int> solveQueries(vector<int>& nums, vector<int>& queries) {
         unordered_map<int,vector<int>> indexMp;
+        map<pair<int,int>,int> indexOfIndex;
         for(int i=0;i<nums.size();i++) {
+            indexOfIndex[{nums[i],i}]=indexMp[nums[i]].size();
             indexMp[nums[i]].push_back(i);
         }
 
         vector<int> ans;
         for(auto index:queries) {
             int dist = INT_MAX;
-            auto mpIndex = lower_bound(indexMp[nums[index]].begin(),indexMp[nums[index]].end(),index)-indexMp[nums[index]].begin();
+            int mpIndex = indexOfIndex[{nums[index],index}];
             // check 1 index before
             int beforeIndex = mpIndex-1;
             if(beforeIndex>=0) dist = min(dist,abs(index-indexMp[nums[index]][beforeIndex]));
