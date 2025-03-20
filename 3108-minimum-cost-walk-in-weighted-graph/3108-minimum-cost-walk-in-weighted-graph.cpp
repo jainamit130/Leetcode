@@ -54,8 +54,6 @@ public:
             }
             int p1=d.leader(q[0]);
             int p2=d.leader(q[1]);
-            if(q[0]==0 && q[1]==1)
-                cout<<p1<<" "<<p2;
             if(p1!=p2)
                 res.push_back(-1);
             else {
