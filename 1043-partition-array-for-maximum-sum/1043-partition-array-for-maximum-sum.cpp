@@ -1,11 +1,14 @@
 class Solution {
 public:
+    vector<int> cache;
     int maxSumAfterPartitioning(vector<int>& arr, int k) {
+        cache.resize(arr.size()+1,-1);
         return solve(arr,0,k);
     }
 
-    int solve(vector<int>& arr,int index,int k) {
+    int solve(vector<int>& arr,int index,int& k) {
         if(index>=arr.size()) return 0;
+        if(cache[index]!=-1) return cache[index];
         int currMax = arr[index];
         int ans = currMax;
         for(int i=index+1;i<=arr.size();i++) {
@@ -15,7 +18,7 @@ public:
                 currMax = max(currMax,arr[i]);
             }
         }
-        return ans;
+        return cache[index]=ans;
     }
 };
 
