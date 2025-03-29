@@ -17,7 +17,6 @@ public:
                 if(i>0 && s[i-1]=='1') continue;
                 if(flag1) {
                     if(flag0==2) {
-                        flag1=0;
                         flag0=1;
                         maxCount = max(maxCount,startz+endz);
                     }
