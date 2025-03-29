@@ -15,14 +15,12 @@ public:
                 if(i!=0 && i!=s.length()-1) ones++;
                 if(flag0) flag1 = 1;
                 if(i>0 && s[i-1]=='1') continue;
-                if(flag1) {
-                    if(flag0==2) {
-                        flag0=1;
-                        maxCount = max(maxCount,startz+endz);
-                    }
-                    startz = endz;
-                    endz = 0;
+                if(flag1 && flag0==2) {
+                    flag0=1;
+                    maxCount = max(maxCount,startz+endz);
                 }
+                startz = endz;
+                endz = 0;
             }
         }
         return maxCount+ones;
