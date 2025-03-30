@@ -3,8 +3,7 @@ public:
     int maxActiveSectionsAfterTrade(string st) {
         string s = "1"+st+"1";
         int startz = 0, endz = 0;
-        int flag1 = 0;
-        int flag0 = 0;
+        int flag0 = 0, flag1 = 0;
         int maxCount = 0;
         int ones = 0;
         for(int i=0;i<s.length();i++) {
@@ -26,16 +25,3 @@ public:
         return maxCount+ones;
     }
 };
-
-/*
-
-101020
-020101
-------
-121121
-
-
-
-
-
-*/
