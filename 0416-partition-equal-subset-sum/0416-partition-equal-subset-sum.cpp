@@ -27,9 +27,9 @@ public:
         vector<vector<bool>> dp(n+1,vector<bool>(target+1));
         dp[n][target]=true;
         for(int index = n-1; index>=0; index--) {
-            for(int sum = target; sum>=0; sum--) {
-                dp[index][sum] = dp[index+1][sum];
-                if(sum+nums[index]<=target) dp[index][sum] = dp[index][sum] || dp[index+1][sum+nums[index]];
+            dp[index] = dp[index+1];
+            for(int sum = target-nums[index]; sum>=0; sum--) {
+                dp[index][sum] = dp[index][sum] || dp[index+1][sum+nums[index]];
             }
         }
         return dp[0][0];
