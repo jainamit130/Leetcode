@@ -1,8 +1,8 @@
 class Solution {
 public:
-    int strStr(string haystack, string needle) {
+    int strStr(string& haystack, string& needle) {
         vector<int> lis = computeLIS(needle);
-        int i=0,j = 0;
+        int i=0,j=0;
         while(i<haystack.length()) {
             if(haystack[i]==needle[j]) {
                 i++;j++;
@@ -10,13 +10,13 @@ public:
             } else {
                 j=max(j-1,0);
                 j=lis[j];
-                if(j==0) i++;
+                if(j==0 && haystack[i]!=needle[j]) i++;
             }
         }
         return -1;
     }
 
-    vector<int> computeLIS(string s) {
+    vector<int> computeLIS(string& s) {
         int i=1,j=0;
         int n = s.length();
         vector<int> lis(n);
@@ -29,7 +29,7 @@ public:
             } else {
                 j=max(j-1,0);
                 j=lis[j];
-                if(j==0) i++;
+                if(j==0 && s[i]!=s[j]) i++;
             }
         }
         return lis;
