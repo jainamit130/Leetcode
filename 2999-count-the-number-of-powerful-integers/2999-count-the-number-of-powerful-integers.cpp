@@ -4,7 +4,7 @@ public:
         return solve(to_string(finish),0,limit,1,s)-solve(to_string(start-1),0,limit,1,s);
     }
 
-    long long solve(string upperLimit,int index,int limit,int isTight,string s) {
+    long long solve(string& upperLimit,int index,int& limit,int isTight,string& s) {
         if(upperLimit.length()<s.length()) return 0;
         if(upperLimit.length()==s.length()) return min(upperLimit,s)==s?1:0;
         if(index==upperLimit.length()-s.length()) return isTight?min(upperLimit.substr(index),s)==s?1:0:1;
