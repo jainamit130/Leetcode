@@ -1,39 +1,19 @@
 class Solution {
 public:
-    int strStr(string text, string pattern) {
-        vector<int> zArr = computeZ(pattern + "$" + text);
-        int len = pattern.length();
-        vector<int> ans;
-        for (int i = len + 1; i < zArr.size(); i++)
-        {
-            if (zArr[i] == pattern.length())
-            {
-                return i - len - 1;
+    int strStr(string haystack, string needle) {
+        int lc=needle.length();
+        int c=0;
+        for(int i=0;i<haystack.length();i++){
+            if(haystack[i]==needle[c]){
+                c++;
+                cout<<c;
+                if(lc==c)
+                    return i-lc+1;
+            }else{
+                i=i-c;
+                c=0;
             }
         }
         return -1;
-    }
-
-    vector<int> computeZ(const string &s)
-    {
-        int n = s.length();
-        vector<int> z(n);
-        int index = 1;
-        while (index < n)
-        {
-            int left = index;
-            int right = left;
-            while (right < s.length() && s[right - left] == s[right])
-                right++;
-            z[index] = right - left;
-            index++;
-            while (index < right && index + z[index - left] < right)
-            {
-                z[index] = z[index - left];
-                index++;
-            }
-        }
-
-        return z;
     }
 };
