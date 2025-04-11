@@ -3,10 +3,8 @@ public:
     int longestConsecutive(vector<int>& nums) {
         unordered_map<int,int> startToEnd;
         unordered_map<int,int> endToStart;
-        unordered_set<int> st;
         int ans = 0;
         for(auto n:nums) {
-            if(st.find(n)!=st.end()) continue;
             int nextNum = n+1;
             int prevNum = n-1;
             if(startToEnd.find(nextNum)!=startToEnd.end() && endToStart.find(prevNum)!=endToStart.end()) {
@@ -33,7 +31,6 @@ public:
                 endToStart[n]=n;
                 ans = max(ans,1);
             }
-            st.insert(n);
         }
         return ans;
     }   
