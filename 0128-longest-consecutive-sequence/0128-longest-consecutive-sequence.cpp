@@ -20,29 +20,30 @@ class Union {
         }
 
         int merge(int n1,int n2) {
-            int parent1 = findParent(n1);
-            int parent2 = findParent(n2);
-            if(parent1==parent2) return size[parent1];
-            if(size[parent1]<=size[parent2]) {
-                size[parent2]+=size[parent1];
-                parents[parent1]=parent2;
+            int p1 = findParent(n1);
+            int p2 = findParent(n2);
+            if(p1==p2) return size[p1];
+            if(size[p1]<=size[p2]) {
+                size[p2]+=size[p1];
+                parents[p1]=p2;
             } else {
-                size[parent1]+=size[parent2];
-                parents[parent2]=parent1;
+                size[p1]+=size[p2];
+                parents[p2]=p1;
             }
-            return max(size[parent1],size[parent2]);
+            return max(size[p1],size[p2]);
         }
 };
 
 class Solution {
 public:
     int longestConsecutive(vector<int>& nums) {
+        if(nums.size()==0) return 0;
         Union* root = new Union();
         for(auto n:nums) {
             root->addNode(n);
         }
 
-        int ans = 0;
+        int ans = 1;
         for(auto n:nums) {
             if(root->parents.find(n-1)!=root->parents.end())
                 ans = max(ans,root->merge(n,n-1));
