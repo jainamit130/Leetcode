@@ -1,23 +1,91 @@
+class Union {
+    public:
+        unordered_map<int,int> parents;
+        unordered_map<int,int> size;
+        Union() {
+        }
+
+        void addNode(int n) {
+            parents[n]=n;
+            size[n]=1;
+            return;
+        }
+
+        int findParent(int n) {
+            int parent = parents[n];
+            while(parent!=parents[parent]) {
+                parent = findParent(findParent(parent));
+            }
+            return parent;
+        }
+
+        int merge(int n1,int n2) {
+            int parent1 = findParent(n1);
+            int parent2 = findParent(n2);
+            if(parent1==parent2) return size[parent1];
+            if(size[parent1]<=size[parent2]) {
+                size[parent2]+=size[parent1];
+                parents[parent1]=parent2;
+            } else {
+                size[parent1]+=size[parent2];
+                parents[parent2]=parent1;
+            }
+            return max(size[parent1],size[parent2]);
+        }
+};
+
 class Solution {
 public:
     int longestConsecutive(vector<int>& nums) {
-        unordered_set<int> st(nums.begin(),nums.end());
+        Union* root = new Union();
+        for(auto n:nums) {
+            root->addNode(n);
+        }
+
         int ans = 0;
-        for(auto n:st) {
-            if(st.find(n-1)==st.end()) {
-                int nextNum = n+1;
-                int subAns = 1;
-                while(st.find(nextNum)!=st.end()) {
-                    subAns++;
-                    nextNum++;
-                }
-                ans = max(subAns,ans);
-            }
+        for(auto n:nums) {
+            if(root->parents.find(n-1)!=root->parents.end())
+                ans = max(ans,root->merge(n,n-1));
+            if(root->parents.find(n+1)!=root->parents.end())
+                ans = max(ans,root->merge(n,n+1));
         }
         return ans;
     }   
 };
 
+/*
+
+97  100 102 105 101 104 98  103 99
+
+
+97      100     102     105     101
+
+
+*/
+
+
+// Simpler O(n)
+// class Solution {
+// public:
+//     int longestConsecutive(vector<int>& nums) {
+//         unordered_set<int> st(nums.begin(),nums.end());
+//         int ans = 0;
+//         for(auto n:st) {
+//             if(st.find(n-1)==st.end()) {
+//                 int nextNum = n+1;
+//                 int subAns = 1;
+//                 while(st.find(nextNum)!=st.end()) {
+//                     subAns++;
+//                     nextNum++;
+//                 }
+//                 ans = max(subAns,ans);
+//             }
+//         }
+//         return ans;
+//     }   
+// };
+
+// My way of O(n)
 // class Solution {
 // public:
 //     int longestConsecutive(vector<int>& nums) {
@@ -62,11 +130,6 @@ public:
 
 
 /*
-
-97  100 102 105 101 104 98  103 99
-
-97          100         102         105                  
-
 
 End
 105 -> 97
