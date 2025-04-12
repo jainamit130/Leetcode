@@ -12,9 +12,7 @@ public:
     }
     
     int pickIndex() {
-        if(indexes.size()==0){
-            return 0;
-        }
+        if(indexes.size()==0) return 0;
         return indexes[rand()%indexes.size()];
     }
 };
