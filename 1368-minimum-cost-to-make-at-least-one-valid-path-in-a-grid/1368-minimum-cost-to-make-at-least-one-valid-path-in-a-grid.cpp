@@ -6,7 +6,7 @@ public:
         int n = grid[0].size();
         priority_queue<vector<int>,vector<vector<int>>,greater<vector<int>>> minHeap;
         vector<vector<int>> distance(m,vector<int>(n,m*n));
-        auto isValid = [&](int row,int col) {
+        auto isValid = [&](int& row,int& col) {
             return row>=0 && row<m && col>=0 && col<n;
         };
         minHeap.push({0,0,0});
@@ -16,7 +16,6 @@ public:
             int row = minHeap.top()[1];
             int col = minHeap.top()[2];
             minHeap.pop();
-            distance[row][col]=min(dist,distance[row][col]);
             for(int i=1;i<=4;i++) {
                 int newRow = row+dirMp[i][0];
                 int newCol = col+dirMp[i][1];
