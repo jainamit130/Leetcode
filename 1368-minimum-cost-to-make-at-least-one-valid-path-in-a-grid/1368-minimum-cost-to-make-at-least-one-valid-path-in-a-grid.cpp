@@ -14,9 +14,6 @@ public:
             int col = q.front()[2];
             int sign = grid[row][col];
             q.pop();
-            if(row==m-1 && col==n-1) {
-                return cost;
-            }
             for (int i = 1; i <= 4; i++) {
                 int newRow = row + dir[i - 1][0];
                 int newCol = col + dir[i - 1][1];
@@ -26,6 +23,6 @@ public:
                 }
             }
         }
-        return 0;
+        return dist[m-1][n-1];
     }
 };
