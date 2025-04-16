@@ -12,13 +12,8 @@ public:
                 j++;
             }
 
-            if(currPairs>=k) {
-                int elementsBeforeI = i+1;
-                int elementsAfterJ = n-j+1;
-                ans += elementsBeforeI*elementsAfterJ;
-            }
-
             while(i<j && currPairs>=k) {
+                ans += n-j+1;
                 updateCurrPairs(currPairs,mp,nums[i],0);
                 i++;
             }
@@ -26,7 +21,7 @@ public:
         return ans;
     }
 
-    void updateCurrPairs(int& currPairs,unordered_map<int,int>& mp,int val,int isGain) {
+    void updateCurrPairs(int& currPairs,unordered_map<int,int>& mp,int& val,int isGain) {
         if(mp.find(val)!=mp.end()) {
             currPairs -= getContribution(mp[val]);
         }
@@ -67,5 +62,17 @@ k pairs of same values
 3   1   4   3   2   2   4
 
 k = 2
+
+                i                                       
+                                                        j
+2   1   3   1   2   2   3   3   2   2   1   1   1   3   1
+
+6 + 10 + 12 + 12 + 10 + 6 
+
+12
+
+1 -> 4
+2 -> 3
+3 -> 3
 
 */
