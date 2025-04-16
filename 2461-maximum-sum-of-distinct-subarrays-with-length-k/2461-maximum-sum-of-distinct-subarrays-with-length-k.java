@@ -2,8 +2,8 @@ class Solution {
     public long maximumSubarraySum(int[] nums, int k) {
         int i=0,j=0;
         Map<Integer, Integer> mp = new HashMap<>();
-        int sum = 0;
-        int ans = 0;
+        long sum = 0;
+        long ans = 0;
         while(j<nums.length) {
             while(i<j && mp.containsKey(nums[j])) {
                 mp.put(nums[i],mp.get(nums[i])-1);
