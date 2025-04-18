@@ -1,39 +1,28 @@
 class Solution {
 public:
     string countAndSay(int n) {
-        int i = 1;
-        string ans = "1";
-        for(int i=2;i<=n;i++) {
-            ans = getRle(ans);
-        }
+        string ans="1"; 
+        for(int i=2;i<=n;i++){
+            ans= cAndS(ans);
+            // cout<<ans<<endl;
+        } 
         return ans;
     }
 
-    string getRle(string str) {
-        int count = 1;
-        string ans;
-        for(int i=1;i<=str.length();i++) {
-            if(i<str.length() && str[i]==str[i-1]) {
-                count++;
-            } else {
-                ans += to_string(count)+str[i-1];
-                count = 1;
-            }
-        }
-        return ans;
+    string cAndS (string ans){
+       int i=0;
+       string nextAns;
+       while(i<ans.length()){
+           int j=i,count=1;
+           while(ans[j]==ans[j+1]){
+               count++;
+               j++;
+           }
+        //    cout<<ans[j]<<endl;
+           nextAns+=to_string(count)+ans[j];
+        //    cout<<"Next ans = "<<nextAns<<endl;
+            i=j+1;
+       }
+        return nextAns;
     }
 };
-
-/*
-
-
-Given: int n => always positive
-Told => base case => countAndSay(1) = "1"
-Return a string
-
-Ex:
-
-11 => 21
-12 => 1112
-
-*/
