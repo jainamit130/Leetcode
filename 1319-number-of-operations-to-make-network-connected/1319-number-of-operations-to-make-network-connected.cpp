@@ -79,9 +79,9 @@ Approach: (Union Find)
     i. If already part of same group then continue;
     ii. If not then merge them and increment the ans once 
 
-Time Complexity => Ackermann Function => O(alpha * n) ~ O(1) for every merge (Given that we use path compression in finding the or the parent of a node)
+Time Complexity => Ackermann Function => O(alpha * n) ~ O(1) for every merge (Given that we use path compression in finding the or the parent of a node) => O(2*(alpha*n)*n)
 
-Space Complexity => O(n)
+Space Complexity => O(2*n)
 
 
 
