@@ -12,12 +12,15 @@ public:
         while(j<nums.size()) {
             runningFreqSum += freq;
             oldMax = currMaxVal;
+            int oldJ = j;
             currMaxVal = nums[j];
             freq = 0;
-            while(j<nums.size() && currMaxVal==nums[j]) {
-                freq++; j++;
-            }
+            // while(j<nums.size() && currMaxVal==nums[j]) {
+            //     freq++; j++;
+            // }
 
+            j = upper_bound(nums.begin(),nums.end(),currMaxVal)-nums.begin();
+            freq += j-oldJ;
             operations += runningFreqSum*(currMaxVal - oldMax);
 
             while(i<j && operations>k) {
