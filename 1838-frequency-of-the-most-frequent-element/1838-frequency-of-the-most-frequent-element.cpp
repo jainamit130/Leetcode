@@ -3,14 +3,14 @@ public:
     int maxFrequency(vector<int>& nums, int k) {
         sort(nums.begin(),nums.end());
         int i=0,j=0;
-        long long runningSum = 0;
+        long long runningFreqSum = 0;
         int currMaxVal = 0;
         int freq = 0;
         long long operations = 0;
         int ans = 0;
         int oldMax = 0;
         while(j<nums.size()) {
-            runningSum += freq;
+            runningFreqSum += freq;
             oldMax = currMaxVal;
             currMaxVal = nums[j];
             freq = 0;
@@ -18,11 +18,11 @@ public:
                 freq++; j++;
             }
 
-            operations += runningSum*(currMaxVal - oldMax);
+            operations += runningFreqSum*(currMaxVal - oldMax);
 
             while(i<j && operations>k) {
                 operations -= currMaxVal - nums[i]; 
-                runningSum -= 1;
+                runningFreqSum -= 1;
                 i++;
             }
             if(operations<=k) ans = max(ans,j-i);
