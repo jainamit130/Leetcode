@@ -9,9 +9,9 @@ public:
         }
         int ans = 0;
         for(auto n:prefix) {
-            int valToLookUp = n<k?n%k:n-k;
+            int valToLookUp = (n%k+k)%k;
             if(mp.find(valToLookUp)!=mp.end()) ans+=mp[valToLookUp];
-            mp[n%5]++;
+            mp[valToLookUp]++;
         }
         return ans;
     }
