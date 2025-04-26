@@ -1,7 +1,7 @@
 class Solution {
 public:
     int strStr(string& haystack, string& needle) {
-        vector<int> lis = computeLIS(needle);
+        vector<int> lis = getLIS(needle);
         int i=0,j=0;
         while(i<haystack.length()) {
             if(haystack[i]==needle[j]) {
@@ -16,21 +16,18 @@ public:
         return -1;
     }
 
-    vector<int> computeLIS(string& s) {
-        int i=1,j=0;
-        int n = s.length();
+vector<int> getLIS(string pattern) {
+        int n = pattern.length();
         vector<int> lis(n);
-        while(i<s.length()) {
-            // match s[i] and s[j]
-            if(s[i]==s[j]) {
-                lis[i]=j+1;
-                i++;
-                j++;
+        int i=1,j=0;
+        while(i<n) {
+            if(pattern[i]==pattern[j]) {
+                lis[i]=lis[i-1]+1;
+                i++;j++;
             } else {
-                j=max(j-1,0);
-                j=lis[j];
-                if(j==0 && s[i]!=s[j]) i++;
-            }
+                if(j-1>=0) j=lis[j-1];
+                else i++;
+            }    
         }
         return lis;
     }
