@@ -4,17 +4,17 @@ public:
         int n = nums.size();
         vector<long long> prefix(1);
         long long ans = 0;
+        int start = 0;
         for(int i=0;i<nums.size();i++) {
             // binary search 
-            int count = getCountOfSubarrayUsingBinarySearch(prefix,i+1,prefix.back()+nums[i],k);
+            int count = getCountOfSubarrayUsingBinarySearch(start,prefix,i+1,prefix.back()+nums[i],k);
             ans += count;
             prefix.push_back(prefix.back()+nums[i]);
         }
         return ans;
     }
 
-    int getCountOfSubarrayUsingBinarySearch(vector<long long>& prefix,int upperIndex,long long val,long long k) {
-        int start = 0;
+    int getCountOfSubarrayUsingBinarySearch(int& start,vector<long long>& prefix,int upperIndex,long long val,long long k) {
         int end = prefix.size()-1;
         int count = 0;
         while(start<=end) {
