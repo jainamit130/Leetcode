@@ -5,23 +5,12 @@ public:
         int i=k,j=k;
         int ans = k;
         int currMin = nums[k];
-        while(i>=0 && j<n) {
-            int scoreI = min(nums[i],currMin)*(j-i);
-            int scoreJ = min(nums[j],currMin)*(j-i);
-            if(scoreI>=scoreJ) {ans = max(scoreI,ans);currMin=min(currMin,nums[i]);i--;}
-            else {ans = max(scoreJ,ans);currMin=min(currMin,nums[j]);j++;}
+        while(i>=0 || j<n) {
+            int scoreI = INT_MIN; if(i>=0) scoreI = min(nums[i],currMin)*(j-i);
+            int scoreJ = INT_MIN; if(j<n) scoreJ = min(nums[j],currMin)*(j-i);
+            if(i>=0 && scoreI>=scoreJ) { ans = max(scoreI,ans); currMin=min(currMin,nums[i]); i--; }
+            else { ans = max(scoreJ,ans); currMin=min(currMin,nums[j]); j++; }
         }
-
-        while(i>=0) {
-            int scoreI = min(nums[i],currMin)*(j-i);
-            ans = max(scoreI,ans);currMin=min(currMin,nums[i]);i--;
-        }
-
-        while(j<n) {
-            int scoreJ = min(nums[j],currMin)*(j-i);         
-            ans = max(scoreJ,ans);currMin=min(currMin,nums[j]);j++;
-        }
-
         return ans;
     }
 };
