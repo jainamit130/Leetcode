@@ -1,42 +1,69 @@
 class Solution {
 public:
-    int n;
     int maximumScore(vector<int>& nums, int k) {
-        n = nums.size();
-        vector<int> nextSmaller(n);
-        populateMinElements(nextSmaller,nums,1);
-        vector<int> prevSmaller(n);
-        populateMinElements(prevSmaller,nums,0);
-
-        int ans = 0;
-        for(int i=0;i<n;i++) {
-            int start = prevSmaller[i];
-            int end = nextSmaller[i];
-            if(start<k && end>k) ans = max((end-start-1)*nums[i],ans);
+        int n = nums.size();
+        int i=k,j=k;
+        int ans = k;
+        int currMin = nums[k];
+        while(i>=0 && j<n) {
+            int scoreI = min(nums[i],currMin)*(j-i);
+            int scoreJ = min(nums[j],currMin)*(j-i);
+            if(scoreI>=scoreJ) {ans = max(scoreI,ans);currMin=min(currMin,nums[i]);i--;}
+            else {ans = max(scoreJ,ans);currMin=min(currMin,nums[j]);j++;}
         }
+
+        while(i>=0) {
+            int scoreI = min(nums[i],currMin)*(j-i);
+            ans = max(scoreI,ans);currMin=min(currMin,nums[i]);i--;
+        }
+
+        while(j<n) {
+            int scoreJ = min(nums[j],currMin)*(j-i);         
+            ans = max(scoreJ,ans);currMin=min(currMin,nums[j]);j++;
+        }
+
         return ans;
     }
-
-    void populateMinElements(vector<int>& arr,vector<int>& nums,int isNextSmaller) {
-        int index = isNextSmaller?n-1:0;
-        int inc = isNextSmaller?-1:1;
-        int count = n;
-        stack<pair<int,int>> st;
-        if(isNextSmaller) st.push({-1,n});
-        else st.push({-1,-1});
-        while(count) {
-            int i = index;
-            while(!st.empty() && st.top().first>=nums[i]) st.pop();
-            i = st.top().second;
-            arr[index]=i;
-            st.push({nums[index],index});
-            index+=inc;
-            count--;
-        }
-        return;
-    }
-    
 };
+
+// class Solution {
+// public:
+//     int n;
+//     int maximumScore(vector<int>& nums, int k) {
+//         n = nums.size();
+//         vector<int> nextSmaller(n);
+//         populateMinElements(nextSmaller,nums,1);
+//         vector<int> prevSmaller(n);
+//         populateMinElements(prevSmaller,nums,0);
+
+//         int ans = 0;
+//         for(int i=0;i<n;i++) {
+//             int start = prevSmaller[i];
+//             int end = nextSmaller[i];
+//             if(start<k && end>k) ans = max((end-start-1)*nums[i],ans);
+//         }
+//         return ans;
+//     }
+
+//     void populateMinElements(vector<int>& arr,vector<int>& nums,int isNextSmaller) {
+//         int index = isNextSmaller?n-1:0;
+//         int inc = isNextSmaller?-1:1;
+//         int count = n;
+//         stack<pair<int,int>> st;
+//         if(isNextSmaller) st.push({-1,n});
+//         else st.push({-1,-1});
+//         while(count) {
+//             int i = index;
+//             while(!st.empty() && st.top().first>=nums[i]) st.pop();
+//             i = st.top().second;
+//             arr[index]=i;
+//             st.push({nums[index],index});
+//             index+=inc;
+//             count--;
+//         }
+//         return;
+//     }
+// };
 
 // class Solution {
 // public:
