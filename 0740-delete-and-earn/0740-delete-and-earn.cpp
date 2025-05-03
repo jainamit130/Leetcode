@@ -1,32 +1,34 @@
 class Solution {
 public:
-    vector<vector<int>> cache;
+    vector<int> cache;
     int deleteAndEarn(vector<int>& nums) {
-        unordered_map<int,int> numsToFreq;
-        for(auto n:nums) {
-            numsToFreq[n]++;
-        }
-
-        vector<pair<int,int>> vecs;
-        for(auto [key,freq]:numsToFreq) {
-            vecs.push_back({key,freq});
-        }
-        sort(vecs.begin(),vecs.end());
-        cache.resize(vecs.size()+1,vector<int>(vecs.back().first+2,-1));
-        return solve(vecs,0,-1);
+        sort(nums.begin(),nums.end());
+        cache.resize(nums.size()+1,-1);
+        return solve(nums,0);
     }
 
-    int solve(vector<pair<int,int>>& vec,int index,int lastTaken) {
-        if(index>=vec.size())  {
-            return 0;
-        } 
-        if(cache[index][lastTaken+1]!=-1) return cache[index][lastTaken+1];
+    int solve(vector<int>& vec,int index) {
+        if(index>=vec.size())  return 0;
+        if(cache[index]!=-1) return cache[index];
         int ans = 0;
-        if(lastTaken+1!=vec[index].first) {
-            ans = max(ans,vec[index].second*vec[index].first+solve(vec,index+1,vec[index].first));
+        int i = index;
+        int val = vec[i];
+        int points = vec[i];
+        i++;
+        while(i<vec.size() && vec[i]==vec[i-1]) {
+            points+=vec[i];
+            i++;
         }
-        ans = max(ans,solve(vec,index+1,lastTaken));
-        return cache[index][lastTaken+1]=ans;
+        if(val+1==vec[i]) {
+            i++;
+            while(i<vec.size() && vec[i]==vec[i-1]) i++;
+        }
+        ans = max(ans,points+solve(vec,i));
+        i=index;
+        i++;
+        while(i<vec.size() && vec[i]==vec[i-1]) i++;
+        ans = max(ans,solve(vec,i));
+        return cache[index]=ans;
     }
 };
 
