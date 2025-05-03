@@ -19,7 +19,7 @@ public:
             points+=vec[i];
             i++;
         }
-        if(val+1==vec[i]) {
+        if(i<vec.size() && val+1==vec[i]) {
             i++;
             while(i<vec.size() && vec[i]==vec[i-1]) i++;
         }
