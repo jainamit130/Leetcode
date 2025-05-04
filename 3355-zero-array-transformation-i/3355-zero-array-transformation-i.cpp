@@ -1,14 +1,14 @@
 class Solution {
 public:
     bool isZeroArray(vector<int>& nums, vector<vector<int>>& queries) {
-        int size = nums.size();
-        vector<int> prefix(size+1);
-        for(auto query:queries) {
-            prefix[query[0]]++;
-            prefix[query[1]+1]--;
+        int n = nums.size();
+        vector<int> prefix(n+1);
+        for(auto q:queries) {
+            prefix[q[0]]++;
+            prefix[q[1]+1]--;
         }
 
-        for(int i=1;i<=size;i++){
+        for(int i=1;i<=n;i++){
             prefix[i]+=prefix[i-1];
             if(prefix[i-1]<nums[i-1]){
                 return false;
@@ -17,3 +17,20 @@ public:
         return true;
     }
 };
+
+
+/*
+
+Query = [2,5]
+
+0   1   2   3   4   5   6   
+2   5   9   4   1   0   3
+
+0   0   0   0   0   0   0
+0   0   1   0   0   0   -1
+0   0   1   1   1   1   0
+
+
+
+
+*/
