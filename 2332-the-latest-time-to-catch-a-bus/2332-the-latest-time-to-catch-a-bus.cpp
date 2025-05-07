@@ -3,41 +3,45 @@ public:
     int latestTimeCatchTheBus(vector<int>& buses, vector<int>& passengers, int capacity) {
         sort(buses.begin(),buses.end());
         sort(passengers.begin(),passengers.end());
-        int i=0;
-        int j=0;
-        int ans=-1;
-        while(i<buses.size()){
-            int currentCap=0;
-            while(j<passengers.size() && passengers[j]<=buses[i] && currentCap<capacity){
-                if(j==0 || passengers[j-1]+1!=passengers[j]){
-                    ans=passengers[j]-1;
+        int currCap = capacity;
+        int i=0,j=0;
+        int ans = 1;
+        while(i<buses.size()) {
+            if(currCap==0) {
+                i++;
+                currCap = capacity;
+            } else if(i<buses.size() && j<passengers.size()) {
+                if(passengers[j]>buses[i]) {
+                    if(j==0 || (j>0 && passengers[j-1]!=buses[i])) ans = max(ans,buses[i]);
+                    i++;
+                    currCap = capacity;
+                } else {
+                    if(j==0 || (j>0 && passengers[j-1]!=passengers[j]-1)) ans = max(ans,passengers[j]-1);
+                    currCap--;
+                    j++;
                 }
-                currentCap++;
-                j++;
+            } else {
+                if(j>0 && passengers[j-1]!=buses[i]) ans = max(ans,buses[i]);
+                currCap = capacity;
+                i++;
             }
-            if(j==0 || buses[i]!=passengers[j-1]){
-                if(capacity>currentCap)
-                    ans=buses[i];
-            }
-            currentCap=0;
-            i++;
         }
         return ans;
     }
 };
 
 
-
 /*
-10  20  30
-i
 
-4   11  13  19  21  25  26
-    i
 
-ans=10
+10  20
+        i
 
-capacity= 0
 
+2   17  18  19
+            j
+
+capacity = 0
+ans = 16
 
 */
