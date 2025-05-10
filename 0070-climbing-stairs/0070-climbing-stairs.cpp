@@ -1,28 +1,27 @@
+// class Solution {
+// public:
+//     int climbStairs(int n) {
+//         vector<int> cache(n+1);
+//         return climb(n,cache);
+//     }
+//     int climb(int n,vector<int>& cache) {
+//         if(n<=1)
+//             return 1;
+//         if(cache[n]!=0)
+//             return cache[n];
+//         return cache[n]=climb(n-1,cache)+climb(n-2,cache);
+//     }
+// };
+
 class Solution {
 public:
-    vector<int> cache;
     int climbStairs(int n) {
-        cache.resize(n+1,-1);
-        return solve(n);
-    }
-
-    int solve(int n) {
-        if(n<=0) return n==0;
-        if(cache[n]!=-1) return cache[n];
-        int ans = 0;
-        ans += solve(n-1) + solve(n-2);
-        return cache[n] = ans;
+        vector<int> dp(n+1);
+        dp[0]=1;
+        dp[1]=1;
+        for(int i=2;i<=n;i++){
+            dp[i]=dp[i-1]+dp[i-2];
+        }
+        return dp[n];
     }
 };
-
-
-/*
-
-Top down
-
-States : just 1 that is n
-choices => 1 or 2
-O(2^n) => time complexity if done without memoization
-O(n) => with memoization
-
-*/
