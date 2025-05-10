@@ -1,57 +1,36 @@
-//Brute Force
-// class Solution {
-// public:
-//     int count=0;
-//     int pathSum(TreeNode* root, int targetSum) {
-//         dfsSolve(root,targetSum);
-//         return count/2;
-//     }
-
-//     void dfsSolve(TreeNode* root,int targetSum){
-//         if(!root)
-//             return;
-
-//         solve(root->left,targetSum-root->val);
-//         solve(root->right,targetSum-root->val);
-//         dfsSolve(root->left,targetSum);
-//         dfsSolve(root->right,targetSum);
-//         return;
-//     }
-
-//     void solve(TreeNode* root,long long targetSum){
-//         if(targetSum==0)
-//             count++;
-
-//         if(!root)
-//             return;
-
-//         solve(root->left,targetSum-root->val);
-//         solve(root->right,targetSum-root->val);
-//         return;
-//     }
-// };
-
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
 class Solution {
 public:
-    int solve(TreeNode* root, int k, long long sum, unordered_map<long long, int>& mpp){
-        if(root == NULL)
-            return 0;
-            
-        sum+=root->val;
-        
-        int count = mpp[sum - k];
-        mpp[sum]++;
-        
-        int left=solve(root->left, k, sum, mpp);
-        int right=solve(root->right, k, sum, mpp);
-        
-        mpp[sum]--;
-        sum-=root->val;
-        return count+left+right;
-    }
+    int ans = 0;
     int pathSum(TreeNode* root, int targetSum) {
-        unordered_map<long long, int> mpp;
-        mpp[0]=1;
-        return solve(root, targetSum, 0, mpp);
+        solve(root,targetSum);
+        return ans/2;
+    }
+
+    void solve(TreeNode* root,int targetSum) {
+        if(!root) return;
+        calculatePathSum(root,targetSum,INT_MAX); 
+        solve(root->left,targetSum);
+        solve(root->right,targetSum);
+        return;
+    }
+
+    void calculatePathSum(TreeNode* root,int targetSum,long long currSum) {
+        if(!root) { ans+=targetSum==currSum; return;}
+        ans += currSum==targetSum;
+        if(currSum==INT_MAX) currSum=0;
+        calculatePathSum(root->left,targetSum,currSum*1LL+root->val);
+        calculatePathSum(root->right,targetSum,currSum*1LL+root->val);
+        return;
     }
 };
