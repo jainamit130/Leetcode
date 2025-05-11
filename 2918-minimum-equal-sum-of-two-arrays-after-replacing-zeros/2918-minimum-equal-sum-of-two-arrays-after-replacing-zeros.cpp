@@ -1,33 +1,36 @@
 class Solution {
 public:
     long long minSum(vector<int>& nums1, vector<int>& nums2) {
-        int c1 = 0;
-        int c2 = 0;
-        long int t1 = 0;
-        long int t2 = 0;
-        for (int i = 0; i < nums1.size(); i++) {
-            if (nums1[i] == 0) {
-                t1 += 1;
-                c1++;
-            }
+        long long sum1 = 0; long long sum2 = 0;
+        int count1 = 0, count2 = 0;
+        for(auto n:nums1) {
+            sum1 += n;
+            count1 += n==0;
+        }
 
-            t1 += nums1[i];
+        for(auto n:nums2) {
+            sum2 += n;
+            count2 += n==0;
         }
-        for (int i = 0; i < nums2.size(); i++) {
-            if (nums2[i] == 0) {
-                t2 += 1;
-                c2++;
-            }
-            t2 += nums2[i];
-        }
-        if (t1 < t2) {
-            if (c1 == 0)
-                return -1;
-        }
-        if (t1 > t2) {
-            if (c2 == 0)
-                return -1;
-        }
-        return max(t1, t2);
+
+        long long min1 = sum1 + count1;   // 6
+        long long min2 = sum2 + count2;   // 5
+
+        // Case1: min1 is smaller and unincreasable (that is count1 = 0)
+        // Case2: min2 is smaller and unincreasable (that is count2 = 0)
+
+        if(min1<min2 && count1==0 || min2<min1 && count2==0) return -1;
+        
+        return max(min1,min2);
+
     }
 };
+
+/*
+
+2   0   2   0   0
+
+
+1   4
+
+*/
