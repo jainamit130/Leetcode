@@ -20,12 +20,15 @@ public:
         });
 
         int ans = 0;
-        for(int i=0;i<nums.size();i++) {
-            if(sortedIndexes[i]==i) continue;
+        int i = 0;
+        while(i<nums.size()) {
+            if(sortedIndexes[i]==i) {
+                i++;
+                continue;
+            }
             else {
                 swap(sortedIndexes[i],sortedIndexes[sortedIndexes[i]]);
                 ans++;
-                i--;
             }
         }
         return max(ans,0);
