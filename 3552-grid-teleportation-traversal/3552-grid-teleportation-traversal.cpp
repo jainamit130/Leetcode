@@ -16,7 +16,7 @@ public:
         vector<vector<int>> dist(m,vector<int>(n,INT_MAX)); 
         vector<int> alpha(26,0);
         
-        priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> q;
+        priority_queue<array<int,3>, vector<array<int,3>>, greater<>> q;
         q.push({0,0,0});
         dist[0][0]=0;
 
