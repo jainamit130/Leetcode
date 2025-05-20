@@ -3,37 +3,31 @@ public:
     bool canPartitionGrid(vector<vector<int>>& grid) {
         int m = grid.size();
         int n = grid[0].size();
-        
-        long long sum = 0;
         vector<long long> row(m);
-        vector<long long> col(n); 
+        vector<long long> col(n);
 
-        unordered_map<int,pair<int,int>> rowSet;
-        unordered_map<int,pair<int,int>> rowSetOtherSec;
+        unordered_map<int,pair<int,int>> rowSec;
+        unordered_map<int,pair<int,int>> rowOtherSec;
 
-        unordered_map<int,pair<int,int>> colSet;
-        unordered_map<int,pair<int,int>> colSetOtherSec;
+        unordered_map<int,pair<int,int>> colSec;
+        unordered_map<int,pair<int,int>> colOtherSec;
 
+        long long sum = 0;
         for(int i=0;i<m;i++) {
             for(int j=0;j<n;j++) {
-                row[i]+=grid[i][j];
-                col[j]+=grid[i][j];
-                sum += grid[i][j];
+                sum +=grid[i][j];
+                row[i] +=grid[i][j];
+                col[j] +=grid[i][j];
 
-                if(rowSet.find(grid[i][j])==rowSet.end()) rowSet[grid[i][j]] = {INT_MAX,INT_MIN};
-                if(rowSetOtherSec.find(grid[i][j])==rowSetOtherSec.end()) rowSetOtherSec[grid[i][j]] = {INT_MAX,INT_MIN}; 
-                if(colSet.find(grid[i][j])==colSet.end()) colSet[grid[i][j]] = {INT_MAX,INT_MIN}; 
-                if(colSetOtherSec.find(grid[i][j])==colSetOtherSec.end()) colSetOtherSec[grid[i][j]] = {INT_MAX,INT_MIN}; 
+                if(rowSec.find(grid[i][j])==rowSec.end()) rowSec[grid[i][j]] = {INT_MAX,INT_MIN};
+                if(rowOtherSec.find(grid[i][j])==rowOtherSec.end()) rowOtherSec[grid[i][j]] = {INT_MAX,INT_MIN};
+                if(colSec.find(grid[i][j])==colSec.end()) colSec[grid[i][j]] = {INT_MAX,INT_MIN};
+                if(colOtherSec.find(grid[i][j])==colOtherSec.end()) colOtherSec[grid[i][j]] = {INT_MAX,INT_MIN};
 
-                if(!(i==0 && j!=0 && j!=n-1)) rowSet[grid[i][j]] = { min(rowSet[grid[i][j]].first,i),
-                                                                     max(rowSet[grid[i][j]].second,i) };
-                if(!(j==0 && i!=0 && i!=m-1)) colSet[grid[i][j]] = { min(colSet[grid[i][j]].first,j),
-                                                                     max(colSet[grid[i][j]].second,j) };
-         
-                if(!(i==m-1 && j!=0 && j!=n-1)) rowSetOtherSec[grid[i][j]] = { min(rowSetOtherSec[grid[i][j]].first,i),
-                                                                               max(rowSetOtherSec[grid[i][j]].second,i) };
-                if(!(j==n-1 && i!=0 && i!=m-1)) colSetOtherSec[grid[i][j]] = { min(colSetOtherSec[grid[i][j]].first,j),
-                                                                               max(colSetOtherSec[grid[i][j]].second,j) };
+                if(!(i==0 && j!=0 && j!=n-1)) rowSec[grid[i][j]] = { min(rowSec[grid[i][j]].first,i), max(rowSec[grid[i][j]].second,i) };
+                if(!(i==m-1 && j!=0 && j!=n-1)) rowOtherSec[grid[i][j]] = { min(rowOtherSec[grid[i][j]].first,i), max(rowOtherSec[grid[i][j]].second,i) };
+                if(!(j==0 && i!=0 && i!=m-1)) colSec[grid[i][j]] = { min(colSec[grid[i][j]].first,j), max(colSec[grid[i][j]].second,j) };
+                if(!(j==n-1 && i!=0 && i!=m-1)) colOtherSec[grid[i][j]] = { min(colOtherSec[grid[i][j]].first,j), max(colOtherSec[grid[i][j]].second,j) };
             }
         }
 
@@ -42,64 +36,72 @@ public:
         for(int i=0;i<row.size();i++) {
             rowSum += row[i];
             long long otherSec = sum - rowSum;
-            long long diff = rowSum - otherSec;
-            if(diff == 0) return true;
-            // other sec is higher
-            else if(diff < 0) {
-                long long lookup = abs(diff);
-                // should be present in otherSec 
-                if(rowSetOtherSec.find(lookup)!=rowSetOtherSec.end() && rowSetOtherSec[lookup].second>=i+1) {
-                    if(n==1 && rowSetOtherSec[lookup].second!=m-1 && rowSetOtherSec[lookup].second!=i+1) continue;
+            long long diff = abs(rowSum-otherSec);
+            // rowSum is equal to other section sum
+            if(otherSec==rowSum) return true;
+            // other section sum is higher
+            else if(otherSec>rowSum) {
+                if(rowOtherSec.find(diff)!=rowOtherSec.end() && rowOtherSec[diff].second>=i+1) {
+                    // check for single column case
+                    if(n==1 && rowOtherSec[diff].second!=m-1 && rowOtherSec[diff].second!=i+1) return false;
                     return true;
                 }
             }
-            // rowSec is higher
+            // rowSec is higher 
             else {
-                long long lookup = diff;
-                // should be present in rowSec 
-                if(rowSet.find(lookup)!=rowSet.end() && rowSet[lookup].first<=i) {
-                    if(n==1 && rowSet[lookup].first!=0 && rowSet[lookup].first!=i) continue;
+                if(rowSec.find(diff)!=rowSec.end() && rowSec[diff].first<=i) {
+                    // check for single column case
+                    if(n==1 && rowSec[diff].first!=0 && rowSec[diff].second!=i) return false;
                     return true;
                 }
             }
         }
+
 
         // vertical cut
         long long colSum = 0;
         for(int i=0;i<col.size();i++) {
             colSum += col[i];
             long long otherSec = sum - colSum;
-            long long diff = colSum - otherSec;
-            if(diff == 0) return true;
-            // other sec is higher
-            else if(diff < 0) {
-                long long lookup = abs(diff);
-                // should be present in otherSec 
-                if(colSetOtherSec.find(lookup)!=colSetOtherSec.end() && colSetOtherSec[lookup].second>=i+1) {
-                    if(m==1 && colSetOtherSec[lookup].second!=n-1 && colSetOtherSec[lookup].second!=i+1) continue;
+            long long diff = abs(colSum-otherSec);
+            // rowSum is equal to other section sum
+            if(otherSec==colSum) return true;
+            // other section sum is higher
+            else if(otherSec>colSum) {
+                if(colOtherSec.find(diff)!=colOtherSec.end() && colOtherSec[diff].second>=i+1) {
+                    // check for single row case
+                    if(m==1 && colOtherSec[diff].second!=n-1 && colOtherSec[diff].second!=i+1) return true;
                     return true;
                 }
             }
-            // colSum is higher
+            // rowSec is higher 
             else {
-                long long lookup = diff;
-                // should be present in colSec 
-                if(colSet.find(lookup)!=colSet.end() && colSet[lookup].first<=i) {
-                    if(m==1 && colSet[lookup].first!=0 && colSet[lookup].first!=i) continue;
+                if(colSec.find(diff)!=colSec.end() && colSec[diff].first<=i) {
+                    // check for single row case
+                    if(m==1 && colSec[diff].first!=0 && colSec[diff].second!=i) return true;
                     return true;
                 }
             }
         }
-
         return false;
     }
 };
 
+
+
 /*
 
-4   1   8 => 13
- 
-3   2   6 => 11
+
+Steps:
+
+1. Create row, col array
+2. Create unordered_map<int,pair<int,int>> for rowSec and rowOtherSec => have default values for a val which is not yet present as {INT_MAX,INT_MIN} 
+3. Create unordered_map<int,pair<int,int>> for colSec and colOtherSec 
+4. iterate through the grid and populate the above data structures
+5. iterate through row array, maintain rowPrefixSum and check if it is valid or not 
+6. repeat step 5 for col array
+7. return false
+
 
 
 */
