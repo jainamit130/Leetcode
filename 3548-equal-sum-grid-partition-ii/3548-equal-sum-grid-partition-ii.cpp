@@ -48,7 +48,6 @@ public:
 
             }
         }
-        cout<<endl;
         // horizontal cut
         long long ans = LLONG_MAX;
         long long rowSum = 0;
