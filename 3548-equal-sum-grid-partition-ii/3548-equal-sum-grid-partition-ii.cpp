@@ -6,6 +6,7 @@ public:
         vector<long long> row(m);
         vector<long long> col(n);
 
+        // i have used long long in map even though the key will never reach that point this is because the diff which is being searched in map can be in the range long long which if searched in a unordered_map with key range being in int would downcast the diff and may result in true even if real long long key is not really present
         unordered_map<long long,pair<int,int>> rowSec;
         unordered_map<long long,pair<int,int>> rowOtherSec;
 
