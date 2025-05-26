@@ -3,12 +3,10 @@ public:
     int largestPathValue(string colors, vector<vector<int>>& edges) {
         int n = colors.size();
         vector<vector<int>> adj(n);
-        vector<int> inDegree(n, 0);
 
         for (auto& edge : edges) {
             int u = edge[0], v = edge[1];
             adj[u].push_back(v);
-            inDegree[v]++;
         }
 
         int ans = 0;
