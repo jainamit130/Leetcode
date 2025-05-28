@@ -3,50 +3,44 @@ public:
     vector<int> maxTargetNodes(vector<vector<int>>& edges1, vector<vector<int>>& edges2, int k) {
         int n = edges1.size()+1;
         int m = edges2.size()+1;
-        
-        // Construct Adjacency List
-        vector<vector<int>> adj1;
-        adj1 = construct(edges1);
 
-        vector<vector<int>> adj2;
-        adj2 = construct(edges2); 
+        // Construct Adj
+        vector<vector<int>> adj1=construct(edges1);
+        vector<vector<int>> adj2=construct(edges2);
 
-        int maxDist = 0;
-        for(int i=0;i<m;i++) {
-            maxDist = max(bfs(i,adj2,k-1),maxDist);
-        }
+        int maxDistTree2 = 0;
+        for(auto i=0;i<m;i++) {
+            maxDistTree2 = max(maxDistTree2,bfs(adj2,i,k-1));
+        } 
         vector<int> ans;
-        for(int i=0;i<n;i++) {
-            ans.push_back(bfs(i,adj1,k)+maxDist);
-        }
+        for(int i=0;i<n;i++){
+            ans.push_back(bfs(adj1,i,k)+maxDistTree2);
+        } 
         return ans;
     }
 
-    int bfs(int startNode, vector<vector<int>>& adj, int k) {
-        int dist = 0;
-        queue<int> q;
-        int ans = 1;
-        if(k<0){
-            return 0;
-        }
+    int bfs(vector<vector<int>>& adj, int startNode, int threshold) {
         vector<int> visited(adj.size());
+        queue<int> q;
         q.push(startNode);
         visited[startNode] = 1;
+        int dist = 0;
+        int ans = (threshold<0)?0:1;
         while(!q.empty()) {
             int size = q.size();
             while(size) {
                 int node = q.front();
                 q.pop();
                 size--;
-                for(auto neigh: adj[node]) {
+                for(auto neigh:adj[node]) {
                     if(!visited[neigh]) {
                         q.push(neigh);
-                        visited[neigh] = 1;
+                        visited[neigh]=1;
                     }
                 }
             }
             dist++;
-            if(dist<=k) {
+            if(dist<=threshold) {
                 ans+=q.size();
             } else {
                 break;
