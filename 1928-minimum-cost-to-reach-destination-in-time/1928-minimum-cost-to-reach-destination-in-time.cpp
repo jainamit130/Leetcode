@@ -9,8 +9,8 @@ public:
         }
         priority_queue<vector<int>,vector<vector<int>>,greater<vector<int>>> pq;
         pq.push({passingFees[0],0,0});
-        vector<int> visited(n);
-        visited[0]=1;
+        vector<vector<int>> visited(n,{INT_MAX,INT_MAX});
+        visited[0]={passingFees[0],0};
         while(!pq.empty()) {
             int node = pq.top()[2];
             int currTime = pq.top()[1];
@@ -22,8 +22,8 @@ public:
             for(int i=0;i<adj[node].size();i++) {
                 int neigh = adj[node][i][0];
                 int time = adj[node][i][1] + currTime;
-                if(!visited[neigh] && time<=maxTime) {
-                    visited[neigh]=1;
+                if((visited[neigh][0]>currCost+passingFees[neigh] || visited[neigh][1]>time) && time<=maxTime) {
+                    visited[neigh]={currCost+passingFees[neigh],time};
                     pq.push({passingFees[neigh]+currCost,time,neigh});
                 } 
             }
