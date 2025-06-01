@@ -11,9 +11,7 @@ public:
         for(int i=0;i<m;i++) {
             for(int j=0;j<classRoom[i].length();j++) {
                if(classRoom[i][j]=='S') startIndex = {i,j};
-               else if(classRoom[i][j]=='L') {
-                    trashId[{i,j}]=id++;
-               }
+               else if(classRoom[i][j]=='L') trashId[{i,j}]=id++;
             }
         }
 
