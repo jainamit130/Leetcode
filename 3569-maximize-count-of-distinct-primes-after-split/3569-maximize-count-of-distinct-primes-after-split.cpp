@@ -122,6 +122,22 @@ public:
 
 /*
 
+Conclusions:
+1. store the primes in seive 
+2. iterate and store the prime occurences in a map<int,set>
+3. create primeOpenCount and primeCloseCount => create prefix and suffix => get prefix + suffix
+4. segment tree stores the prefix + suffix and do updates in lazy tree
+5. Possible operations in segment tree =>
+    i.   Non Prime -> prime => +1
+    ii.  Prime -> prime => -1 then +1
+    iii. Non Prime -> Non Prime => no change required
+    iv.  Prime -> Non Prime => -1
+6. if a operation affects the first occrence or last occurence then a update is needed in the suffix range i+1 -> j and prefix range i -> j-1
+7. for each operation change => update the occurences map
+
+
+Dry Run
+
 0   1   2   3   4   5   6   7   8   9   10  11   
 2   6   5   9   7   7   2   3   4   2   8   11
 
@@ -183,18 +199,5 @@ prefix + suffix
 0   1   2   3   4   5   6   7   8   9   10  11
 6   6   7   6   7   7   6   6   5   5   6   6
 
-
-Conclusions:
-1. store the primes in seive 
-2. iterate and store the prime occurences in a map<int,set>
-3. create primeOpenCount and primeCloseCount => create prefix and suffix => get prefix + suffix
-4. segment tree stores the prefix + suffix and do updates in lazy tree
-5. Possible operations in segment tree =>
-    i.   Non Prime -> prime => +1
-    ii.  Prime -> prime => -1 then +1
-    iii. Non Prime -> Non Prime => no change required
-    iv.  Prime -> Non Prime => -1
-6. if a operation affects the first occrence or last occurence then a update is needed in the suffix range i+1 -> j and prefix range i -> j-1
-7. for each operation change => update the occurences map
 
 */
