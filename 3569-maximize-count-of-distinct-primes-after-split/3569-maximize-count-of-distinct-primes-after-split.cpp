@@ -3,31 +3,29 @@ public:
     vector<bool> isPrime;
     vector<int> segTree;
     vector<int> lazy;
-    map<int,set<int>> primeOccurences;
+    unordered_map<int,set<int>> primeOccurences;
     int n,maxEle=1e5+1;
 
     void updateTree(int start,int end,int low,int high,int change,int pos) {
         if(start>end) return;
 
-        if(lazy[pos]!=0) {
-            segTree[pos]+=lazy[pos];
+        auto lazyPropagation = [&](int val) {
+            segTree[pos]+=val;
             if(start!=end) {
-                lazy[2*pos+1]+=lazy[pos];
-                lazy[2*pos+2]+=lazy[pos];
+                lazy[2*pos+1]+=val;
+                lazy[2*pos+2]+=val;
             }
             lazy[pos]=0;
-        }
+        };
+
+        if(lazy[pos]!=0) lazyPropagation(lazy[pos]);
 
         // non overlap
         if(high<start || end<low) return;
 
         // total overlap
         if(low<=start && end<=high) {
-            segTree[pos] += change;
-            if(start!=end) {
-                lazy[2*pos+1]+=change;
-                lazy[2*pos+2]+=change;
-            }
+            lazyPropagation(change);
             return;
         }
 
