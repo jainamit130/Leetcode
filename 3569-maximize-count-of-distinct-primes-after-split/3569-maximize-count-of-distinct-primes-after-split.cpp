@@ -3,7 +3,7 @@ public:
     vector<bool> isPrime;
     vector<int> segTree;
     vector<int> lazy;
-    map<int,set<int>> primeOccurences;
+    unordered_map<int,set<int>> primeOccurences;
     int n,maxEle;
 
     void updateTree(int start,int end,int low,int high,int change,int pos) {
