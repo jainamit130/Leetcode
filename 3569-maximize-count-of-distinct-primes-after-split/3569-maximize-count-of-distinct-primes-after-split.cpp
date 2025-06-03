@@ -4,7 +4,7 @@ public:
     vector<int> segTree;
     vector<int> lazy;
     unordered_map<int,set<int>> primeOccurences;
-    int n,maxEle;
+    int n,maxEle=1e5+1;
 
     void updateTree(int start,int end,int low,int high,int change,int pos) {
         if(start>end) return;
@@ -41,8 +41,6 @@ public:
 
     vector<int> maximumCount(vector<int>& nums, vector<vector<int>>& queries) {
         n = nums.size();
-        maxEle = *max_element(nums.begin(),nums.end());
-        for(auto q:queries) maxEle = max(q[1],maxEle);
         isPrime.resize(maxEle+1,true);
         populatePrimes();
 
