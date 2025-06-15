@@ -59,7 +59,6 @@ public:
         return prefixWt[u] + prefixWt[v] - 2 * prefixWt[lca];
     }
 
-
     int lift(int node,int lift) {
         int power = 0;
         while(lift) {
