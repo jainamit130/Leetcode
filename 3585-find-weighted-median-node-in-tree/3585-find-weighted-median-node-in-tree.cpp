@@ -22,8 +22,8 @@ public:
             int v = queries[i][1];
             ans[i]=v;
             int lca = getLca(u,v);
-            int dist = getDist(u,v);
-            int target = (dist+1)/2;
+            long long dist = getDist(u,v);
+            long long target = (dist+1)/2;
             int nodeCount = levels[u]+levels[v]-2*levels[lca];
             int start = 0,end = nodeCount;
             int subAns = v;
@@ -54,7 +54,7 @@ public:
         return lift(v,rem);
     }
 
-    int getDist(int u, int v) {
+    long long getDist(int u, int v) {
         int lca = getLca(u, v);
         return prefixWt[u] + prefixWt[v] - 2 * prefixWt[lca];
     }
