@@ -2,31 +2,23 @@ class Solution {
 public:
     int count = 0;
     long long ans = 0;
-
     long long kMirror(int k, int n) {
         int len = 1;
-        while (count < n) {
-            dfs(len, "", k, n);
+        while(count<n) {
+            solve(len,"",n,k);
             len++;
         }
         return ans;
     }
 
-    void dfs(int len, string num, int k, int n) {
-        if (count >= n) return;
-        if (num.size() == len / 2) {
-            string rev = num;
-            reverse(rev.begin(), rev.end());
-
-            if (len % 2 == 0) {
-                string full = num + rev;
-                if (isKbasePalindrome(full, k)) {
-                    ans += stoll(full);
-                    count++;
-                }
-            } else {
+    void solve(int len,string num,int n,int k) {
+        if(count>=n) return;
+        if(num.length()==len/2) {
+            string revNum = num;
+            reverse(revNum.begin(),revNum.end());
+            if(len%2!=0) {
                 for (char c = '0'; c <= '9'; ++c) {
-                    string full = num + c + rev;
+                    string full = num + c + revNum;
                     if (full[0] == '0') continue;
                     if (isKbasePalindrome(full, k)) {
                         ans += stoll(full);
@@ -34,34 +26,39 @@ public:
                         if (count >= n) return;
                     }
                 }
-            }
+                return;
+            } 
+            string palindromeNum = ""+num+revNum;
+            if(isKbasePalindrome(palindromeNum,k) && count<n) {
+                ans += stoll(palindromeNum); count++;
+            } 
             return;
         }
-
         for (char c = '0'; c <= '9'; ++c) {
             if (num.empty() && c == '0') continue;
-            dfs(len, num + c, k, n);
+            solve(len, num + c, n, k);
         }
+        return;
     }
 
-    bool isKbasePalindrome(string numStr, int k) {
-        long long num = stoll(numStr);
-        string baseK = "";
-        while (num > 0) {
-            baseK += char('0' + num % k);
-            num /= k;
+    bool isKbasePalindrome(string numStr,int k) {
+        long long numn = stoll(numStr);
+        string numk = ""; 
+        while(numn) {
+            numk += to_string(numn%k);
+            numn/=k;
         }
-        return isPalindrome(baseK);
+        return isPalindrome(numk);
     }
 
-    bool isPalindrome(const string& s) {
-        int i = 0, j = s.size() - 1;
-        while (i < j) {
-            if (s[i++] != s[j--]) return false;
+    bool isPalindrome(string numStr) {
+        for(int i=0;i<numStr.length()/2;i++) {
+            if(numStr[numStr.length()-1-i]!=numStr[i]) return false;
         }
         return true;
     }
 };
+
 
 /*
 
