@@ -61,9 +61,7 @@ public:
             if(isValid(edges,mid,k,unionFind)) {
                 ans = mid;
                 start = mid+1;
-            } else {
-                end = mid-1;
-            }
+            } else end = mid-1;
         }
         return min(ans,minStart);
     }
@@ -76,11 +74,8 @@ public:
             int v = edge[1];
             if(!root->merge(u,v)) continue;
             if(strength>=stability) continue;
-            if(k>0 && (strength*2)>=stability) {
-                k--;
-            } else {
-                return false;
-            }
+            if(k>0 && (strength*2)>=stability) k--;
+            else return false;
         }
         return root->allConnected();
     }
