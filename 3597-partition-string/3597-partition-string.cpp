@@ -10,11 +10,12 @@ public:
                     st.insert(seg);
                     ans.push_back(seg);
                 } 
-                seg = s[i];
+                seg=s[i];
             } else {
-                seg+=s[i];
+                seg +=s[i];
             }
         }
+
         if(st.find(seg)==st.end()) ans.push_back(seg);
         return ans;
     }
