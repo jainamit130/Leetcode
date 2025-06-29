@@ -1,7 +1,6 @@
 class Solution {
 public:
-    vector<vector<int>> dp;
-    int n;
+    vector<vector<int>> dp; int n;
     int minXor(vector<int>& nums, int k) {
         n = nums.size();
         dp.resize(n+1,vector<int>(k+1,-1));
