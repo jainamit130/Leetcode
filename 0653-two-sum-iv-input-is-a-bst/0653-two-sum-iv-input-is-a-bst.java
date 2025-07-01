@@ -20,7 +20,6 @@ class Solution {
 
     boolean solve(TreeNode root,int k,Set<Integer> st) {
         if(root==null) return false;
-        if(st.contains(k-root.val)) return true;
         boolean ans = solve(root.left,k,st);
         if(st.contains(k-root.val)) return true;
         st.add(root.val);
