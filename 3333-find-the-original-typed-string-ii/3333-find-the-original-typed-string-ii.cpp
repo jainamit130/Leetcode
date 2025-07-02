@@ -1,45 +1,48 @@
 class Solution {
 public:
     int possibleStringCount(string word, int k) {
-        vector<int> arr;
-        int cnt = 1, MOD = 1e9 + 7;
-        char prev = word[0];
-        for(int i=1; i<word.size(); ++i){
-            if(word[i] != prev){
-                arr.push_back(cnt);
-                cnt = 0;
-                prev = word[i];
+        int n = word.size(), cnt = 1;
+        vector<int> freq;
+        for (int i = 1; i < n; ++i) {
+            if (word[i] == word[i - 1]) {
+                ++cnt;
+            } else {
+                freq.push_back(cnt);
+                cnt = 1;
             }
-            cnt++;
         }
-        if(cnt > 0) arr.push_back(cnt);
-        int sz = arr.size();
-        long long total = arr[0];
-        for(int i=1; i<sz; ++i) total = (total * arr[i]) % MOD; 
-        if(k < arr.size()) return total;
+        freq.push_back(cnt);
 
-        // DP ??
-        vector<long long> dp(k), cpy(k);
-        dp[0] = 1;
+        int ans = 1;
+        for (int o : freq) {
+            ans = static_cast<long long>(ans) * o % mod;
+        }
 
-        for(int i=1; i <= sz; ++i){
-            cpy = dp;
-            fill(dp.begin(), dp.end(), 0);
-            
-            vector<long long> prefix(k);
+        if (freq.size() >= k) {
+            return ans;
+        }
 
-            for(int j=0; j<k; ++j){
-                prefix[j] = cpy[j];
-                if(j > 0) prefix[j] = (prefix[j] + prefix[j-1]) % MOD;
+        vector<int> f(k), g(k, 1);
+        f[0] = 1;
+        for (int i = 0; i < freq.size(); ++i) {
+            vector<int> f_new(k);
+            for (int j = 1; j < k; ++j) {
+                f_new[j] = g[j - 1];
+                if (j - freq[i] - 1 >= 0) {
+                    f_new[j] = (f_new[j] - g[j - freq[i] - 1] + mod) % mod;
+                }
             }
-
-            for(int j=i; j<k; ++j){
-                dp[j] = prefix[j-1];
-                int prev_id = min(arr[i-1], j);
-                if(j - prev_id > 0) dp[j] = (dp[j] - prefix[j - prev_id - 1] + MOD) % MOD;
+            vector<int> g_new(k);
+            g_new[0] = f_new[0];
+            for (int j = 1; j < k; ++j) {
+                g_new[j] = (g_new[j - 1] + f_new[j]) % mod;
             }
-        }       
-        for(int i=1; i<k; ++i) dp[i] = (dp[i] + dp[i-1]) % MOD;
-        return (total - dp[k-1] + MOD) % MOD;
+            f = move(f_new);
+            g = move(g_new);
+        }
+        return (ans - g[k - 1] + mod) % mod;
     }
+
+private:
+    static const int mod = 1000000007;
 };
