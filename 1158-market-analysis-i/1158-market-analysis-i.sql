@@ -1,0 +1,2 @@
+# Write your MySQL query statement below
+Select user_id as buyer_id,join_date,count(*) as orders_in_2019 from users left join orders o on users.user_id=o.buyer_id where o.order_date like '2019%' group by user_id;
