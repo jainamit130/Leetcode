@@ -9,28 +9,62 @@ public:
         }
 
         int ans = 1;
-        cache.resize(n+1,vector<vector<int>>(n+1,vector<int>(1<<14,-1)));
+        cache.resize(n+1,vector<vector<int>>(n+1,vector<int>(1<<14,-1)))
         for(int i=0;i<n;i++) {
-            ans = max(ans,1+solve(adj,0|(1<<i),i,i,label));
+            // odd length
+            ans = max(ans,1+solve(adj,i,i,0|(1<<i),label));
+            // even length
             for(int j=0;j<adj[i].size();j++) {
                 if(label[adj[i][j]]==label[i]) {
-                    ans = max(ans,2+solve(adj,0|(1<<adj[i][j])|(1<<i),adj[i][j],i,label));
+                    ans = max(ans,2+solve(adj,i,adj[i][j],0|(1<<i)|(1<<adj[i][j]),label));
                 }
             }
         }
         return ans;
     }
 
-    int solve(vector<vector<int>>& adj,int mask,int node1,int node2,string& label) {
+    // node1 == ith pointer and node2==jth pointer
+    int solve(vector<vector<int>>& adj,int node1,int node2,int mask,string& label) {
         if(cache[node1][node2][mask]!=-1) return cache[node1][node2][mask];
         int ans = 0;
         for(int i=0;i<adj[node1].size();i++) {
-            if((mask>>adj[node1][i])&1) continue;
+            int newNode1 = adj[node1][i];
+            if( (mask>>newNode1) & 1) continue;
             for(int j=0;j<adj[node2].size();j++) {
-                if(((mask>>adj[node2][j])&1) || adj[node2][j]==adj[node1][i]) continue;
-                if(label[adj[node2][j]]==label[adj[node1][i]]) ans = 2 + solve(adj,mask | (1<<adj[node2][j]) | (1<<adj[node1][i]),adj[node1][i],adj[node2][j],label);
+                int newNode2 = adj[node2][j];
+                if( (mask>>newNode2) & 1 || newNode1==newNode2) continue;
+                if(label[newNode1]==label[newNode2]) {
+                    ans = 2 + solve(adj,newNode1,newNode2,mask | (1<<newNode1) | (1<<newNode2),label);
+                }
             }
         }
         return cache[node1][node2][mask]=ans;
     }
 };
+
+
+/*
+mask => 2^14
+
+Steps
+
+1. Build adj
+2. iterate through nodes 
+3. consider 2 cases 1 for odd length and the other for even length => for even length run of of neighbors from adj list
+4. for all cases call the dp/recursive function => states: node1, node2, mask
+5. memoize the function
+
+b   c   a   b   b   a   c
+
+even length => 
+a   b   b   a
+odd length => 
+b   a   b
+
+states => node1, node2
+
+
+node1 -- node2
+
+
+*/
