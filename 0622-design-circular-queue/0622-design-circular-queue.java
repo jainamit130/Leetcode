@@ -1,37 +1,51 @@
 class MyCircularQueue {
-    Deque<Integer> dq;
     int k;
+    int[] arr;
+    int start,end;
     public MyCircularQueue(int k) {
-        this.k=k;
-        dq = new ArrayDeque(k);
+        start = -1;
+        end = -1;
+        arr = new int[k];
+        this.k = k;
     }
     
     public boolean enQueue(int value) {
-        if(dq.size()==k) return false;
-        return dq.offer(value);
+        if(isFull()) return false;
+        if(start==-1) {
+            start = 0;
+            end = 0;
+        }
+        arr[end]=value;
+        end=(end+1)%k;
+        return true;
     }
     
     public boolean deQueue() {
-        if(dq.poll()==null) return false;
+        if(start==-1) return false;
+        start=(start+1)%k;
+        if(start==end) {
+            start=-1;
+            end=-1;
+        }
         return true;
     }
     
     public int Front() {
-        if(dq.peekFirst()==null) return -1;
-        return dq.peekFirst();
+        if(start==-1) return -1;
+        return arr[start];
     }
     
     public int Rear() {
-        if(dq.peekLast()==null) return -1;
-        return dq.peekLast();
+        if(start==-1) return -1;
+        return arr[(end-1+k)%k];
     }
     
     public boolean isEmpty() {
-        return dq.size()==0;
+        return start==-1;
     }
     
     public boolean isFull() {
-        return dq.size()==k;
+        return start!=-1 && start==end;
     }
 }
 
