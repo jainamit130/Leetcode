@@ -9,7 +9,7 @@ public:
         }
 
         int ans = 1;
-        cache.resize(n+1,vector<vector<int>>(n+1,vector<int>(1<<14,-1)))
+        cache.resize(n+1,vector<vector<int>>(n+1,vector<int>(1<<14,-1)));
         for(int i=0;i<n;i++) {
             // odd length
             ans = max(ans,1+solve(adj,i,i,0|(1<<i),label));
@@ -34,7 +34,7 @@ public:
                 int newNode2 = adj[node2][j];
                 if( (mask>>newNode2) & 1 || newNode1==newNode2) continue;
                 if(label[newNode1]==label[newNode2]) {
-                    ans = 2 + solve(adj,newNode1,newNode2,mask | (1<<newNode1) | (1<<newNode2),label);
+                    ans =max(ans, 2 + solve(adj,newNode1,newNode2,mask | (1<<newNode1) | (1<<newNode2),label));
                 }
             }
         }
