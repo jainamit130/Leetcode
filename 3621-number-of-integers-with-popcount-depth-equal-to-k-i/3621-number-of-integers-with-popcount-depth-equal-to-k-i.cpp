@@ -1,6 +1,6 @@
 class Solution {
 public:
-    long long dp[52][2][52];
+    long long dp[50][2][50];
     string toBinaryStr(long long n) {
         string s = "";
         while(n) {
@@ -14,7 +14,7 @@ public:
     long long popcountDepth(long long n, int k) {
         if(k==0) return 1;
         unordered_set<int> validOneCounts;
-        for(int i=1;i<52;i++) {
+        for(int i=1;i<50;i++) {
             int c = i, depth = 0;
             while(c>1) {
                 c = __builtin_popcount(c);
