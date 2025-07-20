@@ -1,6 +1,6 @@
 class Solution {
 public:
-    long long dp[52][2][52];
+    long long dp[52][52][2];
     string toBinaryStr(long long n) {
         string s = "";
         while(n) {
@@ -30,12 +30,12 @@ public:
 
     long long solve(string n,unordered_set<int>& validOnes,int pos,int isTight,int ones) {
         if(pos == n.length()) return validOnes.find(ones)!=validOnes.end();
-        if(dp[pos][isTight][ones]!=-1) return dp[pos][isTight][ones];
+        if(dp[pos][ones][isTight]!=-1) return dp[pos][ones][isTight];
         int limit = isTight ? n[pos]-'0' : 1;
         long long ans = 0;
         for(int i = 0; i<=limit; i++) {
             ans += solve(n,validOnes,pos+1,isTight & (i==limit),ones + i);
         }
-        return dp[pos][isTight][ones]=ans;
+        return dp[pos][ones][isTight]=ans;
     }
 };
