@@ -8,12 +8,10 @@ public:
         int mod = 1e9+7;
         long long ans = 0;
 
-        vector<long long> pairs;
-        for(auto [y,count]:mp) {
-            if(count>1) pairs.push_back(count*1LL*(count-1)/2);
-        }
         long long prefix = 0;
-        for(auto p:pairs) {
+        for(auto [y,count]:mp) {
+            if(count==1) continue;
+            int p = count*1LL*(count-1)/2;
             ans = (ans + prefix*p%mod)%mod;
             prefix = (prefix+p)%mod;
         }
@@ -24,8 +22,10 @@ public:
 
 /*
 
+p1
+p2
+p3
 
-
-
+p1 * p2 + p1 * p3 + p2 * p3
 
 */
