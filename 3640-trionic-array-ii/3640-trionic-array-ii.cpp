@@ -18,6 +18,7 @@ public:
                 start = -1;
             }
         }
+
         long long ans = LLONG_MIN;
         for(auto [start,end,sum]:decreasing) {
             if(start-1>=0 && nums[start-1]<nums[start]) {
@@ -32,6 +33,7 @@ public:
                     int j = end+1;
                     sum += nums[j];
                     while(j+1<n && nums[j]<nums[j+1]) {
+                        ans = max(ans,sum);
                         sum += nums[j+1];
                         j++;
                     }
