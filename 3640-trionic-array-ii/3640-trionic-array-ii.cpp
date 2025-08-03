@@ -2,60 +2,62 @@ class Solution {
 public:
     long long maxSumTrionic(vector<int>& nums) {
         int n = nums.size();
-        vector<tuple<int,int,long long>> decreasing;
         long long sum = 0;
         int start = -1;
-        // get all the decreasing subarrays 
-        // start from index = 1(because i need atleast 2 elements to consider it as decreasing)
-        for(int i=1;i<n;i++) {
+        long long ans = LLONG_MIN;
+        // get all the decreasing subarrays
+        // start from index = 1(because i need atleast 2 elements to consider it
+        // as decreasing)
+        int index = 1;
+        while (index<n) {
             // decreasing
-            if(nums[i-1]>nums[i]) {
-                if(start==-1) start = i-1;
-                sum += nums[i-1];
+            if (nums[index - 1] > nums[index]) {
+                if (start == -1)
+                    start = index - 1;
+                sum += nums[index - 1];
             } else {
-                if(start != -1) {
-                    sum += nums[i-1];
-                    decreasing.emplace_back(start,i-1,sum);
+                if (start != -1) {
+                    sum += nums[index - 1];
+                    int end = index - 1;
+                    // expand increasing 1 and increasing 2
+                        // expand increasing 1 backward
+                        // first check if valid or not
+                        if (start - 1 >= 0 && nums[start - 1] < nums[start]) {
+                            int i = start - 1;
+                            // atleast once included
+                            sum += nums[i];
+                            while (i > 0 && nums[i - 1] < nums[i] &&
+                                   nums[i - 1] > 0) {
+                                sum += nums[i - 1];
+                                i--;
+                            }
+
+                            // expand increasing 2 forward
+                            // first check if valid or not
+                            if (end + 1 < n && nums[end] < nums[end + 1]) {
+                                int j = end + 1;
+                                // atleast once included
+                                sum += nums[j];
+                                while (j + 1 < n && nums[j] < nums[j + 1]) {
+                                    // subarray is guranteed to be trionic at
+                                    // this point
+                                    ans = max(ans, sum);
+                                    sum += nums[j + 1];
+                                    j++;
+                                }
+                                ans = max(ans, sum);
+                            }
+                        }
                 }
                 sum = 0;
                 start = -1;
             }
+            index++;
         }
 
-        long long ans = LLONG_MIN;
-        // expand increasing 1 and increasing 2
-        for(auto [start,end,sum] : decreasing) {
-            // expand increasing 1 backward
-            // first check if valid or not
-            if(start-1>=0 && nums[start-1]<nums[start]) {
-                int i=start -1;
-                // atleast once included
-                sum += nums[i];
-                while(i>0 && nums[i-1]<nums[i] && nums[i-1]>0) {
-                    sum += nums[i-1];
-                    i--;
-                }
-
-                // expand increasing 2 forward
-                // first check if valid or not
-                if(end+1<n && nums[end]<nums[end+1]) {
-                    int j = end + 1;
-                    // atleast once included
-                    sum += nums[j];
-                    while(j+1<n && nums[j]<nums[j+1]) {
-                        // subarray is guranteed to be trionic at this point
-                        ans = max(ans,sum);
-                        sum += nums[j+1];
-                        j++;
-                    }
-                    ans = max(ans,sum);
-                }
-            }
-        }
         return ans;
     }
 };
-
 
 /*
 
@@ -63,7 +65,7 @@ public:
 
 Increasing 1
 Decreasing
-Increasing 2 
+Increasing 2
 
 Case 1 => nums[i]<nums[i+1]; nums[i]==nums[i+1]; nums[i]>nums[i+1]
 
@@ -71,8 +73,9 @@ Case 1 => nums[i]<nums[i+1]; nums[i]==nums[i+1]; nums[i]>nums[i+1]
 p   ......  q
 
 Conclsuions:
-1. decreasing is the foundation => reason being its fixed as the mid part leaving us with no choice
-2. elements can be negative 
+1. decreasing is the foundation => reason being its fixed as the mid part
+leaving us with no choice
+2. elements can be negative
 3. get all the decreasing subarrays
 4. expand backwards to get increasing 1
     i. expand till its valid => nums[i-1]<nums[i] (atleast once)
@@ -93,8 +96,8 @@ Dry Run
 
 Decreasing
 Start   End   Total
-0       1     -2  
-2       3     -4  
+0       1     -2
+2       3     -4
 
 
 
