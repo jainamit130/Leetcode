@@ -1,5 +1,5 @@
 class Solution {
-    Integer[][][] dp;
+    Integer[][] dp;
     public Map<Integer,List<List<Integer>>> mp = Map.of(
         0,List.of(List.of(1,1),List.of(1,-1),List.of(1,0)),
         1,List.of(List.of(0,1),List.of(-1,1),List.of(1,1))
@@ -7,7 +7,7 @@ class Solution {
     int n;
     public int maxCollectedFruits(int[][] fruits) {
         n = fruits.length;
-        dp = new Integer[n][n][2]; 
+        dp = new Integer[n][n]; 
         int ans = solve(0,n-1,0,fruits) + solve(n-1,0,1,fruits);
         for(int i=0;i<n;i++) ans+=fruits[i][i];
         return ans;
@@ -20,7 +20,7 @@ class Solution {
     int solve(int row,int col,int child,int[][] fruits) {
         if(row==n-1 && col==n-1) return 0;
         if((child==0 && col<=row) || (child==1 && row<=col)) return Integer.MIN_VALUE;
-        if (dp[row][col][child] != null) return dp[row][col][child];
+        if (dp[row][col] != null) return dp[row][col];
 
         int ans = 0;
         List<List<Integer>> dir = mp.get(child);
@@ -30,6 +30,6 @@ class Solution {
             if(!isValid(newRow,newCol)) continue;
             ans = Math.max(ans , fruits[row][col] + solve(newRow,newCol,child,fruits));
         }
-        return dp[row][col][child]=ans;
+        return dp[row][col]=ans;
     }
 }
