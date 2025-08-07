@@ -8,10 +8,7 @@ class Solution {
     public int maxCollectedFruits(int[][] fruits) {
         n = fruits.length;
         dp = new Integer[n][n][2]; 
-        int ans = solve(0,n-1,0,fruits);
-        dp = new Integer[n][n][2]; 
-        int subAns = solve(n-1,0,1,fruits);
-        ans += subAns; 
+        int ans = solve(0,n-1,0,fruits) + solve(n-1,0,1,fruits);
         for(int i=0;i<n;i++) ans+=fruits[i][i];
         return ans;
     }
