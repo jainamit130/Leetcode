@@ -1,7 +1,7 @@
 class Solution {
     int ans = 0;
     public int reversePairs(int[] nums) {
-        int[] sorted = getReversePairsCount(nums,0,nums.length-1);
+        getReversePairsCount(nums,0,nums.length-1);
         return ans;
     }
 
@@ -18,9 +18,7 @@ class Solution {
         int start = 0, end = right.length-1;
         int i=0,j=0;
         while(i<m) {
-            while(j<n && left[i] > 2L * right[j]) {
-                j++;
-            }
+            while(j<n && left[i] > 2L * right[j]) j++;
             ans+=j;
             i++;
         }
