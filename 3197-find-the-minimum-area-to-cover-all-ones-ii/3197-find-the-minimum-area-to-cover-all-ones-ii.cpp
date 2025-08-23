@@ -4,8 +4,9 @@ public:
         int m=grid.size();
         int n=grid[0].size();
         int one=0,two=0,three=0;
+        int ans=INT_MAX;
+
         /*
-        5 possibilities
         1st Possibility
         ------------
         |    (1)    |
@@ -14,18 +15,18 @@ public:
         | (2) | (3) |
         |     |     |
         -------------
+
         */
-        int ans=INT_MAX;
         for(int i=0;i<m;i++){
             one=minimumArea(grid,0,i,0,n-1);
-            for(int j=0;j<n;j++){
-                two=minimumArea(grid,i+1,m-1,0,j);
-                three=minimumArea(grid,i+1,m-1,j+1,n-1);
+            for(int  j=0;j<n;j++){
+                two = minimumArea(grid,i+1,m-1,0,j);
+                three = minimumArea(grid,i+1,m-1,j,n-1);
                 ans=min(ans,one+two+three);
             }
         }
 
-        /*
+         /*
         2nd Possibility
         -------------
         |     | (2) |
@@ -129,9 +130,9 @@ public:
 
     }
 
-    int minimumArea(vector<vector<int>>& grid,int startI,int endI,int startJ,int endJ) {
-        int minI=INT_MAX;int minJ=INT_MAX;
-        int maxI=INT_MIN;int maxJ=INT_MIN;
+    int minimumArea(vector<vector<int>>& grid,int startI,int endI,int startJ, int endJ) {
+        int minI=INT_MAX,minJ=INT_MAX;
+        int maxI=INT_MIN,maxJ=INT_MIN;
         for(int i=startI;i<=endI;i++){
             for(int j=startJ;j<=endJ;j++){
                 if(grid[i][j]==1){
@@ -142,8 +143,96 @@ public:
                 }
             }
         }
-        if(minI==INT_MAX || minJ==INT_MAX || maxI==INT_MIN || maxJ==INT_MIN)
+        if(minI==INT_MAX || minJ==INT_MAX || maxJ == INT_MIN || maxI==INT_MIN){
             return 900;
+        }
         return (maxI-minI+1)*(maxJ-minJ+1);
-    }
+    }    
 };
+
+/*
+
+
+2 possibilities
+
+        -------------
+        |    (1)    |
+        |           |
+        -------------
+        |    (2)    |
+        |           |
+        -------------
+
+        -------------
+        |     |     |
+        |     |     |
+        | (1) | (2) |
+        |     |     |
+        |     |     |
+        -------------
+
+6 possibilities
+
+        1st Possibility
+        ------------
+        |    (1)    |
+        |           |
+        ------------
+        | (2) | (3) |
+        |     |     |
+        -------------
+        
+        
+        2nd Possibility
+        -------------
+        |     | (2) |
+        |     |     |
+        | (1) -------
+        |     |     |
+        |     | (3) |
+        -------------
+
+        3rd Possibility
+        -------------
+        |     |     |
+        | (2) |     |
+        ------- (1) |
+        |     |     |
+        | (3) |     |
+        -------------  
+
+
+        4th possibility
+        -------------
+        | (2) | (3) |
+        |     |     |
+        ------------
+        |           |
+        |    (1)    |
+        -------------   
+
+
+        5th possibility
+        -------------
+        |    (1)    |
+        -------------
+        |    (2)    |
+        -------------
+        |    (3)    |
+        -------------
+
+
+        6th possibility
+        -------------
+        |   |   |   |
+        |   |   |   |
+        |(1)|(2)|(3)|
+        |   |   |   |
+        |   |   |   |
+        -------------
+        
+*/
+
+
+
+
