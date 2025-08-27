@@ -1,79 +1,67 @@
 class Solution {
 public:
     int maxWalls(vector<int>& robots, vector<int>& distance, vector<int>& walls) {
-        int n = robots.size();
         sort(walls.begin(),walls.end());
-        vector<int> indexes(n);
-        iota(indexes.begin(),indexes.end(),0);
-        sort(indexes.begin(),indexes.end(),[&](auto& lhs,auto& rhs) {
+        int n = robots.size();
+        vector<int> indices(n);
+        iota(indices.begin(),indices.end(),0);
+        sort(indices.begin(),indices.end(),[&](auto& lhs,auto& rhs) {
             return robots[lhs]<robots[rhs];
         });
 
-        vector<vector<int>> dp(n+1, vector<int>(2, 0));
-
-        for (int i = n-1; i >= 0; i--) {
-            for (int prevDir = 0; prevDir < 2; prevDir++) {
-                int roboIndex = indexes[i];
-                int startDist = robots[roboIndex] - distance[roboIndex];
-                int endDist   = robots[roboIndex] + distance[roboIndex];
-
-                if (i >= 1) {
-                    startDist = max(robots[indexes[i-1]]+1, startDist);
-                    if (prevDir == 1) 
-                        startDist = max(startDist, robots[indexes[i-1]] + distance[indexes[i-1]] + 1);
+        vector<vector<int>> cache(n+1,vector<int>(2,-1));
+        auto solve = [&](auto&& self,int index,int prevDir) -> int {
+            if(index>=n) return 0;
+            if(cache[index][prevDir]!=-1) return cache[index][prevDir];
+            int robotIndex = indices[index];
+            // the leftmost point the bullet reaches
+            // case 1: startDist reaches till robotsPos - BulletDistance
+            // case 2: if a prevRobot exists startDist reaches till prevRobot pos + 1 
+            // case 3: if a prevRobot exists && prevDir=1 then startDist reaches till prevRobot Bullet pos + 1
+            int startDist = robots[robotIndex] - distance[robotIndex];
+            if(index>0) {
+                startDist = max(startDist,robots[indices[index-1]]+1);
+                if(prevDir == 1) {
+                    startDist = max(robots[indices[index-1]]+distance[indices[index-1]]+1,startDist);
                 }
-
-                int ans = 0;
-
-                int roboPosIndex = upper_bound(walls.begin(), walls.end(), robots[roboIndex]) - walls.begin();
-                int startIndex   = lower_bound(walls.begin(), walls.end(), startDist) - walls.begin();
-                ans = max(ans, roboPosIndex - startIndex + dp[i+1][0]);
-
-                roboPosIndex = lower_bound(walls.begin(), walls.end(), robots[roboIndex]) - walls.begin();
-                if (i < n-1) endDist = min(endDist, robots[indexes[i+1]] - 1);
-                int endIndex = upper_bound(walls.begin(), walls.end(), endDist) - walls.begin();
-                ans = max(ans, endIndex - roboPosIndex + dp[i+1][1]);
-
-                dp[i][prevDir] = ans;
             }
-        }
-        
-        return dp[0][0];
-
-
-        // vector<vector<int>> cache(n+1,vector<int>(2,-1));
-        // function<int(int,int)> solve = [&](int i,int prevDir) {
-        //     if(i>=n) return 0;
-        //     if(cache[i][prevDir]!=-1) return cache[i][prevDir];
-        //     int roboIndex = indexes[i];
-        //     int startDist = robots[roboIndex]-distance[roboIndex];
-        //     int endDist = robots[roboIndex]+distance[roboIndex];
-        //     if(i>=1) {
-        //         startDist = max(robots[indexes[i-1]]+1,startDist);
-        //         if(prevDir==1) startDist = max(startDist,robots[indexes[i-1]]+distance[indexes[i-1]]+1);
-        //     }
-
-        //     int ans = 0;
-        //     int roboPosIndex = upper_bound(walls.begin(),walls.end(),robots[roboIndex])-walls.begin();
-        //     int startIndex = lower_bound(walls.begin(),walls.end(),startDist)-walls.begin();
-        //     ans = max(ans,roboPosIndex-startIndex + solve(i+1,0));
-        //     roboPosIndex = lower_bound(walls.begin(),walls.end(),robots[roboIndex])-walls.begin();
-        //     if(i<n-1) endDist = min(endDist,robots[indexes[i+1]]-1);
-        //     int endIndex = upper_bound(walls.begin(),walls.end(),endDist)-walls.begin();
-        //     ans = max(ans,endIndex-roboPosIndex + solve(i+1,1));
-        //     return cache[i][prevDir]=ans;
-        // };
-        // return solve(0,0);
+            startDist = min(startDist,robots[robotIndex]);
+            int startIndex = lower_bound(walls.begin(),walls.end(),startDist)-walls.begin();
+            int currIndex = upper_bound(walls.begin(),walls.end(),robots[robotIndex])-walls.begin();
+            int ans = 0;
+            ans = max(ans,currIndex-startIndex + self(self,index+1,0));
+            // the rightMost point the bullet reaches
+            // case 1: endDist reaches till robotsPos + BulletDistance
+            // case 2: if a nextRobot exists endDist reaches till nextRobot pos - 1 
+            int endDist = robots[robotIndex]+distance[robotIndex];
+            if(index<n-1) endDist = min(endDist,robots[indices[index+1]]-1);
+            int endIndex = upper_bound(walls.begin(),walls.end(),endDist)-walls.begin();
+            currIndex = lower_bound(walls.begin(),walls.end(),robots[robotIndex])-walls.begin();
+            ans = max(ans,endIndex-currIndex+self(self,index+1,1));
+            return cache[index][prevDir]=ans;
+        };
+        return solve(solve,0,0);
     }
 };
 
-
 /*
 
-45  56  58
-8   7   8
+W       W    W           W       W               W               W
+        R       R2                       R           R
+---------        
+----------------------------------------------------------------
 
-50  52  58  75
+Suppose bullet tarvel from R2 in left direction => using binary search => 
+startIndex and curr pos (end Index)
+smilarly the endIndex for the right direction
 
+
+Dynamic Progamming 
+
+Steps
+1. Sort walls and robots array (sort index array based on robots)
+2. run a dynamic programming (2 states - index, prevDir - 0,1)
+3. for every index determine the startIndex and endIndex using binary search of startDist and EndDist values over walls array.
+4. Handle edge cases where the robots and walls take the same position.
 
 */
