@@ -11,8 +11,8 @@ public:
         for(int i=0;i<m;i++) {
             for(int j=0;j<n;j++) {
                 if(grid[i][j]==1) {
-                    for(int k = 0;k<=3;k++) {
-                        ans = max(ans,1+solve(grid, i + dirMp[k][0], j+dirMp[k][1],k,0,1));
+                    for(int k=0;k<4;k++) {
+                        ans = max(ans,1+solve(grid, i,j,k,0,1));
                     }
                 }
             }
@@ -20,22 +20,25 @@ public:
         return ans;
     }
 
-    bool isValid(int row,int col) {
-        return row>=0 && row<m && col>=0 && col<n;
+    bool isValid(int row,int col,vector<vector<int>>& grid,int order) {
+        return row>=0 && row<m && col>=0 && col<n && ((grid[row][col]==2 && order) || (!grid[row][col] && !order));
     }
 
     int solve(vector<vector<int>>& grid,int row,int col,int dir,int turn,int order) {
-        if(!isValid(row,col)) return 0;
-        if((order && grid[row][col]!=2) || (!order && grid[row][col]!=0)) return 0;
         if(dp[row][col][dir][turn][order]!=-1) return dp[row][col][dir][turn][order];
         int length = 0;
         
         // either to go forward
-        length = max(length,1+solve(grid,row+dirMp[dir][0],col+dirMp[dir][1],dir,turn,!order));
+        int newRow = row+dirMp[dir][0];
+        int newCol = col+dirMp[dir][1];
+        if(isValid(newRow,newCol,grid,order)) length = max(length,1+solve(grid,newRow,newCol,dir,turn,!order));
+
         // or to change direction
         if(!turn) {
             int newDir = (dir+1)%4;
-            length = max(length,1+solve(grid,row+dirMp[newDir][0],col+dirMp[newDir][1],newDir,1,!order));
+            int newRow = row+dirMp[newDir][0];
+            int newCol = col+dirMp[newDir][1];
+            if(isValid(newRow,newCol,grid,order)) length = max(length,1+solve(grid,newRow,newCol,newDir,1,!order));
         }
         return dp[row][col][dir][turn][order]=length;
     }
