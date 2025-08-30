@@ -1,34 +1,35 @@
 class Solution {
 public:
     bool isValidSudoku(vector<vector<char>>& board) {
-        for(int i=0;i<9;i++){
-            for(int j=0;j<9;j++){
-               if(board[i][j]!='.')
-               {
-                    if(isValid(board,i,j,board[i][j])){
-                        continue;
-               }    else
-                        return false; 
-                }
+        int m = board.size(), n = board[0].size();
+        vector<vector<int>> boxBitMask(3,vector<int>(3));
+        vector<int> row(m),col(n);
+        for(int i=0;i<m;i++) {
+            for(int j=0;j<n;j++) {
+                if(board[i][j]=='.') continue;
+                int val = board[i][j]-'0';
+                vector<int> valuesToCheck = {boxBitMask[i/3][j/3],row[i],col[j]};
+                for(auto valueToCheck:valuesToCheck) {
+                    if((valueToCheck>>val)&1) return false;
+                }    
+                boxBitMask[i/3][j/3]|=1<<val;
+                row[i]|=1<<val;
+                col[j]|=1<<val;
             }
-        }  
-        return true;      
-    }
-
-    bool isValid(vector<vector<char>>& board,int row,int col,char c){
-         for(int i=0;i<9;i++){
-             if(board[row][i]==c)
-                {if(i!=col)
-                    return false;}
-            if(board[i][col]==c)
-                {
-                if(i!=row)
-                    return false;}
-            if(board[3*(row/3)+(i/3)][3*(col/3)+i%3]==c)
-                {
-                if((3*(row/3)+(i/3))!=row && (3*(col/3)+i%3)!=col)
-                    return false;}
-         }
-         return true;
+        }
+        return true;
     }
 };
+
+
+/*
+
+2+2 = 4
+
+
+
+
+
+
+
+*/
