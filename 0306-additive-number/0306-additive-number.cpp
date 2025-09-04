@@ -1,34 +1,31 @@
 class Solution {
 public:
-    bool isAdditiveNumber(string nums) {
-        if (nums.length() < 3) return false;
-        bool ans = false;
-        for(int len1=1;len1<nums.length()-1;len1++) {
-            for(int len2=1;max(len1,len2)<=(nums.length()-len1-len2);len2++) {    
-                ans = ans || solve(nums,0,len1,len1,len2);
-            }
-        }
-        return ans;
+    bool isAdditiveNumber(string num) {
+        return helper(num, 0, -1, -1, LONG_MAX / 100);
     }
-
-    int solve(string nums,int start1,int start2,int len1,int len2) {
-        if((nums[start1]=='0'&& len1>1) || (nums[start2]=='0' && len2>1)) return false;
-        if(start2+len2>=nums.length()) return true;
-        long thirdNum = stoll(nums.substr(start1,len1)) + stoll(nums.substr(start2,len2));
-        string thirdNumStr = to_string(thirdNum);
-        if(thirdNumStr == nums.substr(start2+len2,thirdNumStr.length())) {
-            return solve(nums,start2,start2+len2,len2,thirdNumStr.length());
+    bool helper(string num, int inx, long first, long second, long mx) {
+        int n = num.length();
+        long val = 0;
+        for (int i = inx; i < n; i++) {
+            val = val * 10 + (num[i] - '0');
+            if (i > inx && num[inx] == '0' || val > mx)
+                break;
+            if (first == -1) {
+                if (helper(num, i + 1, val, second, mx))
+                    return true;
+            } else if (second == -1) {
+                if (helper(num, i + 1, first, val, mx))
+                    return true;
+            } else {
+                if (first + second == val) {
+                    if (i == n - 1)
+                        return true;
+                    return helper(num, i + 1, second, val, mx);
+                }
+                if (first + second < val)
+                    break;
+            }
         }
         return false;
     }
 };
-
-
-/*
-
-        E       l2  
-x   x   x   x   x   x   x   x   x   x
-
-
-
-*/
