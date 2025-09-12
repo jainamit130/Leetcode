@@ -1,15 +1,21 @@
 class Solution {
 public:
     bool doesAliceWin(string s) {
-        int count=0;
-        for(auto c:s){
-            if(c=='a' || c=='e' || c=='i' || c=='o' || c=='u'){
-                count++;
-            }
+        unordered_set<char> vowel = {'a','e','i','o','u'};
+        int count = 0;
+        for(auto ch:s) {
+            if(vowel.find(ch)!=vowel.end()) return true;
         }
-        if(count==0){
-            return false;
-        }
-        return true;
+        return false;
     }
 };
+
+/*
+
+
+
+
+
+
+*/
+
