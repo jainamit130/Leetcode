@@ -2,7 +2,6 @@ class Solution {
 public:
     bool doesAliceWin(string s) {
         unordered_set<char> vowel = {'a','e','i','o','u'};
-        int count = 0;
         for(auto ch:s) {
             if(vowel.find(ch)!=vowel.end()) return true;
         }
