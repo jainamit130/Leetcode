@@ -1,37 +1,68 @@
 class Solution {
 public:
-    int compareVersion(string v1, string v2) {
-        int i = 0, j = 0;
-        v1+=".";
-        v2+=".";
-        while (i < v1.length() || j < v2.length()) {
-            int flag = 0;
-            string s1 = "", s2 = "";
-            while (i < v1.length() && v1[i] != '.') {
-                if (v1[i] != '0' || flag) {
-                    s1 += v1[i];
-                    flag = 1;
-                }
+    int compareVersion(string version1, string version2) {
+        int i=-1;
+        int j=-1;
+        cout<<i<<" "<<j<<" "<<version1.length()<<" "<<version2.length()<<endl;
+        
+        while(i<version1.length() && j<version2.length()){
+            cout<<i<<" "<<j<<endl;
+            string num1="";
+            string num2="";
+            i++;
+            while(version1[i]!='.'){
+                num1+=version1[i];
                 i++;
-            }flag=0;
-            while (j < v2.length() && v2[j] != '.') {
-                if (v2[j] != '0' || flag) {
-                    s2 += v2[j];
-                    flag = 1;
-                }
+            }
+            j++;
+            while(version2[j]!='.'){
+                num2+=version2[j];
                 j++;
             }
-            if(s1=="")
-                s1="0";
-            if(s2=="")
-                s2="0";
-            if(stoi(s1)<stoi(s2))
+            cout<<num1<<" "<<num2<<endl;
+            int n1=strToNum(num1);
+            int n2=strToNum(num2);
+            if(n1<n2)
                 return -1;
-            else if(stoi(s1)>stoi(s2))
+            else if(n1>n2)
                 return 1;
+        }
+        string num1="";
+        string num2="";
+        while(i<version1.length()){
+            cout<<"brooo";
+            num1="";
             i++;
+            while(version1[i]!='.'){
+                num1+=version1[i];
+                i++;
+            }
+            int n1=strToNum(num1);
+            if(n1>0)
+                return 1;
+        }
+        while(j<version2.length()){
+            cout<<"brooo";
+            num2="";
             j++;
+            while(version2[j]!='.'){
+                num2+=version2[j];
+                j++;
+            }
+            int n2=strToNum(num2);
+            if(n2>0)
+                return -1;
         }
         return 0;
+    }
+
+    int strToNum(string n){
+        int m=n.length()-1;
+        int ans=0;
+        for(int i=m;i>=0;i--){
+            ans+=(n[m-i]*pow(10,i));
+        }
+        cout<<ans<<endl;
+        return ans;
     }
 };
