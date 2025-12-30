@@ -15,6 +15,9 @@ public:
             int node=pq.top()[1];
             int time=pq.top()[0];
             pq.pop();
+            if(visited[node]){
+                continue;
+            }
             visited[node]=1;
             visitedCount++;
             distances[node]=min(distances[node],time);
