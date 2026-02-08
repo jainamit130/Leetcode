@@ -1,31 +1,32 @@
 class Solution {
 public:
     int minimumDeletions(string s) {
-        int counta=0;
-        int countb=0;
-        int ans=INT_MAX;
-        for(int i=0;i<s.length();i++){
-            if(s[i]=='b')
-               countb++;
-            else 
-               counta++;
-            if(countb==0 && counta!=0){
-                counta=0;
-            }
+        int n = s.length();
+        int totalA = 0;
+        vector<int> prefix(n+1);
+        for(int i=0;i<s.length();i++) {
+            prefix[i+1] = prefix[i] + (s[i]=='a');
+            totalA+=(s[i]=='a');
         }
-        for(int i=s.length();i>=0;i--){
-            if(s[i]=='b')
-               countb--;
-            if(s[i]=='a')
-                break;
+        int ans = totalA;
+        for(int i=0;i<n;i++) {
+            int leftB = i - prefix[i];
+            int rightA = totalA - prefix[i];
+            ans = min(leftB + rightA, ans);
         }
-        ans=min(ans,min(counta,countb));
-       return ans;
+        ans = min(ans,n-totalA);
+        return ans;
     }
 };
 
 
+/*
 
 
+    b   b   a   a   a   a   a   b   b
+0   1   2   2   2   2   2   2   3   4
+    5   5   5   4   3   2   1   0   0   0
 
+    5   6   7   6   5   4   3   2   3   
 
+*/
