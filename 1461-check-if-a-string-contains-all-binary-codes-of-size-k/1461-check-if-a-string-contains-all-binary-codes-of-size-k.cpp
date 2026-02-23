@@ -1,6 +1,6 @@
 class Solution {
 public:
-    bool hasAllCodes(string s, int t) {
+    bool hasAllCodes(string& s, int t) {
         int n = s.length();
         int totalNums = pow(2, t);
         unordered_set<int> st;
