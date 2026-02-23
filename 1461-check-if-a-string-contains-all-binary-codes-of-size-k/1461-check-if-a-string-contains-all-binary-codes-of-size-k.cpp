@@ -16,7 +16,7 @@ public:
                 l++;
             } else {
                 if (s[l] - '0') val += 1;
-                st.erase(val);
+                if(st.find(val)!=st.end()) st.erase(val);
                 if (s[k] - '0') val -= pow(2, t - 1);
                 val *= 2;
                 l++; k++;
