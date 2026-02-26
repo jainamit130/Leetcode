@@ -1,42 +1,57 @@
 class Solution {
 public:
     int numSteps(string s) {
-        int steps = 0;
-        while(s.length()>0 && s!="1") {
-            if(s.back()=='1') {
-                string endStr = "";
-                while(s.length() && s.back()=='1') {
-                    endStr += '0';
-                    s.pop_back();
-                }
-                string midStr = "";
-                if(s.length()>0) {
-                    s.pop_back();
-                    midStr = "1"; 
-                }
-                s = s + midStr + endStr;
-            } else {
+        int ans=0;
+        while(s.length()>1){
+            if(s.back()=='0'){
+                ans++;
                 s.pop_back();
+            } else {
+                int i=s.length()-1;
+                s[i]='0';
+                i--;
+                while(i>=0 && s[i]=='1'){
+                    s[i]='0';
+                    i--;
+                }
+                if(i==-1){
+                    s[0]='1';
+                    ans++;
+                    s.push_back('0');
+                } else {
+                    s[i]='1';
+                    ans++;
+                }
             }
-            steps++;
         }
-        return steps;
+        return ans;
     }
 };
 
-/*
-1   1   0   1
 
+/*
+
+1   1   0   1
 1   1   1   0
 1   1   1
 1   0   0   0
 1   0   0
 1   0
+1
+
+
+
+
+0   1   1   1   1   
+
+1   0   0   0   0
+
+1   0   0   0
+
+1   0   0
+
 1   0
 
-
-1   0   0   1   1   
-
-0   0
+1
 
 */
