@@ -1,23 +1,31 @@
 class Solution {
 public:
-    string findDifferentBinaryString(vector<string>& nums) {
-        int n  = nums.size();
-        unordered_set<string> st(nums.begin(),nums.end());
-        return solve(n,st);
-    }
-
-    string solve(int n,unordered_set<string> st) {
-        if(n==0) {
+    int n;
+    unordered_set<string> numsSet;
+    
+    string generate(string curr) {
+        if (curr.size() == n) {
+            if (numsSet.find(curr) == numsSet.end()) {
+                return curr;
+            }
+            
             return "";
         }
-
-        string ans = "";
-        // add 0
-        ans="0"+solve(n-1,st);
-        if(st.find(ans)==st.end()) return ans;
-        // add 1
-        ans = "1"+solve(n-1,st);
-        if(st.find(ans)==st.end()) return ans;
-        return ans;
+        
+        string addZero = generate(curr + "0");
+        if (addZero.size() > 0) {
+            return addZero;
+        }
+        
+        return generate(curr + "1");
+    }
+    
+    string findDifferentBinaryString(vector<string>& nums) {
+        n = nums.size();
+        for (string s : nums) {
+            numsSet.insert(s);
+        }
+        
+        return generate("");
     }
 };
