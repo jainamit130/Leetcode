@@ -1,24 +1,18 @@
 class Solution {
 public:
     int largestSubmatrix(vector<vector<int>>& matrix) {
-        int row=matrix.size();
-        int col=matrix[0].size();
-        int ans=0;
-        vector<int> colCountofConsecutive1(col);
-        for(int i=0;i<row;i++){
-            for(int j=0;j<col;j++){
-                if(matrix[i][j])
-                    colCountofConsecutive1[j]++;
-                else
-                    colCountofConsecutive1[j]=0;
-            }
-            vector<int> copy=colCountofConsecutive1;
-            sort(copy.begin(),copy.end());
-            for(int i=copy.size()-1;i>=0;i--){
-                int base=copy.size()-i;
-                ans=max(copy[i]*(base),ans);
+        int m = matrix.size();
+        int n = matrix[0].size();
+        vector<int> nextRow(n);
+        int area = 0;
+        for(int i=0;i<m;i++) {
+            for(int j=0;j<n;j++) nextRow[j] = matrix[i][j] ? nextRow[j]+1 : 0;
+            sort(nextRow.begin(),nextRow.end(),greater<int>());
+            for(int j=0;j<n;j++) {
+                area = max(area,(j+1)*nextRow[j]);
             }
         }
-        return ans;
-    }   
+
+        return area;
+    }
 };
