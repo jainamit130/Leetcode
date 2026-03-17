@@ -11,7 +11,6 @@ public:
             sort(copyRow.begin(),copyRow.end(),greater<int>());
             for(int j=0;j<n;j++) area = max(area,(j+1)*copyRow[j]);
         }
-
         return area;
     }
 };
