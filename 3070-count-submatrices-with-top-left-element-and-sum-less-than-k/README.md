@@ -1,4 +1,4 @@
-<h2><a href="https://leetcode.com/problems/count-submatrices-with-top-left-element-and-sum-less-than-k">3070. Count Submatrices with Top-Left Element and Sum Less Than k</a></h2><h3>Medium</h3><hr><p>You are given a <strong>0-indexed</strong> integer matrix <code>grid</code> and an integer <code>k</code>.</p>
+<h2><a href="https://leetcode.com/problems/count-submatrices-with-top-left-element-and-sum-less-than-k/?envType=daily-question&envId=2026-03-18">3070. Count Submatrices with Top-Left Element and Sum Less Than k</a></h2><h3>Medium</h3><hr><p>You are given a <strong>0-indexed</strong> integer matrix <code>grid</code> and an integer <code>k</code>.</p>
 
 <p>Return <em>the <strong>number</strong> of <span data-keyword="submatrix">submatrices</span> that contain the top-left element of the</em> <code>grid</code>, <em>and have a sum less than or equal to </em><code>k</code>.</p>
 
