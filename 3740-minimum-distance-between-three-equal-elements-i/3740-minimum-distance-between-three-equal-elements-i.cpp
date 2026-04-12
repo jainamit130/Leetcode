@@ -11,7 +11,7 @@ public:
                 int a = temp.front();temp.pop();
                 int b = temp.front();temp.pop();
                 int c = temp.front();temp.pop();
-                ans = min(ans,b-a+c-a+c-b);
+                ans = min(ans,2*c-2*a);
             }
         }
         return ans==INT_MAX?-1:ans;
