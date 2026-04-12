@@ -9,7 +9,7 @@ public:
             if(mp[nums[i]].size()==3) {
                 queue<int> temp = mp[nums[i]];
                 int a = temp.front();temp.pop();
-                int b = temp.front();temp.pop();
+                temp.pop();
                 int c = temp.front();temp.pop();
                 ans = min(ans,2*c-2*a);
             }
