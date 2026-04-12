@@ -1,23 +1,19 @@
 class Solution {
 public:
     int minimumDistance(vector<int>& nums) {
-        int n = nums.size();
-        int ans = n + 1;
-
-        for (int i = 0; i < n - 2; i++) {
-            for (int j = i + 1; j < n - 1; j++) {
-                if (nums[i] != nums[j]) {
-                    continue;
-                }
-                for (int k = j + 1; k < n; k++) {
-                    if (nums[j] == nums[k]) {
-                        ans = std::min(ans, k - i);
-                        break;
-                    }
-                }
+        unordered_map<int,queue<int>> mp;
+        int ans = INT_MAX;
+        for(int i=0;i<nums.size();i++) {
+            if(mp.find(nums[i])!=mp.end() && mp[nums[i]].size()==3) mp[nums[i]].pop();
+            mp[nums[i]].push(i);
+            if(mp[nums[i]].size()==3) {
+                queue<int> temp = mp[nums[i]];
+                int a = temp.front();temp.pop();
+                int b = temp.front();temp.pop();
+                int c = temp.front();temp.pop();
+                ans = min(ans,b-a+c-a+c-b);
             }
         }
-
-        return ans == n + 1 ? -1 : ans * 2;
+        return ans==INT_MAX?-1:ans;
     }
 };
