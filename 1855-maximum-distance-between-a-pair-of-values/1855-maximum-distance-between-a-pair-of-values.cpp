@@ -11,6 +11,7 @@ public:
                 if(nums2[mid]>=nums1[i]) {
                     // update ans 
                     ans = max(ans,mid-i);
+                    // try better
                     start = mid + 1;
                 } else {
                     end = mid-1;
