@@ -1,4 +1,4 @@
-<h2><a href="https://leetcode.com/problems/closest-equal-element-queries">3488. Closest Equal Element Queries</a></h2><h3>Medium</h3><hr><p>You are given a <strong>circular</strong> array <code>nums</code> and an array <code>queries</code>.</p>
+<h2><a href="https://leetcode.com/problems/closest-equal-element-queries/?envType=daily-question&envId=2026-04-16">3488. Closest Equal Element Queries</a></h2><h3>Medium</h3><hr><p>You are given a <strong>circular</strong> array <code>nums</code> and an array <code>queries</code>.</p>
 
 <p>For each query <code>i</code>, you have to find the following:</p>
 
